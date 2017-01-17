@@ -1,18 +1,24 @@
 "use strict";
-define("BoardWindow", [], function() {
+define("BoardWindow", ["UI", "Video", "Canvas", "ViewFiles"], function(UI, Video, Canvas, ViewFiles) {
+	var TEST_VIDEO_URL = "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv";
+	// var TEST_VIDEO_URL = "static/SampleVideo_1280x720.mp4";
 	var BoardWindow = function(name) {
 		this.name = name;
 		this._id = BoardWindow.randomId();
-		this._currentView = 1;
+		this._currentView = 2;
 		this.isActive = false;
 
 		// board element
 		this.boardElement = null;
 		// views elemenets
-		this.videoElement = null;
-		this.canvasElement = null;
+		// this.videoElement = null;
+		// this.canvasElement = null;
+		var v = new Video(TEST_VIDEO_URL);
+		var c = new Canvas();
+		this.files = new ViewFiles();
+		this._elements = [v, c];
 	};
-
+// 
 	BoardWindow.views = {
 		0: ["video"],
 		1: ["canvas"],
@@ -33,53 +39,143 @@ define("BoardWindow", [], function() {
 		return res;
 	};
 
-	BoardWindow.prototype.initBoard = function(element) {
-		var board = document.createElement("div");
-		board.setAttribute("id", "board_" + this._id);
-		board.classList.add("board-window");
-		this.boardElement = board;
-		var asidePanel = this.renderAsidePanel();
-		var header = document.createElement("h3");
-		header.classList.add("head");
-		header.textContent = this.name;
-		// append boardWindow to element
-		this.boardElement.appendChild(header);
-		this.boardElement.appendChild(asidePanel);
-
-		var main = document.getElementById(element);
-		main.appendChild(this.boardElement);
-
-		
-
-	};
+	
 	BoardWindow.prototype.getId = function() {
 		return this._id;
 	};
+	BoardWindow.prototype.setCurrentView = function() {
+		var views = BoardWindow.views;
+		var c, v;
+		v = this._elements[0],
+		c = this._elements[1];
+		for(var k in views) {
+			switch(this._currentView) {
+				case 0:
+					v.setActive(true);
+					c.setActive(false);
+					return 1;
+				break;
+				case 1:
+					this._elements.forEach(function(el) {
+							if(!el.getActive()){
+								el.setActive(true);
+							} else {
+								el.setActive(false);
+							}
+						});
+					
+					return 2;
+				break;
+				case 2:
+					v.setActive(false);
+					c.setActive(true);
+					return 0;
+					
+				break;
+			}
+		};
+	}
 
 	BoardWindow.prototype.renderVideo = function() {
-		var v = document.createElement("div");
-		v.setAttribute("id", this._id + "_" + "video");
-		v.setAttribute("class", "board_video");
-		this.videoElement = v;
+		
 	};
 	BoardWindow.prototype.renderCanvas = function() {
-		var c = document.createElement("div");
-		c.setAttribute("id", this._id + "_" + "canvas");
-		c.setAttribute("class", "board_canvas");
-		this.canvasElement = c;
+		
 	};
-	BoardWindow.prototype.renderAll = function() {
-		var elems = [this.videoElement, this.canvasElement];
-		elems.forEach(function(el) {
-			if (el != null) {
-				this.boardElement.appendChild(el);
+	BoardWindow.prototype.render = function() {
+		var main = UI.createElement({
+			type: "div",
+			className: "board-window",
+			id: this._id
+		});
+		var content = this.renderContent();
+		var asidePanel = this.renderAsidePanel();
+		// 
+		// var elems = [this.videoElement, this.canvasElement];
+		main.appendChild(asidePanel);
+		main.appendChild(content);
+		return main;
+		// var target = document.querySelector("." + className);
+		// target.appendChild(main);
+	};
+	BoardWindow.prototype.renderContent = function() {
+		// var head = UI.createElement({
+		// 	type: "h3",
+		// 	className: "board-content_header",
+		// 	name: this.name
+		// });
+		var wrapper = UI.createElement({
+			type: "div",
+			className: "board-content"
+			// child: head
+		});
+		this._elements.forEach(function(el) {
+			var block = el.render();
+			wrapper.appendChild(block);
+		});
+		return wrapper;
+	};
+	BoardWindow.prototype.update = function() {
+		var main = document.getElementById(this._id);
+		main.innerHTML = "";
+		var blocks = this.renderContent();
+		var asidePanel = this.renderAsidePanel();
+		main.appendChild(asidePanel);
+		main.appendChild(blocks);
+
+	};
+	BoardWindow.prototype.switchBlocks = function() {
+		this._elements = this._elements.reverse();
+		// this.update();
+		var b = document.querySelector(".board-content");
+		if (b != null) {
+			b.classList.toggle("reverse");
+		}
+		return this;
+	};
+	BoardWindow.prototype.toggleViews = function() {
+		this._currentView = this.setCurrentView();
+		// this.update();
+	};
+
+	BoardWindow.prototype.renderAsidePanel = function() {
+		var asidePanel = UI.createElement({
+			type: "div",
+			className: "board-asidePanel"
+		});
+		var self = this;
+		// if (this._currentView == 2) {
+			var switchButton = UI.createElement({
+				type: "button",
+				className: "asidePanel-switchButton",
+				eventType: "click",
+				name: "switch",
+				event: function(e) {
+					e.preventDefault();
+					self.switchBlocks();
+				}
+			});
+			// switchButton.setAttribute("disabled", true);
+			asidePanel.appendChild(switchButton);
+
+		// } 
+		var toggleButton = UI.createElement({
+			type: "button",
+			className: "asidePanel-toggleButton",
+			eventType: "click",
+			name: "toggle",
+			event: function(e) {
+				e.preventDefault();
+				self.toggleViews();
 			}
 		});
-	};
-	BoardWindow.prototype.renderAsidePanel = function() {
-		var asidePanel = document.createElement("div");
-		asidePanel.classList.add("asidePanel");
-		// var boardWindow = document.getElementById(this._id);
+		var files = this.files.render();
+		asidePanel.appendChild(toggleButton);
+		asidePanel.appendChild(files);
+		// if (this.files.listIsOpen) {
+		// 	var l = this.file.renderList();
+		// 	asidePanel.appendChild(l);
+		// }
 		return asidePanel;
 	};
 	return BoardWindow;

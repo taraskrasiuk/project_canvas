@@ -30,7 +30,7 @@ define("UI", [], function() {
 				el.appendChild(child);
 			}
 			if (eventType != null && event != null) {
-				el.addEventListener(eventType, event, false);
+				el.addEventListener(eventType, event, true);
 			}
 			return el;
 		},

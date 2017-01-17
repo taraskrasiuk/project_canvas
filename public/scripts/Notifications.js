@@ -9,6 +9,10 @@ define("Notifications", [], function() {
 		currentBoard : function(board) {
 			var _id = board.getId();
 			return "currentBoard with id is " + _id + " .";
+		},
+		boardDeleted: function(board) {
+			var _id = board.getId();
+			return "board with id " + _id + " successfully deleted";
 		}
 	};
 });

@@ -8,9 +8,9 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		this._id = "main_board";
 
 		// for test
-		var b = new BoardWindow("test");
-		this.boards = this.boards.concat(b)
-		this._currentBoard = b;
+		//  var b = new BoardWindow("test");
+		// this.boards = this.boards.concat(b)
+		// this._currentBoard = b;
 	};
 	/*Static*/
 	MainBoard.MAX_BOARDS = 10;
@@ -23,69 +23,23 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		var mainBoard = document.createElement("div");
 		mainBoard.setAttribute("id", this._id);
 		var targetElement = document.getElementById(id);
-		var topPanel = this.topPanel();
+		var topPanel = this.renderTopPanel();
 		var bottomPanel = this.renderBottomPanel();
 		var content = this.renderMainContent();
+		if (this._currentBoard != null) {
+			var b = this._currentBoard.render();
+			content.appendChild(b);
+		}
 
 		mainBoard.appendChild(topPanel);
 		mainBoard.appendChild(content);
 		mainBoard.appendChild(bottomPanel);
 
 		targetElement.appendChild(mainBoard);
+		
 	};
 	/*Top-panel*/
 	MainBoard.prototype.renderTopPanel = function() {
-		var topPanel = document.createElement("div");
-		topPanel.classList.add("top-panel");
-		var optChild = UI.createElement({
-			type: ""
-		});
-		var spanClose = document.createElement("span");
-			spanClose.classList.add("close");
-			spanClose.textContent = "x";
-			spanClose.addEventListener("click", function(e) {
-				this.deleteBoard(board);
-				// s.updateBoardsList();
-			}, false);
-
-		var ul = UI.renderList("top-panel", this.boards, spanClose);
-		var liArray = this.boards.map(function(el) {
-			var li = UI.createElement({
-				type: "li",
-				className: "list_item",
-				active: this.getCurrentBoard() === el,
-				eventType: "click",
-				event: function(e) {
-
-				}
-			})
-		});
-		// var ul = this.renderBoardList();
-		// var head = document.createElement("h3");
-		// head.classList.add("top-panel_head");
-		// head.textContent = "Board";
-		// topPanel.appendChild(head);
-		topPanel.appendChild(ul);
-		return topPanel;
-	};
-	/*Bottom-panel*/
-	MainBoard.prototype.renderBottomPanel = function() {
-		var bottomPanel = document.createElement("div");
-		bottomPanel.classList.add("bottom-panel");
-		var bottomHeader = document.createElement("h3");
-		bottomHeader.textContent = "BOTTOM";
-		bottomPanel.appendChild(bottomHeader);
-		return bottomPanel;
-	};
-	/*Main-content*/
-	MainBoard.prototype.renderMainContent = function() {
-		var board = document.createElement("div");
-		board.classList.add("main-board");
-		return board;
-	};
-
-	/*render top-list*/
-	MainBoard.prototype.topPanel = function() {
 		var topPanel = UI.createElement({
 			type: "div",
 			className: "top-panel"
@@ -130,7 +84,9 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 				className: "list_item",
 				eventType: "click",
 				event: function(e) {
-					self.addBoard();
+					var bName = "Board " + (self.boards.length);
+					var b = new BoardWindow(bName);
+					self.addBoard(b);
 				}
 			});
 		liArray.push(add);
@@ -143,121 +99,21 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		topPanel.appendChild(ul);
 		return topPanel;
 	};
-
-	// MainBoard.prototype.initMainBoard = function(id) { 
-	// 	var mainBoard = document.createElement("div");
-	// 	mainBoard.setAttribute("id", this._id);
-	// 	var targetElement = document.getElementById(id);
-	// 	targetElement.appendChild(mainBoard);
-
-	// 	// init top panel
-	// 	this.renderTopPanel();
-	// 	mainBoard.appendChild(this.renderBottomPanel());
-	// };
-
-	// MainBoard.prototype.renderCurrentBoard = function() {
-	// var board = document.createElement("div");
-	// 	board.setAttribute("id", this._currentBoard.name);
-	// 	board.classList.add("main-board");
-	// var main = document.getElementById(this._id);
-	// 	main.appendChild(board);
-	// 	var current = this.getCurrentBoard();
-	// 	if (current != null) {
-	// 		current.initBoard(this._currentBoard.name);
-	// 		current.renderAll();
-	// 	}
-
-		
-	// };
-
-	// MainBoard.prototype.renderTopPanel = function() {
-	// 	var topPanel = document.createElement("div");
-	// 	topPanel.setAttribute("class", "top-panel");
-	// 	var ul = this.renderBoardList();
-	// 	var head = document.createElement("h3");
-	// 	head.setAttribute("class", "top-panel_head");
-	// 	head.textContent = "Board";
-	// 	topPanel.appendChild(head);
-	// 	topPanel.appendChild(ul);
-
-	// 	var main = document.getElementById(this._id);
-	// 	main.appendChild(topPanel);
-	// };
-
-	// MainBoard.prototype.renderBottomPanel = function() {
-	// 	var bottomPanel = document.createElement("div");
-	// 	bottomPanel.classList.add("bottom-panel");
-	// 	var bottomHeader = document.createElement("h3");
-	// 	bottomHeader.textContent = "BOTTOM";
-	// 	bottomPanel.appendChild(bottomHeader);
-	// 	return bottomPanel;
-	// }
-
-	// MainBoard.prototype.renderBoardList = function() {
-	// 	var ul = document.createElement("ul");
-	// 	ul.setAttribute("class", "top-panel_list");
-	// 	for(var i = 0; i < this.boards.length; i++) {
-	// 		ul.appendChild(this.renderBoardListElement(this.boards[i]));
-	// 	}
-	// 	// if( this.boards.length == 0) {
-	// 		ul.appendChild(this.renderBoardListElement(null));
-	// 	// }
-	// 	return ul;
-	// };
-
-	// MainBoard.prototype.renderBoardListElement = function(board) {
-	// 	var li = document.createElement("li");
-
-	// 	li.classList.add("list_item");
-		
-	// 	var s = this;
-
-	// 	if(board) {
-	// 		// li.textContent = board.name;
-	// 		li.addEventListener("click", function(e) {
-	// 			// var b = new BoardWindow("board " + (s.boards.length + 1));
-	// 			s.setCurrentBoard(board);
-	// 			s.updateBoardsList();
-	// 		}, false);
-
-	// 		var spanClose = document.createElement("span");
-	// 		spanClose.classList.add("close");
-	// 		spanClose.textContent = "x";
-	// 		spanClose.addEventListener("click", function(e) {
-	// 			s.deleteBoard(board);
-	// 			s.updateBoardsList();
-	// 		}, false);
-	// 		var spanTitle = document.createElement("span");
-	// 		spanTitle.classList.add("span-title");
-	// 		spanTitle.textContent = board.name;
-	// 		li.appendChild(spanTitle);
-	// 		li.appendChild(spanClose);
-	// 		if (this.getCurrentBoard() === board) {
-	// 			li.classList.add("active");
-
-	// 		}
-	// 	} else {
-	// 		li.textContent = "+";
-	// 		li.addEventListener("click", function(e) {
-	// 			var b = new BoardWindow("board " + (s.boards.length + 1));
-	// 			s.addBoard(b);
-	// 		}, false);
-	// 	}
-		
-	// 	return li;
-	// }
-	// MainBoard.prototype.updateBoardsList = function() {
-	// 	var ul = document.querySelector(".top-panel_list");
-	// 	ul.innerHTML = "";
-	// 	for(var i = 0; i < this.boards.length; i++) {
-	// 		ul.appendChild(this.renderBoardListElement(this.boards[i]));
-	// 	}
-	// 	ul.appendChild(this.renderBoardListElement(null));
-	// };
-
-	// MainBoard.prototype.updateBoardContent = function() {
-	// 	this.renderCurrentBoard();
-	// };
+	/*Bottom-panel*/
+	MainBoard.prototype.renderBottomPanel = function() {
+		var bottomPanel = document.createElement("div");
+		bottomPanel.classList.add("bottom-panel");
+		// var bottomHeader = document.createElement("h3");
+		// bottomHeader.textContent = "BOTTOM";
+		// bottomPanel.appendChild(bottomHeader);
+		return bottomPanel;
+	};
+	/*Main-content*/
+	MainBoard.prototype.renderMainContent = function() {
+		var board = document.createElement("div");
+		board.classList.add("main-board");
+		return board;
+	};
 
 	MainBoard.prototype.addBoard = function(board) {
 		if (Utils.isBoard(board)){
@@ -266,24 +122,29 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 				this.setCurrentBoard(board);
 				var notify = Notifications.boardAdded(board);
 				MainBoard.log(notify);
-				// this.updateBoardsList();
 				return true;
 			}
 		}
 		return false;
 	};
+
 	MainBoard.prototype.getCurrentBoard = function(){
 		return this._currentBoard;
 	};
+
 	MainBoard.prototype.setCurrentBoard = function(b) {
-		if (Utils.isBoard(b)) {
+		if (Utils.isBoard(b) && this._currentBoard != b) {
 			var notify = Notifications.currentBoard(b);
 			MainBoard.log(notify);
 			this._currentBoard = b;
-			// this.updateBoardContent();
+		} else if(b == null) {
+			this._currentBoard = b;
 		}
+		this.update(b);
+
 		return this;
 	};
+
 	MainBoard.prototype.deleteBoard = function(b) {
 		if (Utils.isBoard(b)) {
 			var idx = this.boards.indexOf(b);
@@ -291,21 +152,36 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 				this.boards = this.boards.filter(function(el, i, arr) {
 					return i != idx;
 				});
-				if(b === this.getCurrentBoard()) {
-					this.setCurrentBoard(this.boards[this.boards.length - 1]);
-				} 
-				// this.updateBoardsList();
+				if (this.boards.length > 0) {
+					if(b === this.getCurrentBoard()) {
+						this.setCurrentBoard(this.boards[this.boards.length - 1]);
+					} 
+				} else {
+					this.setCurrentBoard(null);
+				}
+				var notify = Notifications.boardDeleted(b);
+				MainBoard.log(notify);
 				return true;
 			}
 		}
-		return false;
+		return false;	
 	};
 
 	// MAIN update
-	MainBoard.prototype.update = function() {
-		// this.updateBoardsList();
-		// update top panle list
-		// update content
+	MainBoard.prototype.update = function(board) {
+		var main = document.getElementById(this._id);
+		main.innerHTML = "";
+		var topPanel = this.renderTopPanel();
+		var content = this.renderMainContent();
+		var bottomPanel = this.renderBottomPanel();
+		main.appendChild(topPanel);
+		main.appendChild(content);
+		main.appendChild(bottomPanel);
+		var b;
+		if (Utils.isBoard(board)) {
+			b = board.render();
+			content.appendChild(b);
+		}
 	}
 	return MainBoard;
 });
