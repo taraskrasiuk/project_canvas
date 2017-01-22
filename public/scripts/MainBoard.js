@@ -36,10 +36,19 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		mainBoard.appendChild(bottomPanel);
 
 		targetElement.appendChild(mainBoard);
-		
+
+		resize();
 	};
+
+
+
+
+
+	// END
 	/*Top-panel*/
 	MainBoard.prototype.renderTopPanel = function() {
+		
+
 		var topPanel = UI.createElement({
 			type: "div",
 			className: "top-panel"
@@ -94,9 +103,22 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		liArray.forEach(function(li) {
 			ul.appendChild(li);
 		});
+		// topPanel.appendChild(resize);
+		// var dragDiv = document.createElement("div");
+		// dragDiv.classList.add("drag_div");
 
+
+		// topPanel.appendChild(dragDiv);
+		
 		topPanel.appendChild(topPanelHead);
 		topPanel.appendChild(ul);
+		// var dm = document.querySelector('main-board'); 
+		topPanel.addEventListener('dragstart',drag_start,false); 
+		// dragDiv.addEventListener('dragstart',function(e){
+		// 	console.log(e);
+		// },false);
+		document.body.addEventListener('dragover',drag_over,false); 
+		document.body.addEventListener('drop',drop,false); 
 		return topPanel;
 	};
 	/*Bottom-panel*/
@@ -106,12 +128,21 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		// var bottomHeader = document.createElement("h3");
 		// bottomHeader.textContent = "BOTTOM";
 		// bottomPanel.appendChild(bottomHeader);
+		var resize = UI.createElement({
+			type: "span",
+			className: "resize_span",
+			
+		});
+		bottomPanel.appendChild(resize);
 		return bottomPanel;
 	};
 	/*Main-content*/
 	MainBoard.prototype.renderMainContent = function() {
+		// var drag = document.createElement("div");
+		// drag.classList.add("drag");
 		var board = document.createElement("div");
 		board.classList.add("main-board");
+		// drag.appendChild(board);
 		return board;
 	};
 
@@ -182,8 +213,64 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 			b = board.render();
 			content.appendChild(b);
 		}
+		resize();
+
 	}
 	return MainBoard;
 });
 
+
+// DRAG
+
+function drag_start(event) {
+	var main = document.getElementById("main_board");
+    var style = window.getComputedStyle(main, null);
+    event.dataTransfer.setData("text/plain",
+    (parseInt(style.getPropertyValue("left"),10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"),10) - event.clientY));
+} 
+function drag_over(event) { 
+    event.preventDefault(); 
+    return false; 
+} 
+function drop(event) { 
+    var offset = event.dataTransfer.getData("text/plain").split(',');
+    var dm = document.getElementById('main_board');
+    dm.style.left = (event.clientX + parseInt(offset[0],10)) + 'px';
+    dm.style.top = (event.clientY + parseInt(offset[1],10)) + 'px';
+    event.preventDefault();
+    return false;
+} 
+
+
+
+	// RESIZE LISTENERS
+// RESIZE
+function resize() {
+	var startX, startY, startWidth, startHeight;
+
+		// init RESIZE
+			var p = document.getElementById("main_board");
+
+
+			function initDrag(e) {
+			   startX = e.clientX;
+			   startY = e.clientY;
+			   startWidth = parseInt(document.defaultView.getComputedStyle(p).width, 10);
+			   startHeight = parseInt(document.defaultView.getComputedStyle(p).height, 10);
+			   document.documentElement.addEventListener('mousemove', doDrag, false);
+			   document.documentElement.addEventListener('mouseup', stopDrag, false);
+			}
+
+			function doDrag(e) {
+			   p.style.width = (startWidth + e.clientX - startX) + 'px';
+			   p.style.height = (startHeight + e.clientY - startY) + 'px';
+			}
+
+			function stopDrag(e) {
+			    document.documentElement.removeEventListener('mousemove', doDrag, false);    
+			    document.documentElement.removeEventListener('mouseup', stopDrag, false);
+			}
+			var resizeSpan = document.querySelector(".resize_span");
+			resizeSpan.addEventListener("mousemove", initDrag, false);
+}
 

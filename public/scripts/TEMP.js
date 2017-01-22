@@ -430,14 +430,10 @@ canvas.observe("selection:cleared", function(o) {
 
 function drawing() {
   canvas.isDrawingMode = true;
-
-
   canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
   canvas.freeDrawingBrush.color = "#ddd";
-      canvas.freeDrawingBrush.width = 5;
-      canvas.freeDrawingBrush.shadowBlur = 2;
-      // canvas.renderAll();
-
+  canvas.freeDrawingBrush.width = 5;
+  canvas.freeDrawingBrush.shadowBlur = 2;
 }
 
 // GLOBAL ACTIONS

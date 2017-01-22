@@ -6,20 +6,50 @@ html, body {
 	width: 100%;
 	height: 100%;
 }
+/* RESIZE */
+.resize_span {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 20px;
+	height: 20px;
+	background: #f00;
+}
+/* DRAGE DIV */
+.drag_div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	/*width: 100%;*/
+	height: 5px;
+	background: #222;
+	cursor: pointer;
+}
 /* MainBoard */
 #main_board {
+	
 	display: flex;
 	flex-direction: column;
-	width: auto;
-	height: 100%;
+	width: 500px;
+	height: 400px;
 	background: #ddd;
+	min-width: 400px;
+	min-height: 200px;
+
+position: absolute;
+	top: 20%;
+	left: 0%;
+	border: 1px solid #333;
 
 }
 /* MainBoard top-panel*/
 #main_board .top-panel {
+	position: relative;
 	display: flex;
 	flex-direction: row;
-	flex: 1 0 5%;
+	flex: 1;
+	min-height: 3rem;
 	justify-content: flex-start;
 	padding: .5rem 2rem;
 	background: #fff;
@@ -79,7 +109,7 @@ html, body {
 /* BoardWindow */
 #main_board .main-board {
 	display: flex;
-	flex: 1 0 85%;
+	flex: 10;
 	background: #ccc;
 }
 #main_board .main-board .board-window {
@@ -88,7 +118,7 @@ html, body {
 }
 #main_board .main-board .board-window .board-asidePanel {
 	padding-left: 1rem;
-	flex: 1 0 5%;
+	flex: 1;
 	background: #fff;
 	border-right: 1px solid #333;
 }
@@ -96,7 +126,7 @@ html, body {
 /* board - content */
 #main_board .main-board .board-window .board-content {
 	display: flex;
-	flex: 1 0 85%;
+	flex: 10;
 }
 #main_board .main-board .board-window .board-content.reverse {
 	flex-direction: row-reverse;
@@ -107,11 +137,11 @@ html, body {
 	align-items: center;
 }
 #main_board .main-board .board-window .board-content .video-wrapper {
-	flex: 1;
+	/*flex: 1;*/
 	background: #ddd;
-	padding: 1rem;
+	/*padding: 1rem;*/
 }
-#main_board .main-board .board-window .board-content .video-wrapper.full {
+#main_board .main-board .board-window .board-content .video-wrapper.open {
 	flex: 1;
 }
 #main_board .main-board .board-window .board-content .video-wrapper.close {
@@ -172,13 +202,13 @@ html, body {
  
 /* canvas */
 #main_board .main-board .board-window .board-content .canvas-wrapper {
-	flex: 1;
+	/*flex: 1;*/
 	background: #bbb;
-	padding: 1rem;
+	/*padding: 1rem;*/
 	display: flex;
 	align-items: flex-start;
 }
-#main_board .main-board .board-window .board-content .canvas-wrapper.full {
+#main_board .main-board .board-window .board-content .canvas-wrapper.open {
 	flex: 1;
 }
 #main_board .main-board .board-window .board-content .canvas-wrapper.close {
@@ -190,7 +220,7 @@ html, body {
 .canvas-element {
 	width: 100%;
 	height: 100%;
-	border: 1px solid #333;
+	/*border: 1px solid #333;*/
 }
 /* canvas tools */
 .tools {
@@ -217,8 +247,9 @@ html, body {
 }
 /* Bottom panel*/
 #main_board .bottom-panel {
+	position: relative;
 	display: flex;
-	flex: 1 0 5%;
+	flex: 1;
 	padding: .5rem 2rem;
 	background: #fff;
 	border-top: 1px solid #333;

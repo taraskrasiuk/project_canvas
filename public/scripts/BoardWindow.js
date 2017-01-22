@@ -5,7 +5,7 @@ define("BoardWindow", ["UI", "Video", "Canvas", "ViewFiles"], function(UI, Video
 	var BoardWindow = function(name) {
 		this.name = name;
 		this._id = BoardWindow.randomId();
-		this._currentView = 2;
+		this._currentView = 0;
 		this.isActive = false;
 
 		// board element
@@ -22,7 +22,7 @@ define("BoardWindow", ["UI", "Video", "Canvas", "ViewFiles"], function(UI, Video
 	BoardWindow.views = {
 		0: ["video"],
 		1: ["canvas"],
-		2: ["video", "canvas"]
+		// 2: ["video", "canvas"]
 	};
 
 
@@ -56,21 +56,9 @@ define("BoardWindow", ["UI", "Video", "Canvas", "ViewFiles"], function(UI, Video
 					return 1;
 				break;
 				case 1:
-					this._elements.forEach(function(el) {
-							if(!el.getActive()){
-								el.setActive(true);
-							} else {
-								el.setActive(false);
-							}
-						});
-					
-					return 2;
-				break;
-				case 2:
 					v.setActive(false);
 					c.setActive(true);
 					return 0;
-					
 				break;
 			}
 		};
@@ -90,20 +78,15 @@ define("BoardWindow", ["UI", "Video", "Canvas", "ViewFiles"], function(UI, Video
 		});
 		var content = this.renderContent();
 		var asidePanel = this.renderAsidePanel();
-		// 
-		// var elems = [this.videoElement, this.canvasElement];
+		// this.canvasElement;
 		main.appendChild(asidePanel);
 		main.appendChild(content);
+				// this.setCurrentView();
 		return main;
-		// var target = document.querySelector("." + className);
-		// target.appendChild(main);
+		
 	};
 	BoardWindow.prototype.renderContent = function() {
-		// var head = UI.createElement({
-		// 	type: "h3",
-		// 	className: "board-content_header",
-		// 	name: this.name
-		// });
+		
 		var wrapper = UI.createElement({
 			type: "div",
 			className: "board-content"
@@ -113,6 +96,8 @@ define("BoardWindow", ["UI", "Video", "Canvas", "ViewFiles"], function(UI, Video
 			var block = el.render();
 			wrapper.appendChild(block);
 		});
+
+
 		return wrapper;
 	};
 	BoardWindow.prototype.update = function() {

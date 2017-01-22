@@ -6,7 +6,7 @@ define("Video", ["UI"], function(UI) {
 		if (url != null) {
 			this.url = url;
 		};
-		this._isActive = true;
+		this._isActive = false;
 		this._videoMode = 'static';
 		// video
 		this._stop = true;
@@ -14,6 +14,9 @@ define("Video", ["UI"], function(UI) {
 		this.element = null;
 
 		this.isInit = false;
+
+		this._videoElement = null;
+
 	};
 
 	Video.modes = {
@@ -28,11 +31,13 @@ define("Video", ["UI"], function(UI) {
 
 		if (c != null && !bool) {
 			c.classList.toggle("close");
+			c.classList.remove("open");
 			if (v != null) {
 				v.pause();
 			}
 		} else if (c != null && bool){
 			c.classList.remove("close");
+			c.classList.add("open");
 			
 		}
 		return this;
@@ -69,11 +74,24 @@ define("Video", ["UI"], function(UI) {
 
 
 		// var cls = "video-wrapper " + (this.isActive ? "open" : "close");
-		var wrapper = UI.createElement({
-			type: "div",
-			className: "video-wrapper",
-			// name: "Video"
-		});
+		// var wrapper = UI.createElement({
+		// 	type: "div",
+		// 	className: "video-wrapper",
+		// 	// name: "Video"
+		// });
+		// if (this._isActive) {
+		// 	wrapper.classList.add("open");
+		// }
+		// else {
+		// 	wrapper.classList.remove("open");
+		// 	wrapper.classList.add("close")
+		// }
+		// if (this._isActive) {
+		// 	wrapper.classList.add("open");	
+		// } else {
+		// 	wrapper.classList.add("remove");
+		// }
+		
 		if (this.isInit) {
 			// wrapper.classList.add("open");
 			// var modes = this.renderChangeModeVideo();
@@ -87,7 +105,21 @@ define("Video", ["UI"], function(UI) {
 			// if(!this._isActive) {
 			// 	wrapper.classList.add("close");
 			// }
+			// wrapper.appendChild(this._videoElement);
+			return this._videoElement;
 		} else {
+			var wrapper = UI.createElement({
+				type: "div",
+				className: "video-wrapper",
+				// name: "Video"
+			});
+			if (this._isActive) {
+				wrapper.classList.add("open");
+			}
+			else {
+				wrapper.classList.remove("open");
+				wrapper.classList.add("close")
+			}
 			wrapper.classList.add("init");
 			var self = this;
 			var img = UI.createElement({
@@ -102,7 +134,7 @@ define("Video", ["UI"], function(UI) {
 				eventType: "click",
 				event: function(e) {
 					e.preventDefault();
-					this.isInit = true;
+					self.isInit = true;
 					var p = e.target.parentElement;
 					if(p.classList.contains("init-btn")) {
 						p.remove();
@@ -123,11 +155,14 @@ define("Video", ["UI"], function(UI) {
 							w.classList.add("close");
 						}
 					}
+					self._videoElement = w;
+					// self.isInit = true;
 				}
 			});
-			wrapper.appendChild(initButton)
+			wrapper.appendChild(initButton);
+			return wrapper;
 		}
-		return wrapper;
+		// return wrapper;
 	};
 
 	Video.prototype.renderURLinput = function() {

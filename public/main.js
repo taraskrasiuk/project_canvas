@@ -19,15 +19,15 @@ requirejs.config({
 
 require(["MainBoard"], function(MainBoard){
   console.log("RUN...");
+  var Main = new MainBoard();
+  var btn = document.getElementById("initButton");
+  btn.addEventListener("click", function(e) {
+    var d = document.getElementById("content");
+    if (d.children.length == 0) {
+      Main.init("content");
+    }
+  }, false);
 
-  function init() {
-    var mainBoard = new MainBoard({
-     
-    });
-    mainBoard.init("content");
-    
-    console.log(mainBoard);
-  }
-  init();
+
 
 });
