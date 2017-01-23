@@ -10,12 +10,13 @@ import {
 
 class Block {
 	constructor(options) {
-		const {key, el, isActive, createElement} = options;
+		const {key, el, isActive, createElement, startElement} = options;
 		this.key = key;
 		this.element = el;
 		this.isActive = isActive;
 		this.isInit = false;
 		this.createElement = (createElement != null) ? createElement : $(ELEMENT_DIV);
+		this.startElement = startElement;
 	};
 
 	onClick (e) {
@@ -47,7 +48,7 @@ class Block {
 			const initButton = this.getInitButton();
 			$(wrapper).append(initButton);
 			if (this.element != null) {
-				$(wrapper).append(this.element)
+				$(wrapper).append(this.element);
 			}
 		} else {
 			let exist = $(".board-window");

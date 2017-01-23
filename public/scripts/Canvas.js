@@ -55,11 +55,23 @@ class CanvasPaint {
 	};
 
 	render () {
-			
-		const c = this.renderCanvas();
-		this.initListeners();
-		return c;
-		// return 
+		const canvasElement = $(ELEMENT_CANVAS, {
+			"class": "canvas-element",
+			id: "canvas-element"
+		});
+		const boardContent = $(".board-content");
+		boardContent.empty().append(canvasElement);
+		const _c = document.querySelector(".canvas-element");
+		// $(canvasElement).outerWidth(can)
+		_c.width = _c.parentElement.offsetWidth;
+		_c.height = _c.parentElement.offsetHeight;
+		this.canvas = new fabric.Canvas("canvas-element", {
+			selection: false,
+			freeDrawingMode: true
+		});
+		// this.canvas.setWidth = $(_c).outerWidth();
+		// this.canvas.setHeight = $(_c).outerHeight();
+		return _c;
 	}
 
 	getShape (type) {

@@ -8,8 +8,6 @@ import {
 	TEST_YOUTUBE_VIDEO_URL
 } from './Constants';
 import $ from "jquery";
-// const  TEST_VIDEO_URL,
- // = "https://www.youtube.com/embed/B9FzVhw8_bY";
 
 class VideoFrame {
 	constructor(url) {
