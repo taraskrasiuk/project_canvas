@@ -1,8 +1,11 @@
 "use strict";
+import UI from './UI';
 
-define("ViewFiles", ["UI"], function(UI) {
-	var TEST_PDF_URL = "url=http://infolab.stanford.edu/pub/papers/google.pdf";
-	var ViewFiles = function(files) {
+const TEST_PDF_URL = "url=http://infolab.stanford.edu/pub/papers/google.pdf";
+
+
+class ViewFiles {
+	constructor(files) {
 		this.files = files || [];
 		// test
 		this.files.push(TEST_PDF_URL);
@@ -23,25 +26,8 @@ define("ViewFiles", ["UI"], function(UI) {
 		};
 		window.addEventListener("click", self.closeIframe, true);
 	};
-	ViewFiles.getParent = function(element, parent) {
-		// var p = element.parentElement;
-		// var _p = document.querySelector(parent);
-		// if (_p != null) {
-		// 	if (_p == p) {
-		// 		return p;
-		// 	}
-		// 	while(_p != p) {
-		// 		ViewFiles.getParent(p, parent);
-		// 	}
-		// }
 
-	}
-	ViewFiles.googleAPI = {
-		startURL: "http://docs.google.com/gview?",
-		endURL: "&embedded=true"
-	};
-
-	ViewFiles.prototype.renderButton = function() {
+	renderButton () {
 		var self = this;
 		var b = UI.createElement({
 				type: "button",
@@ -75,7 +61,7 @@ define("ViewFiles", ["UI"], function(UI) {
 		return b;
 	};
 
-	ViewFiles.prototype.renderList = function() {
+	renderList () {
 		var list = UI.createElement({
 			type: "ul",
 			className: "file-list"
@@ -112,7 +98,7 @@ define("ViewFiles", ["UI"], function(UI) {
 		return list;
 	};
 
-	ViewFiles.prototype.renderIframe = function() {
+	renderIframe () {
 		if (this.iframeIsOpen && this.selectedFileURL != null) {
 			var iframe = UI.createElement({
 				type: "iframe",
@@ -125,7 +111,7 @@ define("ViewFiles", ["UI"], function(UI) {
 		};
 	};
 
-	ViewFiles.prototype.render = function() {
+	render () {
 		var wrapper = UI.createElement({
 			type: "div",
 			className: "files-wrapper"
@@ -135,7 +121,5 @@ define("ViewFiles", ["UI"], function(UI) {
 		return wrapper;
 
 	};
-
-
-	return ViewFiles;
-});
+}
+export default ViewFiles;

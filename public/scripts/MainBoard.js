@@ -1,169 +1,112 @@
-"use strict";
+import Utils from './Utils';
+import Notifications from './Notifications';
+import BoardWindow from './BoardWindow';
+import UI from './UI.js';
+import $ from 'jquery';
+import {
+	MAX_BOARDS
+} from './Constants';
 
-define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Utils, Notifications, BoardWindow, UI) {
-	var MainBoard = function(options) {
+class MainBoard {
+	constructor() {
 		this.boards = [];
 		this._currentBoard = null;
-
 		this._id = "main_board";
-
-		// for test
-		//  var b = new BoardWindow("test");
-		// this.boards = this.boards.concat(b)
-		// this._currentBoard = b;
 	};
-	/*Static*/
-	MainBoard.MAX_BOARDS = 10;
-
-	MainBoard.log = function(string) {
+	static log(string) {
 		console.log("MainBoard: " + string);
-	};
-	/*Initialize*/
-	MainBoard.prototype.init = function(id) {
-		var mainBoard = document.createElement("div");
-		mainBoard.setAttribute("id", this._id);
-		var targetElement = document.getElementById(id);
-		var topPanel = this.renderTopPanel();
-		var bottomPanel = this.renderBottomPanel();
-		var content = this.renderMainContent();
+	}
+
+	init (id) {
+		const main = $("<div></div>", {
+			id: this._id
+		});
+		const targetElement = $("#" + id);
+		const topPanel = this.renderTopPanel();
+		const bottomPanel = this.renderBottomPanel();
+		const content = this.renderMainContent();
 		if (this._currentBoard != null) {
-			var b = this._currentBoard.render();
-			content.appendChild(b);
+			$(content).append(this._currentBoard.render());
 		}
-
-		mainBoard.appendChild(topPanel);
-		mainBoard.appendChild(content);
-		mainBoard.appendChild(bottomPanel);
-
-		targetElement.appendChild(mainBoard);
-
+		$(main).append(topPanel, content, bottomPanel).appendTo(targetElement);
 		resize();
 	};
 
-
-
-
-
-	// END
-	/*Top-panel*/
-	MainBoard.prototype.renderTopPanel = function() {
-		
-
-		var topPanel = UI.createElement({
-			type: "div",
-			className: "top-panel"
+	renderTopPanel () {
+		const self = this;
+		const topPanel = $("<div></div>", {
+			"class": "top-panel"
 		});
-		
-		var topPanelHead = UI.createElement({
-			type: "h3",
-			className: "top-panel_head",
-			name: "Board"
-		});
-
-		var ul = UI.createElement({
-			type: "ul",
-			className: "top-panel_list"
-		});
-		var self = this;
-		var liArray = this.boards.map(function(el, idx) {
-			var span = UI.createElement({
-				type: "span",
-				className: "close",
-				eventType: "click",
-				event: function(e) {
-					self.deleteBoard(el);	
-				},
-				name: "x"
+		const topPanelHead = $("<h3></h3>", {
+			"class": "top-panel_head",
+			text: "Board"
+		}).appendTo(topPanel);
+		const ul = $("<ul></ul>", {
+			"class": "top-panel_list"
+		}).appendTo(topPanel);
+		const liArray = this.boards.map((el, idx) => {
+			const span = $("<span></span>", {
+				"class": "close",
+				"text": "x"
+			}).on("click", (e) => {
+				self.deleteBoard(el);
 			});
-			var li = UI.renderListItem({
-				type: "li",
-				name: el.name,
-				className: "list_item",
-				eventType: "click",
-				event: function(e) {
-					self.setCurrentBoard(el);
-				},
-				child: span
-			}, idx, self._currentBoard === el);
+			const li = $("<li></li>", {
+				"class": "list_item",
+				text: el.name
+			}).on("click", (e) => {
+				self.setCurrentBoard(el);
+			}).append(span).toggleClass("active", this._currentBoard == el);
+			
 			return li;
 		});
-		var add = UI.createElement({
-				type: "li",
-				name: "+",
-				className: "list_item",
-				eventType: "click",
-				event: function(e) {
-					var bName = "Board " + (self.boards.length);
-					var b = new BoardWindow(bName);
-					self.addBoard(b);
-				}
-			});
-		liArray.push(add);
-
-		liArray.forEach(function(li) {
-			ul.appendChild(li);
+		const addSpan = $("<li></li>", {
+			"class": "list_item",
+			text: "+"
+		}).on("click", (e) => {
+			self.addBoard(new BoardWindow("Board " + self.boards.length));
 		});
-		// topPanel.appendChild(resize);
-		// var dragDiv = document.createElement("div");
-		// dragDiv.classList.add("drag_div");
 
-
-		// topPanel.appendChild(dragDiv);
-		
-		topPanel.appendChild(topPanelHead);
-		topPanel.appendChild(ul);
-		// var dm = document.querySelector('main-board'); 
-		topPanel.addEventListener('dragstart',drag_start,false); 
-		// dragDiv.addEventListener('dragstart',function(e){
-		// 	console.log(e);
-		// },false);
-		document.body.addEventListener('dragover',drag_over,false); 
-		document.body.addEventListener('drop',drop,false); 
+		liArray.push(addSpan);
+		liArray.forEach(el => {
+			el.appendTo(ul);
+		});
 		return topPanel;
 	};
-	/*Bottom-panel*/
-	MainBoard.prototype.renderBottomPanel = function() {
-		var bottomPanel = document.createElement("div");
-		bottomPanel.classList.add("bottom-panel");
-		// var bottomHeader = document.createElement("h3");
-		// bottomHeader.textContent = "BOTTOM";
-		// bottomPanel.appendChild(bottomHeader);
-		var resize = UI.createElement({
-			type: "span",
-			className: "resize_span",
-			
-		});
-		bottomPanel.appendChild(resize);
+
+	renderBottomPanel () {
+		const bottomPanel = $("<div></div>", {
+			"class": "bottom-panel"
+		}).append($("<span></span>", {
+			"class": "resize_span"
+		}));
 		return bottomPanel;
 	};
-	/*Main-content*/
-	MainBoard.prototype.renderMainContent = function() {
-		// var drag = document.createElement("div");
-		// drag.classList.add("drag");
-		var board = document.createElement("div");
-		board.classList.add("main-board");
-		// drag.appendChild(board);
+
+	renderMainContent () {
+		const board = $("<div></div>", {
+			"class": "main-board"
+		});
 		return board;
 	};
 
-	MainBoard.prototype.addBoard = function(board) {
+	addBoard (board) {
 		if (Utils.isBoard(board)){
-			if (this.boards.length < MainBoard.MAX_BOARDS) {
+			if (this.boards.length < MAX_BOARDS) {
 				this.boards.push(board);
 				this.setCurrentBoard(board);
-				var notify = Notifications.boardAdded(board);
-				MainBoard.log(notify);
+				MainBoard.log(Notifications.boardAdded(board));
 				return true;
 			}
 		}
 		return false;
 	};
 
-	MainBoard.prototype.getCurrentBoard = function(){
+	getCurrentBoard (){
 		return this._currentBoard;
 	};
 
-	MainBoard.prototype.setCurrentBoard = function(b) {
+	setCurrentBoard (b) {
 		if (Utils.isBoard(b) && this._currentBoard != b) {
 			var notify = Notifications.currentBoard(b);
 			MainBoard.log(notify);
@@ -172,11 +115,10 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 			this._currentBoard = b;
 		}
 		this.update(b);
-
 		return this;
 	};
 
-	MainBoard.prototype.deleteBoard = function(b) {
+	deleteBoard (b) {
 		if (Utils.isBoard(b)) {
 			var idx = this.boards.indexOf(b);
 			if (idx != -1) {
@@ -198,41 +140,38 @@ define("MainBoard", ["Utils", "Notifications", "BoardWindow", "UI"], function(Ut
 		return false;	
 	};
 
-	// MAIN update
-	MainBoard.prototype.update = function(board) {
-		var main = document.getElementById(this._id);
-		main.innerHTML = "";
-		var topPanel = this.renderTopPanel();
-		var content = this.renderMainContent();
-		var bottomPanel = this.renderBottomPanel();
-		main.appendChild(topPanel);
-		main.appendChild(content);
-		main.appendChild(bottomPanel);
-		var b;
-		if (Utils.isBoard(board)) {
-			b = board.render();
-			content.appendChild(b);
+	
+	update (board) {
+		const main = $("#" + this._id);
+		$(main).html("");
+		const topPanel = this.renderTopPanel();
+		const bottomPanel = this.renderBottomPanel();
+		const content = this.renderMainContent();
+		if (board != null) {
+			const b = board.render();
+			content.append(b);
 		}
+		$(main).append(topPanel, content, bottomPanel);
 		resize();
-
 	}
-	return MainBoard;
-});
+}
+	
+export default MainBoard;
 
 
 // DRAG
 
-function drag_start(event) {
-	var main = document.getElementById("main_board");
-    var style = window.getComputedStyle(main, null);
+const drag_start = (event) => {
+	const main = $("main_board");
+    const style = window.getComputedStyle(main, null);
     event.dataTransfer.setData("text/plain",
     (parseInt(style.getPropertyValue("left"),10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"),10) - event.clientY));
-} 
-function drag_over(event) { 
+};
+const drag_over = (event) => { 
     event.preventDefault(); 
     return false; 
-} 
-function drop(event) { 
+}; 
+const drop = (event) => { 
     var offset = event.dataTransfer.getData("text/plain").split(',');
     var dm = document.getElementById('main_board');
     dm.style.left = (event.clientX + parseInt(offset[0],10)) + 'px';
@@ -241,9 +180,6 @@ function drop(event) {
     return false;
 } 
 
-
-
-	// RESIZE LISTENERS
 // RESIZE
 function resize() {
 	var startX, startY, startWidth, startHeight;

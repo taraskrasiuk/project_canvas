@@ -1,6 +1,9 @@
 "use strict";
+import UI from './UI';
 
-define("CanvasTools", ["UI"], function(UI) {
+
+
+// define("CanvasTools", ["UI"], function(UI) {
 	var TOOL_IMG_PATH = "static/images/";
 	var sameSet = {
 		colors: {
@@ -114,5 +117,6 @@ define("CanvasTools", ["UI"], function(UI) {
 		this.activeTool = tool;
 		return this;
 	}
-	return CanvasTools;
-});
+	export default CanvasTools;
+	// return CanvasTools;
+// });

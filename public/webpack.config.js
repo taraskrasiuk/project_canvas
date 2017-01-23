@@ -1,13 +1,27 @@
 "use strict";
+const path = require("path");
 
 module.exports = {
-	entry: "./bundle",
+	entry: __dirname + "/main.js",
 	output: {
-		path: __dirname + "/dist",
-		filename: "bundle.js"
+		filename: "dist/bundle.js"
 	},
+	
+	watch: true,
+	devtool: "source-map", 
 
-	watchOptions : {
-		aggregateTimeout: 200
+	module: {
+		loaders: [
+			{
+                test: /\.ts$/,
+                loaders: ['babel-loader'],
+                exclude: [/(node_modules)/]
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel',
+                exclude: [/(node_modules)/]
+            }
+		]
 	}
 };
