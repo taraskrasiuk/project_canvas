@@ -1,52 +1,39 @@
-// "use strict";
-import UI from './UI';
+import $ from "jquery";
+import VideoFrame from "./VideoFrame";
 import Block from './Block';
 import {
-	TEST_VIDEO_URL,
-	ELEMENT_DIV,
-	ELEMENT_IFRAME,
-	TEST_YOUTUBE_VIDEO_URL
-} from './Constants';
-import $ from "jquery";
-
-class VideoFrame {
-	constructor(url) {
-		this.url = url || TEST_YOUTUBE_VIDEO_URL;
-	}
-
-	renderIframe () {
-		const frame = $(ELEMENT_IFRAME, {
-			"class" : "iframe-video",
-			"src": this.url,
-			"controls": true,
-			"allowfullscreen": true,
-			"frameborder": 0
-		});
-		return frame;
-	};
-
-	getVideoUrl () {
-		return this.url;
-	};
-
-	setVideoUrl (newUrl) {
-		this.url = newUrl;
-		return this;
-	};
-	render () {
-		return this.renderIframe();
-	}
-}
+	ELEMENT_DIV
+} from "./Constants";
 
 class Video extends Block {
 	constructor() {
-		super({key: "video", element: null, isActive: true, createElement: new VideoFrame()});
-		this.url = null;
-		this._videoMode = 'static';
-
+		super({key: "video", element: null, isActive: true});
+		this.video = new VideoFrame();
 	};
 
-	
-
+	// ** ALMOST DUPLICATE
+	render () {
+		const currentKey = `${this.key}-wrapper`;
+		let wrapper = null;
+		if (this.isInit) {
+			const existWrapper = $(currentKey);
+			if (existWrapper.hasClass("init")) {
+				existWrapper.removeClass("init");
+			}
+			return this.element;
+		} else {
+			wrapper = $(ELEMENT_DIV, {
+				"class": `${this.key}-wrapper`
+			}).addClass("init");
+			const initButton = this.getInitButton((e) => {
+				let currentWrapper = $("." + currentKey);
+				currentWrapper.empty();
+				this.element = this.video.init("." + currentKey);
+				this.isInit = true;
+			});
+			wrapper.append(initButton);
+		}
+		return wrapper;
+	}
 };
 export default Video;

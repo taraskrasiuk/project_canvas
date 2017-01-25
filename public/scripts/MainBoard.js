@@ -56,7 +56,7 @@ class MainBoard {
 				text: el.name
 			}).on("click", (e) => {
 				self.setCurrentBoard(el);
-			}).append(span).toggleClass("active", this._currentBoard == el);
+			}).append(span).toggleClass("active", self._currentBoard == el);
 			
 			return li;
 		});
@@ -122,9 +122,7 @@ class MainBoard {
 		if (Utils.isBoard(b)) {
 			var idx = this.boards.indexOf(b);
 			if (idx != -1) {
-				this.boards = this.boards.filter(function(el, i, arr) {
-					return i != idx;
-				});
+				this.boards = this.boards.filter((el, i, arr) => i != idx);
 				if (this.boards.length > 0) {
 					if(b === this.getCurrentBoard()) {
 						this.setCurrentBoard(this.boards[this.boards.length - 1]);
@@ -143,7 +141,7 @@ class MainBoard {
 	
 	update (board) {
 		const main = $("#" + this._id);
-		$(main).html("");
+		$(main).empty();
 		const topPanel = this.renderTopPanel();
 		const bottomPanel = this.renderBottomPanel();
 		const content = this.renderMainContent();

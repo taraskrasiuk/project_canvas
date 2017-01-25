@@ -128,27 +128,29 @@ position: absolute;
 	display: flex;
 	flex: 10;
 }
-#main_board .main-board .board-window .board-content.reverse {
+/*#main_board .main-board .board-window .board-content.reverse {
 	flex-direction: row-reverse;
-}
+}*/
 /* video */
-#main_board .main-board .board-window .board-content .video-wrapper.init {
+#main_board .main-board .board-window .board-content .video-wrapper.init,
+#main_board .main-board .board-window .board-content .canvas-wrapper.init {
 	display: flex;
 	align-items: center;
 }
-#main_board .main-board .board-window .board-content .video-wrapper {
-	/*flex: 1;*/
+#main_board .main-board .board-window .board-content .video-wrapper,
+#main_board .main-board .board-window .board-content .canvas-wrapper {
+	flex: 1;
 	background: #ddd;
-	/*padding: 1rem;*/
+	padding: 1rem;
 }
-#main_board .main-board .board-window .board-content .video-wrapper.open {
+/*#main_board .main-board .board-window .board-content .video-wrapper.open {
 	flex: 1;
 }
 #main_board .main-board .board-window .board-content .video-wrapper.close {
 	flex: 0;
 	width: 0;
 	display: none;
-}
+}*/
 .iframe-video {
 	width: 84%;
 	height: auto;
@@ -201,10 +203,8 @@ position: absolute;
 }
  
 /* canvas */
-#main_board .main-board .board-window .board-content .canvas-wrapper {
-	/*flex: 1;*/
+/*#main_board .main-board .board-window .board-content .canvas-wrapper {
 	background: #bbb;
-	/*padding: 1rem;*/
 	display: flex;
 	align-items: flex-start;
 }
@@ -215,7 +215,7 @@ position: absolute;
 	flex: 0;
 	width: 0;
 	display: none;
-}
+}*/
 
 .canvas-element {
 	width: 100%;
@@ -227,6 +227,16 @@ position: absolute;
 	display: flex;
 	flex-direction: column;
 }
+.tool-group {
+	display: flex;
+	max-width: 3rem;
+	flex-direction: column;
+	align-items: center;
+	/*padding: 1rem;*/
+	margin: .2rem 0;
+	border: 1px solid #333;
+	border-radius: .5rem;
+}
 .tool-button {
 	display: flex;
     align-items: center;
@@ -234,16 +244,32 @@ position: absolute;
     cursor: pointer;
     width: 2rem;
     height: 2rem;
+    background: none;
+    border: none;
+    outline: none;
+    margin: .2rem 0;
 }
 
 .tool-button.active {
-	background: #ccc;
+	border: 1px solid #333;
+	border-radius: .5rem;
+	padding: .2rem;
+
 }
 
 .tool-img {
 	display: block;
 	width: 100%;
 	height: auto;
+}
+.tool-label {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: .6rem;
+}
+.tool-range {
+	max-width: 3.5rem;
 }
 /* Bottom panel*/
 #main_board .bottom-panel {

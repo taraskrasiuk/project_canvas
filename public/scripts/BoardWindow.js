@@ -32,6 +32,16 @@ class BoardWindow {
 			0: new Video(),
 			1: new Canvas()
 		}
+
+		// test
+		// const elems = [new Video(), new Canvas()];
+		this.boardElements = {
+			"Video": new Video(),
+			"Canvas": new Canvas()
+		};
+		this.boardElement = null;
+
+
 	};
 
 	static randomId() {
@@ -73,12 +83,17 @@ class BoardWindow {
 	update () {
 		const main = $("#" + this._id);
 		const boardContent = $(".board-content");
-		$(boardContent).empty();
+		// $(boardContent).empty();
 		const content = this._currentView.render();
 		// const boardContent = $(".board-content"); 
 		if (content != null) {
 			// $(boardContent).innerHTML = "";
-			$(boardContent).append(content);
+			const ch = $(boardContent).children()[0];
+			if (ch != null) {
+				$(ch).replaceWith(content);
+			} else {
+				$(boardContent).append(content);
+			}
 		}
 	};
 
