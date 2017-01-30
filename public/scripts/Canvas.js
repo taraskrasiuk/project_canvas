@@ -5,7 +5,6 @@ import {
 	ELEMENT_DIV,
 	ELEMENT_CANVAS
 } from './Constants';
-
 class Canvas extends Block{
 	constructor() {
 		super({key: "canvas", element: null, isActive: true});
@@ -14,10 +13,13 @@ class Canvas extends Block{
 
 	renderCanvas () {
 		const canvas = $(ELEMENT_CANVAS, {
-			id: "canvas-element",
+			"id": "canvas-element",
 		});
+		const tools = this.canvas.tools.render();
+		const _div = $("<div></div>").css({display: "flex", "width": "100%", "height": "100%"})
+		.append(tools, canvas);
 
-		return canvas;
+		return _div;
 	}
 	// ** ALMOST DUPLICATE
 	render () {
@@ -33,6 +35,9 @@ class Canvas extends Block{
 			wrapper = $(ELEMENT_DIV, {
 				"class": `${this.key}-wrapper`
 			}).addClass("init");
+			// wrapper.resize(e => {
+			// 	console.log("**" + e);
+			// });
 			const initButton = this.getInitButton((e) => {
 				let currentWrapper = $("." + currentKey);
 				currentWrapper.empty();

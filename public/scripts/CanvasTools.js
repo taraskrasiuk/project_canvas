@@ -15,19 +15,15 @@ import {
 	TRANSFORM_WIDTH_STROKE,
 	BRUSH_TOOL,
 	ELEMENT_INPUT,
-	ELEMENT_LABEL
+	ELEMENT_LABEL,
+	PAINT_SET_DEFAULT,
+	PAINT_SET_BRUSH,
+	PAINT_SET_PENCIL,
+	TOOLS_GROUP_COLORS,
+	TOOLS_GROUP_TRANSFORMS,
+	TOOLS_GROUP_SHAPES
 } from './Constants';
 import $ from "jquery";
-
-const sameSet = {
-	colors: {
-		fillColor: true,
-		strokeColor: true	
-	},
-	transforms: {
-		strokeWidth: true			 
-	}
-};
 
 class CanvasTools {
 	constructor(props = {}) {
@@ -37,6 +33,11 @@ class CanvasTools {
 		this.strokeColor = strokeColor || "#ddd";
 		this.fillColor = fillColor || "#299";
 		this.backgroundColor = backgroundColor || "#8cf";
+
+		this.currentSet = CanvasTools.sets[PAINT_SET_DEFAULT];
+		if (props.handleBackgroundColorChange) {
+			this.handleBackgroundColorChange = props.handleBackgroundColorChange;
+		}
 	}
 
 	renderTool (name, cb) {
@@ -61,6 +62,7 @@ class CanvasTools {
 		return button;
 	}
 
+
 	renderTransform (name, cb) {
 		const range = $(ELEMENT_INPUT, {
 			"class": "tool-range",
@@ -76,20 +78,74 @@ class CanvasTools {
 		const color = $(ELEMENT_INPUT, {
 			"class": "tool-color",
 			"type": "color",
-			"value": "#fff"
+			"value": "#fff",
+			"name": name
 		}).on("input", cb).css({display: "none"});
 		return this._getLabel(name, color, name);
 	}
 
 	toolGroup (groupName, array, method, cb) {
 		const wrapper = $(ELEMENT_DIV, {
-			"class": "tool-group"
+			"class": `tool-group ${groupName}`
 		});
 		array.forEach(el => {
 			wrapper.append(method(el, cb));
 		});
 		return wrapper;
 	}
+
+	render () {
+	 	const resultTools = [];
+	 	const grShapes = this.toolGroup("Shapes", CanvasTools.toolsShapes, this.renderTool.bind(this), (toolName) => {
+			const toolsWrapper = $(".tools-wrapper");
+			if (toolsWrapper != null) {
+				this.currentSet = CanvasTools.sets[toolName];
+				const r = this.render();
+				toolsWrapper.replaceWith(r);
+			}
+		});
+	 	resultTools.push(grShapes);
+	 	const fromSet = Object.keys(this.currentSet);
+	 	for(let s of fromSet){
+		 	const toolGroup = this.currentSet[s];
+		 	let forPush = null;
+		 	switch(s) {
+		 		case TOOLS_GROUP_COLORS:
+		 			forPush = this.renderColors;
+		 			break;
+		 		case TOOLS_GROUP_TRANSFORMS:
+		 			forPush = this.renderTransform;
+		 			break;
+		 		case TOOLS_GROUP_SHAPES:
+		 			forPush = this.renderTool;
+		 			break;
+		 		default :
+		 			console.log("UNKNOWN");
+		 			break;
+		 	}
+		 	resultTools.push(this.toolGroup(s, toolGroup, forPush.bind(this), (e) => {
+		 		this[e.currentTarget.name] = e.currentTarget.value;
+		 		if (e.currentTarget.name == "backgroundColor") {
+		 			this.handleBackgroundColorChange(e.currentTarget.value);
+		 		}
+		 		console.log(e.currentTarget.name + "||" + e.currentTarget.value);
+		 	}));
+	 	}
+	 	const toolsWrapper = $("<div></div>", {
+	 		"class": "tools-wrapper"
+	 	}).append(resultTools);
+	 	return toolsWrapper;
+	 }
+
+	setCurrentSet (newSet) {
+		this.currentSet = newSet;
+		return this;
+	}
+
+	getCurrentSet () {
+		return CanvasTools.sets[this.currentSet];
+	}
+
 	_getLabel (name, child, imgSrc) {
 		const l =  $(ELEMENT_LABEL, {
 			"text": name,
@@ -118,29 +174,26 @@ CanvasTools.toolsColors = [
 CanvasTools.toolsTransforms = [
 	TRANSFORM_WIDTH_STROKE
 ];
-CanvasTools.set = {
-	default: {
-		colors: {
-			[COLOR_FILL_COLOR]: true,
-			[COLOR_STROKE_COLOR]: true,
-			[COLOR_BACKGROUND]: true
-		},
-		transforms: {
-			[TRANSFORM_WIDTH_STROKE]: true			 
-		}
+
+const sameSet = {
+	[TOOLS_GROUP_COLORS]: [COLOR_FILL_COLOR, COLOR_STROKE_COLOR, COLOR_BACKGROUND],
+	[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE]
+};
+
+CanvasTools.sets = {
+	[PAINT_SET_DEFAULT]: {
+		[TOOLS_GROUP_COLORS]: [COLOR_FILL_COLOR, COLOR_STROKE_COLOR, COLOR_BACKGROUND],
+		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE]
 	},
-	brush: {
-		colors: {
-			[COLOR_STROKE_COLOR]: true	
-		},
-		transforms: {
-			[TRANSFORM_WIDTH_STROKE]: true
-		}
+	[BRUSH_TOOL]: {
+		[TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR],
+		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE]
 	},
 	[SHAPE_RECTANGLE]: sameSet,
 	[SHAPE_TRIANGLE]: sameSet,
 	[SHAPE_CIRCLE]: sameSet,
-	[SHAPE_ELLIPSE]: sameSet
+	[SHAPE_ELLIPSE]: sameSet,
+	[SHAPE_LINE]: sameSet
 };
 
 

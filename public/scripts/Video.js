@@ -8,7 +8,9 @@ import {
 class Video extends Block {
 	constructor() {
 		super({key: "video", element: null, isActive: true});
-		this.video = new VideoFrame();
+		this.video = new VideoFrame(null, (val) => {
+			this.render();
+		});
 	};
 
 	// ** ALMOST DUPLICATE

@@ -16,7 +16,8 @@ class BoardWindow {
 		
 		this.views = {
 			"Video": new Video(),
-			"Paint": new Canvas()
+			"Paint": new Canvas(),
+			"Files": new ViewFiles()
 		};
 
 		this.videoElement = new Video();
@@ -124,9 +125,11 @@ class BoardWindow {
 				}
 			},
 			{
-				name: "File",
+				name: "Files",
 				onClick: (e) => {
-					console.log("files");
+					// console.log("files");
+					e.preventDefault();
+					this.handleSelect(e.target.textContent);
 				}
 			}
 		];

@@ -31,15 +31,15 @@ html, body {
 	
 	display: flex;
 	flex-direction: column;
-	width: 500px;
-	height: 400px;
+	width: 600px;
+	height: 600px;
 	background: #ddd;
-	min-width: 400px;
-	min-height: 200px;
+	min-width: 600px;
+	min-height: 400px;
 
 position: absolute;
-	top: 20%;
-	left: 0%;
+	top: 30%;
+	left: 30%;
 	border: 1px solid #333;
 
 }
@@ -136,6 +136,7 @@ position: absolute;
 #main_board .main-board .board-window .board-content .canvas-wrapper.init {
 	display: flex;
 	align-items: center;
+	flex-direction: column;
 }
 #main_board .main-board .board-window .board-content .video-wrapper,
 #main_board .main-board .board-window .board-content .canvas-wrapper {
@@ -217,10 +218,25 @@ position: absolute;
 	display: none;
 }*/
 
+/* TEST */
+
+.canvas-wrapper {
+	width: 100%;
+}
+.canvas-container {
+	width: 100%;
+	height: 100%;
+}
+/* END test */
+
 .canvas-element {
 	width: 100%;
 	height: 100%;
 	/*border: 1px solid #333;*/
+}
+#canvas-element {
+	width: 100%;
+	height: 100%;
 }
 /* canvas tools */
 .tools {
@@ -298,4 +314,25 @@ position: absolute;
 	width: 100%;
 	height: 100%;
 
+}
+
+
+/*TEST*/
+
+.targetDiv { 
+	width: 400px;
+	height: 200px;
+	position: absolute;
+	background: #333;
+}
+.topDrag {
+	width: 100%;
+	height: 10px;
+	background: #0f0;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.topDrag.drag {
+	background: #f00;
 }

@@ -1,6 +1,6 @@
 export const TEST_VIDEO_URL = "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv";
 export const TEST_YOUTUBE_VIDEO_URL = "https://www.youtube.com/embed/B9FzVhw8_bY";
-export const MAX_BOARDS = 10;
+export const MAX_BOARDS = 3;
 export const TOOL_IMG_PATH = "static/images/";
 
 // Paths
@@ -23,7 +23,7 @@ export const ELEMENT_LABEL = "<label></label>";
 
 // Shapes
 export const SHAPE_CIRCLE = "Circle";
-export const SHAPE_RECTANGLE = "Rectangle";
+export const SHAPE_RECTANGLE = "Rect";
 export const SHAPE_TRIANGLE = "Triangle";
 export const SHAPE_ELLIPSE = "Ellipse";
 export const SHAPE_LINE = "Line";
@@ -37,6 +37,14 @@ export const COLOR_STROKE_COLOR = "strokeColor";
 export const COLOR_BACKGROUND = "backgroundColor";
 // Transform
 export const TRANSFORM_WIDTH_STROKE = "strokeWidth";
+// Sets
+export const PAINT_SET_DEFAULT = "default";
+export const PAINT_SET_BRUSH = BRUSH_TOOL;
+export const PAINT_SET_PENCIL = BRUSH_PENCIL;
+
+export const TOOLS_GROUP_COLORS = "toolsColors";
+export const TOOLS_GROUP_TRANSFORMS = "toolsTransforms";
+export const TOOLS_GROUP_SHAPES = "toolsShapes";
 // events
 export const MOUSE_DOWN = "mouse:down";
 export const MOUSE_UP = "mouse:up";

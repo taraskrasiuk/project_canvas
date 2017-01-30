@@ -14,6 +14,8 @@ import {
 	MOUSE_MOVE
 } from './Constants';
 import {fabric} from 'fabric';
+import io from "socket.io-client";
+
 
 
 class CanvasPaint {
@@ -21,10 +23,16 @@ class CanvasPaint {
 	constructor(props) {
 		this.canvas = null;
 		this.currentTool = null;
-		this.tools = new CanvasTools();
+		this.tools = new CanvasTools({
+			handleBackgroundColorChange: (bgVak) => {
+				if (this.canvas != null) {
+					this.canvas.setBackgroundColor(bgVak);
+					this.canvas.renderAll();
+				}
+			}
+		});
+		// this.socket = io(); 
 
-		// test
-		// this.c = this.renderCanvasElement();
 
 		this.isDrawing = false;
 		this.isDragging = false;
@@ -32,6 +40,8 @@ class CanvasPaint {
 		this.currentShape = null;
 		this.currentShapeType = null;
 		this.startLocations = {};
+
+
 	}
 
 	renderCanvas () {
@@ -52,22 +62,40 @@ class CanvasPaint {
 
 	init (elementId) {
 		const c = $("#" + elementId);
+		
 		this.canvas = new fabric.Canvas(elementId, {
-			isDrawingMode: true
+			selection: false,
+			width: c.width(),
+			height: c.height()
 		});
+
+		// SOCKET
+		
+		// this.socket.on("draw", (data) => {
+		// 		this.canvas.loadFromJSON(data);
+		// 		this.canvas.renderAll();
+		// });
+		this.initListeners();
+		// const tools = this.tools.render();
+		// const _div = $("<div></div>").css({display: "flex"})
+		// .append(tools, c);
 		return this.canvas;
 	}
 
 	getShape (type) {
-		const strokeColor = "#ddd";
-		const fillColor = "#333";
+		const strokeColor = this.tools.strokeColor;
+		const fillColor = this.tools.fillColor;
 		let shape;
-		return new fabirc[type]({
+		if (type == "Brush") {
+			type = "PatternBrush";
+		}
+		return new fabric[type]({
 			left: this.startLocations.x,
 			top: this.startLocations.y,
 			stroke: strokeColor,
 			fill: fillColor,
-			selectable: true
+			selectable: true,
+			strokeWidth: this.tools.strokeWidth
 		});
 	};
 
@@ -83,13 +111,13 @@ class CanvasPaint {
 			} else {
 				this.startLocations.x = option.e.offsetX;
 				this.startLocations.y = option.e.offsetY;
-				this.currentShape = this.getShape(this.currentShapeType);
+				this.currentShape = this.getShape(this.tools.activeShape);
 				if (this.currentShape && !this.isDragging) {
 				this.canvas.add(this.currentShape);
 				
 
 
-				this.canvas.observe(this.MouseEvents.MOUSE_MOVE, (option) => {
+				this.canvas.observe(MOUSE_MOVE, (option) => {
 					console.log("MOUSE MOVE");
 					if(!this.isDrawing && this.isMouseDown && this.currentShape) {
 						const isCircle = this.currentShape instanceof fabric.Circle;
@@ -116,7 +144,7 @@ class CanvasPaint {
 				            console.log("LINE");
 				            this.currentShape.set({ x2: this.startLocations.x, y2: this.startLocations.y });
 				          }
-				          canvas.renderAll();
+				          this.canvas.renderAll();
 				        }
 
 				}, false);
@@ -133,8 +161,10 @@ class CanvasPaint {
 			this.canvas.isDrawingMode = false;
 		    this.canvas.selection= true;
 		    this.currentShape = null;
-		   	this.canvas.off('mouse:move');
-		    this.canvas.forEachObject((o) => { o.setCoords(); })
+		   	this.canvas.off(MOUSE_MOVE);
+		    this.canvas.forEachObject((o) => { o.setCoords(); });
+		    console.log(JSON.stringify(this.canvas));
+			this.socket.emit("draw", JSON.stringify(this.canvas));
 
 		});
 	}
