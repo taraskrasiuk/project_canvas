@@ -28,10 +28,24 @@ class CanvasPaint {
 				if (this.canvas != null) {
 					this.canvas.setBackgroundColor(bgVak);
 					this.canvas.renderAll();
+					this.socketSend();
 				}
+			},
+			handleDrawing: (val) => {
+				if (val != null && val == "Brush") {
+					this.isDrawing = true;
+					this.drawing();
+				}
+			},
+			handleShape: (val) => {
+				this.isDrawing = false;
+				this.initListeners();
+			},
+			handleText: (val) => {
+				this.drawText(val);
 			}
 		});
-		// this.socket = io(); 
+		this.socket = io(); 
 
 
 		this.isDrawing = false;
@@ -42,6 +56,10 @@ class CanvasPaint {
 		this.startLocations = {};
 
 
+	}
+
+	socketSend () {
+		this.socket.emit("draw", JSON.stringify(this.canvas));
 	}
 
 	renderCanvas () {
@@ -71,11 +89,11 @@ class CanvasPaint {
 
 		// SOCKET
 		
-		// this.socket.on("draw", (data) => {
-		// 		this.canvas.loadFromJSON(data);
-		// 		this.canvas.renderAll();
-		// });
-		this.initListeners();
+		this.socket.on("draw", (data) => {
+				this.canvas.loadFromJSON(data);
+				this.canvas.renderAll();
+		});
+		// this.initListeners();
 		// const tools = this.tools.render();
 		// const _div = $("<div></div>").css({display: "flex"})
 		// .append(tools, c);
@@ -86,8 +104,12 @@ class CanvasPaint {
 		const strokeColor = this.tools.strokeColor;
 		const fillColor = this.tools.fillColor;
 		let shape;
-		if (type == "Brush") {
-			type = "PatternBrush";
+		if (type == "IText") {
+			return new fabric.Textbox("type", {
+				left: this.startLocations.x,
+				top: this.startLocations.y,
+				selectable: true
+			});
 		}
 		return new fabric[type]({
 			left: this.startLocations.x,
@@ -96,19 +118,23 @@ class CanvasPaint {
 			fill: fillColor,
 			selectable: true,
 			strokeWidth: this.tools.strokeWidth
-		});
+			});
 	};
 
 	initListeners () {
 		this.canvas.observe(MOUSE_DOWN, (option) => {
 			this.canvas.selection = false;
 			this.isMouseDown = true;
+			this.isDrawing = false;
+			this.canvas.isDrawingMode = false;
+
 			if (option.target != null) {
 				return ;
 			}
-			if (this.isDrawing || this.canvas.isDrawingMode) {
-				//
-			} else {
+			else if (!this.isDrawing) {
+				this.currentShape = this.getShape(this.tools.activeShape);
+				this.isDrawing = false;
+				this.canvas.isDrawingMode = false;
 				this.startLocations.x = option.e.offsetX;
 				this.startLocations.y = option.e.offsetY;
 				this.currentShape = this.getShape(this.tools.activeShape);
@@ -119,7 +145,7 @@ class CanvasPaint {
 
 				this.canvas.observe(MOUSE_MOVE, (option) => {
 					console.log("MOUSE MOVE");
-					if(!this.isDrawing && this.isMouseDown && this.currentShape) {
+					if(this.isMouseDown && this.currentShape) {
 						const isCircle = this.currentShape instanceof fabric.Circle;
 				        const isRect = this.currentShape instanceof fabric.Rect;
 				        const isTriangle = this.currentShape instanceof fabric.Triangle;
@@ -145,6 +171,7 @@ class CanvasPaint {
 				            this.currentShape.set({ x2: this.startLocations.x, y2: this.startLocations.y });
 				          }
 				          this.canvas.renderAll();
+				          this.socketSend();
 				        }
 
 				}, false);
@@ -158,15 +185,77 @@ class CanvasPaint {
 
 		this.canvas.observe(MOUSE_UP, (option) => {
 			this.isMouseDown = false;
-			this.canvas.isDrawingMode = false;
+			if (this.isDrawing) {
+				this.isDrawing = false;
+				this.canvas.isDrawingMode = false;
+			}
 		    this.canvas.selection= true;
 		    this.currentShape = null;
 		   	this.canvas.off(MOUSE_MOVE);
+		   	this.canvas.off(MOUSE_DOWN);
 		    this.canvas.forEachObject((o) => { o.setCoords(); });
-		    console.log(JSON.stringify(this.canvas));
-			this.socket.emit("draw", JSON.stringify(this.canvas));
-
 		});
+	}
+
+	drawText(val) {
+		this.canvas.observe(MOUSE_DOWN, (option) => {
+			this.startLocations.x = option.e.offsetX;
+			this.startLocations.y = option.e.offsetY;
+			const iText = this.getShape(val);
+
+			this.canvas.observe(MOUSE_UP, (o) => {
+				this.canvas.add(iText);
+				iText.enterEditing();
+				this.canvas.off(MOUSE_DOWN);
+				this.socketSend();
+			});
+		});
+		
+	}
+
+	drawing() {
+		this.isDrawing = true;
+		this.canvas.isDrawingMode = true;
+		this.canvas.freeDrawingBrush = this.brush();
+		this.canvas.freeDrawingBrush.color = this.tools.strokeColor;
+      	this.canvas.freeDrawingBrush.width = this.tools.strokeWidth;
+      	this.canvas.observe(MOUSE_MOVE, (option) => {
+      		this.canvas.renderAll();
+      		this.socketSend();
+      		this.canvas.observe(MOUSE_UP, (option) => {
+      			this.canvas.off(MOUSE_MOVE);
+      		});
+      	});
+
+	}
+
+	vLine () {
+		 var vLinePatternBrush = new fabric.PatternBrush(this.canvas);
+	    vLinePatternBrush.getPatternSrc = () => {
+
+	      var patternCanvas = fabric.document.createElement('canvas');
+	      patternCanvas.width = patternCanvas.height = 10;
+	      var ctx = patternCanvas.getContext('2d');
+
+	      ctx.strokeStyle = this.tools.strokeColor;
+	      ctx.lineWidth = this.tools.strokeWidth;
+	      ctx.beginPath();
+	      ctx.moveTo(0, 5);
+	      ctx.lineTo(10, 5);
+	      ctx.closePath();
+	      ctx.stroke();
+
+	      return patternCanvas;
+	    };
+	    return vLinePatternBrush;
+	}
+
+	brush () {
+		var d = new fabric.PencilBrush(this.canvas);
+		d.selectable = false;
+		this.canvas.freeDrawingBrush.color = this.tools.strokeColor;
+		this.canvas.freeDrawingBrush.width = this.tools.strokeWidth;
+		return d;
 	}
 };
 

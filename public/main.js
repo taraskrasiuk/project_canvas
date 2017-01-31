@@ -14,7 +14,13 @@ import Video from './scripts/Video';
 import CanvasTools from "./scripts/CanvasTools";
 
 console.log(fabric);
-const main = new MainBoard();
+const options = {
+	startBoard: true,
+	user: {
+		
+	}
+}
+const main = new MainBoard(true);
 var btn = document.getElementById("initButton");
   btn.addEventListener("click", function(e) {
     var d = document.getElementById("content");
@@ -59,7 +65,7 @@ var btn = document.getElementById("initButton");
 // tools.currentSet = CanvasTools.sets[PAINT_SET_BRUSH];
  
 // const canvas = new Canvas();
-// const _div = $("<div></div>").css({display: "flex", "border": "1px solid #333", "borderRadius": ".5rem", "padding": "1rem"}).append(canvas.canvas.tools.render(), canvas.render());
+// const _div = $("<div></div>").css({display: "flex", "border": "1px solid #333", "borderRadius": ".5rem", "padding": "1rem"}).append(canvas.render());
 // mainRender("#content", _div);
 
 

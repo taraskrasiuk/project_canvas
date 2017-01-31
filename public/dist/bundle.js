@@ -78,7 +78,11 @@ var board =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	console.log(_fabric.fabric);
-	var main = new _MainBoard2.default();
+	var options = {
+	  startBoard: true,
+	  user: {}
+	};
+	var main = new _MainBoard2.default(true);
 	var btn = document.getElementById("initButton");
 	btn.addEventListener("click", function (e) {
 	  var d = document.getElementById("content");
@@ -118,7 +122,7 @@ var board =
 	// tools.currentSet = CanvasTools.sets[PAINT_SET_BRUSH];
 	
 	// const canvas = new Canvas();
-	// const _div = $("<div></div>").css({display: "flex", "border": "1px solid #333", "borderRadius": ".5rem", "padding": "1rem"}).append(canvas.canvas.tools.render(), canvas.render());
+	// const _div = $("<div></div>").css({display: "flex", "border": "1px solid #333", "borderRadius": ".5rem", "padding": "1rem"}).append(canvas.render());
 	// mainRender("#content", _div);
 	
 	
@@ -177,11 +181,16 @@ var board =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var MainBoard = function () {
-		function MainBoard() {
+		function MainBoard(isBoard) {
 			_classCallCheck(this, MainBoard);
 	
 			this.boards = [];
-			this._currentBoard = null;
+			if (isBoard) {
+				this._currentBoard = new _BoardWindow2.default("Board 1");
+				this.boards.push(this._currentBoard);
+			} else {
+				this._currentBoard = null;
+			}
 			this._id = "main_board";
 			this.isDrag = false;
 			this.socket = null;
@@ -193,6 +202,9 @@ var board =
 				var main = (0, _jquery2.default)(_Constants.ELEMENT_DIV, {
 					id: this._id
 				});
+				// main.resize(e => {
+				// 	console.log("***" + e);
+				// });
 				var targetElement = (0, _jquery2.default)("#" + id);
 				var topPanel = this.renderTopPanel();
 				var bottomPanel = this.renderBottomPanel();
@@ -268,14 +280,16 @@ var board =
 	
 					return li;
 				});
-				var addSpan = (0, _jquery2.default)("<li></li>", {
-					"class": "list_item",
-					text: "+"
-				}).on("click", function (e) {
-					self.addBoard(new _BoardWindow2.default("Board " + self.boards.length));
-				});
+				if (this.boards.length < _Constants.MAX_BOARDS) {
+					var addSpan = (0, _jquery2.default)("<li></li>", {
+						"class": "list_item",
+						text: "+"
+					}).on("click", function (e) {
+						self.addBoard(new _BoardWindow2.default("Board " + self.boards.length));
+					});
 	
-				liArray.push(addSpan);
+					liArray.push(addSpan);
+				}
 				liArray.forEach(function (el) {
 					el.appendTo(ul);
 				});
@@ -296,9 +310,10 @@ var board =
 							// JSON.stringify(v.canvas.canvas);
 						}
 					}
-				})).append((0, _jquery2.default)("<span></span>", {
-					"class": "resize_span"
 				}));
+				// .append($("<span></span>", {
+				// 	"class": "resize_span"
+				// }));
 				return bottomPanel;
 			}
 		}, {
@@ -376,7 +391,7 @@ var board =
 					content.append(b);
 				}
 				(0, _jquery2.default)(main).append(topPanel, content, bottomPanel);
-				resize();
+				// resize();
 			}
 		}], [{
 			key: 'log',
@@ -410,14 +425,38 @@ var board =
 		function doDrag(e) {
 			p.style.width = startWidth + e.clientX - startX + 'px';
 			p.style.height = startHeight + e.clientY - startY + 'px';
+	
+			var canvasWrapper = (0, _jquery2.default)(".canvas-wrapper");
+			// if (canvasWrapper != null) {
+			// 		// console.log(canvasWrapper.children());
+			// 		const contaier = $(".canvas-container");
+			// 		if (container != null && this._currentBoard._currentView != null) {
+			// 			const c = this._currentBoard._currentView.canvas.canvas;
+			// 			if (c != null) {
+			// 				const scale = canvasWrapper.width() / $(container).width();
+			// 				const objects = c.getObject();
+			// 				for (let k in objects) {
+			// 		objects[i].scaleX = objects[i].scaleX * scale;
+			//               objects[i].scaleY = objects[i].scaleY * scale;
+			//               objects[i].left = objects[i].left * scale;
+			//               objects[i].top = objects[i].top * scale;
+			//               objects[i].setCoords();       
+			// 				}
+			// 				c.setWidth(c.getWidth() * scale);
+			//           c.setHeight(c.getHeight() * scale);
+			//           c.renderAll();
+			//           c.calcOffset();
+			// 			}
+			// 		}
+			// }
 		}
 	
 		function stopDrag(e) {
 			document.documentElement.removeEventListener('mousemove', doDrag, false);
 			document.documentElement.removeEventListener('mouseup', stopDrag, false);
 		}
-		var resizeSpan = document.querySelector(".resize_span");
-		resizeSpan.addEventListener("mousemove", initDrag, false);
+		// var resizeSpan = document.querySelector(".resize_span");
+		// resizeSpan.addEventListener("mousemove", initDrag, false);
 	}
 
 /***/ },
@@ -11048,19 +11087,16 @@ var board =
 	
 			this.url = url || _Constants.TEST_YOUTUBE_VIDEO_URL;
 			this.changeUrl = changeUrl;
+			this.player = null;
+			this.done = false;
 		}
 	
 		_createClass(VideoFrame, [{
 			key: 'renderIframe',
 			value: function renderIframe() {
-				var frame = (0, _jquery2.default)(_Constants.ELEMENT_IFRAME, {
-					"class": "iframe-video",
-					"src": this.url,
-					"controls": true,
-					"allowfullscreen": true,
-					"frameborder": 0
+				return (0, _jquery2.default)(_Constants.ELEMENT_DIV, {
+					id: "player"
 				});
-				return frame;
 			}
 		}, {
 			key: 'renderUrlField',
@@ -11081,8 +11117,8 @@ var board =
 				}).on("click", function (e) {
 					var i = (0, _jquery2.default)("#video-input");
 					if (i.val() != null) {
-						_this.setVideoUrl(i.val());
-						// this.changeUrl();
+						var videoId = i.val().split("?v=")[1];
+						_this.player.loadVideoById(videoId);
 						var currentIframe = (0, _jquery2.default)(".iframe-video");
 						currentIframe.attr("src", _this.url);
 					}
@@ -11094,9 +11130,56 @@ var board =
 			key: 'init',
 			value: function init(elementId) {
 				var element = (0, _jquery2.default)(elementId);
+				this.initYoutubeApi();
 				element.append(this.renderUrlField());
 				element.append(this.renderIframe());
+				this.initPlayer();
 				return element;
+			}
+		}, {
+			key: 'initYoutubeApi',
+			value: function initYoutubeApi() {
+				var scriptTag = document.createElement("script");
+				scriptTag.setAttribute("src", "https://www.youtube.com/iframe_api");
+				var firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag);
+			}
+		}, {
+			key: 'initPlayer',
+			value: function initPlayer() {
+				var _this2 = this;
+	
+				var self = this;
+				var videoWrapper = (0, _jquery2.default)(".video-wrapper");
+				window.onYouTubeIframeAPIReady = function () {
+					_this2.player = new YT.Player("player", {
+						height: "360",
+						width: videoWrapper.width(),
+						videoId: "uxIF8upjjRA",
+						events: {
+							onReady: self.onReadyPlayer,
+							onStateChange: self.onStateChangePlayer
+						}
+					});
+				};
+			}
+		}, {
+			key: 'onReadyPlayer',
+			value: function onReadyPlayer(e) {
+				e.target.playVideo();
+			}
+		}, {
+			key: 'onStateChangePlayer',
+			value: function onStateChangePlayer(e) {
+				if (e.data == YT.PlayerState.PLAYING && !this.done) {
+					setTimeout(stopVideo, 6000);
+					this.done = true;
+				}
+			}
+		}, {
+			key: 'stopVideo',
+			value: function stopVideo() {
+				this.player.stopVideo();
 			}
 		}, {
 			key: 'getVideoUrl',
@@ -11217,7 +11300,7 @@ var board =
 	});
 	var TEST_VIDEO_URL = exports.TEST_VIDEO_URL = "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv";
 	var TEST_YOUTUBE_VIDEO_URL = exports.TEST_YOUTUBE_VIDEO_URL = "https://www.youtube.com/embed/B9FzVhw8_bY";
-	var MAX_BOARDS = exports.MAX_BOARDS = 10;
+	var MAX_BOARDS = exports.MAX_BOARDS = 3;
 	var TOOL_IMG_PATH = exports.TOOL_IMG_PATH = "static/images/";
 	
 	// Paths
@@ -11244,6 +11327,8 @@ var board =
 	var SHAPE_ELLIPSE = exports.SHAPE_ELLIPSE = "Ellipse";
 	var SHAPE_LINE = exports.SHAPE_LINE = "Line";
 	
+	var SHAPE_TEXT = exports.SHAPE_TEXT = "IText";
+	
 	var BRUSH_TOOL = exports.BRUSH_TOOL = "Brush";
 	// brush
 	var BRUSH_PENCIL = exports.BRUSH_PENCIL = "pencil";
@@ -11251,8 +11336,12 @@ var board =
 	var COLOR_FILL_COLOR = exports.COLOR_FILL_COLOR = "fillColor";
 	var COLOR_STROKE_COLOR = exports.COLOR_STROKE_COLOR = "strokeColor";
 	var COLOR_BACKGROUND = exports.COLOR_BACKGROUND = "backgroundColor";
+	var COLOR_LINE_COLOR = exports.COLOR_LINE_COLOR = "lineColor";
+	var COLOR_TEXT_COLOR = exports.COLOR_TEXT_COLOR = "textColor";
 	// Transform
 	var TRANSFORM_WIDTH_STROKE = exports.TRANSFORM_WIDTH_STROKE = "strokeWidth";
+	var TRANSFORM_WIDTH_LINE = exports.TRANSFORM_WIDTH_LINE = "lineWidth";
+	var TRANSFORM_FONT_SIZE = exports.TRANSFORM_FONT_SIZE = "fontSize";
 	// Sets
 	var PAINT_SET_DEFAULT = exports.PAINT_SET_DEFAULT = "default";
 	var PAINT_SET_BRUSH = exports.PAINT_SET_BRUSH = BRUSH_TOOL;
@@ -11417,7 +11506,21 @@ var board =
 					if (_this.canvas != null) {
 						_this.canvas.setBackgroundColor(bgVak);
 						_this.canvas.renderAll();
+						_this.socketSend();
 					}
+				},
+				handleDrawing: function handleDrawing(val) {
+					if (val != null && val == "Brush") {
+						_this.isDrawing = true;
+						_this.drawing();
+					}
+				},
+				handleShape: function handleShape(val) {
+					_this.isDrawing = false;
+					_this.initListeners();
+				},
+				handleText: function handleText(val) {
+					_this.drawText(val);
 				}
 			});
 			this.socket = (0, _socket2.default)();
@@ -11431,6 +11534,11 @@ var board =
 		}
 	
 		_createClass(CanvasPaint, [{
+			key: 'socketSend',
+			value: function socketSend() {
+				this.socket.emit("draw", JSON.stringify(this.canvas));
+			}
+		}, {
 			key: 'renderCanvas',
 			value: function renderCanvas() {
 				var canvasWrapper = (0, _jquery2.default)(".canvas-wrapper");
@@ -11452,23 +11560,20 @@ var board =
 				var _this2 = this;
 	
 				var c = (0, _jquery2.default)("#" + elementId);
-				var wrapper = (0, _jquery2.default)(".canvas-wrapper");
-				wrapper.on("resize", function (e) {
-					console.log(e);
-				});
+	
 				this.canvas = new _fabric.fabric.Canvas(elementId, {
 					selection: false,
 					width: c.width(),
 					height: c.height()
 				});
 	
+				// SOCKET
+	
 				this.socket.on("draw", function (data) {
-					// if (data.length > JSON.stringify(this.canvas).length) {
 					_this2.canvas.loadFromJSON(data);
 					_this2.canvas.renderAll();
-					// }
 				});
-				this.initListeners();
+				// this.initListeners();
 				// const tools = this.tools.render();
 				// const _div = $("<div></div>").css({display: "flex"})
 				// .append(tools, c);
@@ -11480,6 +11585,13 @@ var board =
 				var strokeColor = this.tools.strokeColor;
 				var fillColor = this.tools.fillColor;
 				var shape = void 0;
+				if (type == "IText") {
+					return new _fabric.fabric.Textbox("type", {
+						left: this.startLocations.x,
+						top: this.startLocations.y,
+						selectable: true
+					});
+				}
 				return new _fabric.fabric[type]({
 					left: this.startLocations.x,
 					top: this.startLocations.y,
@@ -11497,12 +11609,15 @@ var board =
 				this.canvas.observe(_Constants.MOUSE_DOWN, function (option) {
 					_this3.canvas.selection = false;
 					_this3.isMouseDown = true;
+					_this3.isDrawing = false;
+					_this3.canvas.isDrawingMode = false;
+	
 					if (option.target != null) {
 						return;
-					}
-					if (_this3.isDrawing || _this3.canvas.isDrawingMode) {
-						//
-					} else {
+					} else if (!_this3.isDrawing) {
+						_this3.currentShape = _this3.getShape(_this3.tools.activeShape);
+						_this3.isDrawing = false;
+						_this3.canvas.isDrawingMode = false;
 						_this3.startLocations.x = option.e.offsetX;
 						_this3.startLocations.y = option.e.offsetY;
 						_this3.currentShape = _this3.getShape(_this3.tools.activeShape);
@@ -11511,7 +11626,7 @@ var board =
 	
 							_this3.canvas.observe(_Constants.MOUSE_MOVE, function (option) {
 								console.log("MOUSE MOVE");
-								if (!_this3.isDrawing && _this3.isMouseDown && _this3.currentShape) {
+								if (_this3.isMouseDown && _this3.currentShape) {
 									var isCircle = _this3.currentShape instanceof _fabric.fabric.Circle;
 									var isRect = _this3.currentShape instanceof _fabric.fabric.Rect;
 									var isTriangle = _this3.currentShape instanceof _fabric.fabric.Triangle;
@@ -11537,6 +11652,7 @@ var board =
 										_this3.currentShape.set({ x2: _this3.startLocations.x, y2: _this3.startLocations.y });
 									}
 									_this3.canvas.renderAll();
+									_this3.socketSend();
 								}
 							}, false);
 						}
@@ -11547,16 +11663,87 @@ var board =
 	
 				this.canvas.observe(_Constants.MOUSE_UP, function (option) {
 					_this3.isMouseDown = false;
-					_this3.canvas.isDrawingMode = false;
+					if (_this3.isDrawing) {
+						_this3.isDrawing = false;
+						_this3.canvas.isDrawingMode = false;
+					}
 					_this3.canvas.selection = true;
 					_this3.currentShape = null;
 					_this3.canvas.off(_Constants.MOUSE_MOVE);
+					_this3.canvas.off(_Constants.MOUSE_DOWN);
 					_this3.canvas.forEachObject(function (o) {
 						o.setCoords();
 					});
-					console.log(JSON.stringify(_this3.canvas));
-					_this3.socket.emit("draw", JSON.stringify(_this3.canvas));
 				});
+			}
+		}, {
+			key: 'drawText',
+			value: function drawText(val) {
+				var _this4 = this;
+	
+				this.canvas.observe(_Constants.MOUSE_DOWN, function (option) {
+					_this4.startLocations.x = option.e.offsetX;
+					_this4.startLocations.y = option.e.offsetY;
+					var iText = _this4.getShape(val);
+	
+					_this4.canvas.observe(_Constants.MOUSE_UP, function (o) {
+						_this4.canvas.add(iText);
+						iText.enterEditing();
+						_this4.canvas.off(_Constants.MOUSE_DOWN);
+						_this4.socketSend();
+					});
+				});
+			}
+		}, {
+			key: 'drawing',
+			value: function drawing() {
+				var _this5 = this;
+	
+				this.isDrawing = true;
+				this.canvas.isDrawingMode = true;
+				this.canvas.freeDrawingBrush = this.brush();
+				this.canvas.freeDrawingBrush.color = this.tools.strokeColor;
+				this.canvas.freeDrawingBrush.width = this.tools.strokeWidth;
+				this.canvas.observe(_Constants.MOUSE_MOVE, function (option) {
+					_this5.canvas.renderAll();
+					_this5.socketSend();
+					_this5.canvas.observe(_Constants.MOUSE_UP, function (option) {
+						_this5.canvas.off(_Constants.MOUSE_MOVE);
+					});
+				});
+			}
+		}, {
+			key: 'vLine',
+			value: function vLine() {
+				var _this6 = this;
+	
+				var vLinePatternBrush = new _fabric.fabric.PatternBrush(this.canvas);
+				vLinePatternBrush.getPatternSrc = function () {
+	
+					var patternCanvas = _fabric.fabric.document.createElement('canvas');
+					patternCanvas.width = patternCanvas.height = 10;
+					var ctx = patternCanvas.getContext('2d');
+	
+					ctx.strokeStyle = _this6.tools.strokeColor;
+					ctx.lineWidth = _this6.tools.strokeWidth;
+					ctx.beginPath();
+					ctx.moveTo(0, 5);
+					ctx.lineTo(10, 5);
+					ctx.closePath();
+					ctx.stroke();
+	
+					return patternCanvas;
+				};
+				return vLinePatternBrush;
+			}
+		}, {
+			key: 'brush',
+			value: function brush() {
+				var d = new _fabric.fabric.PencilBrush(this.canvas);
+				d.selectable = false;
+				this.canvas.freeDrawingBrush.color = this.tools.strokeColor;
+				this.canvas.freeDrawingBrush.width = this.tools.strokeWidth;
+				return d;
 			}
 		}]);
 	
@@ -11577,7 +11764,7 @@ var board =
 		value: true
 	});
 	
-	var _sameSet, _PAINT_SET_DEFAULT, _BRUSH_TOOL, _CanvasTools$sets;
+	var _sameSet, _PAINT_SET_DEFAULT, _BRUSH_TOOL, _SHAPE_TEXT, _CanvasTools$sets;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -11619,6 +11806,15 @@ var board =
 			if (props.handleBackgroundColorChange) {
 				this.handleBackgroundColorChange = props.handleBackgroundColorChange;
 			}
+			if (props.handleDrawing) {
+				this.handleDrawing = props.handleDrawing;
+			}
+			if (props.handleShape) {
+				this.handleShape = props.handleShape;
+			}
+			if (props.handleText) {
+				this.handleText = props.handleText;
+			}
 		}
 	
 		_createClass(CanvasTools, [{
@@ -11643,6 +11839,15 @@ var board =
 					});
 					e.currentTarget.classList.add("active");
 					cb(name);
+					if (name == "Brush") {
+						_this.handleDrawing(name);
+					}
+					if (name != "Brush" && name != "IText") {
+						_this.handleShape(name);
+					}
+					if (name == "IText") {
+						_this.handleText(name);
+					}
 				});
 				return button;
 			}
@@ -11696,6 +11901,9 @@ var board =
 				});
 				resultTools.push(grShapes);
 				var fromSet = Object.keys(this.currentSet);
+				var positionAbsoluteDiv = (0, _jquery2.default)(_Constants.ELEMENT_DIV, {
+					"class": "tool-absolute"
+				});
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
 				var _iteratorError = undefined;
@@ -11720,7 +11928,7 @@ var board =
 								console.log("UNKNOWN");
 								break;
 						}
-						resultTools.push(this.toolGroup(s, toolGroup, forPush.bind(this), function (e) {
+						positionAbsoluteDiv.append(this.toolGroup(s, toolGroup, forPush.bind(this), function (e) {
 							_this2[e.currentTarget.name] = e.currentTarget.value;
 							if (e.currentTarget.name == "backgroundColor") {
 								_this2.handleBackgroundColorChange(e.currentTarget.value);
@@ -11743,6 +11951,7 @@ var board =
 					}
 				}
 	
+				resultTools.push(positionAbsoluteDiv);
 				var toolsWrapper = (0, _jquery2.default)("<div></div>", {
 					"class": "tools-wrapper"
 				}).append(resultTools);
@@ -11785,13 +11994,13 @@ var board =
 		return CanvasTools;
 	}();
 	
-	CanvasTools.toolsShapes = [_Constants.BRUSH_TOOL, _Constants.SHAPE_RECTANGLE, _Constants.SHAPE_TRIANGLE, _Constants.SHAPE_CIRCLE, _Constants.SHAPE_ELLIPSE];
+	CanvasTools.toolsShapes = [_Constants.BRUSH_TOOL, _Constants.SHAPE_RECTANGLE, _Constants.SHAPE_TRIANGLE, _Constants.SHAPE_CIRCLE, _Constants.SHAPE_ELLIPSE, _Constants.SHAPE_TEXT];
 	CanvasTools.toolsColors = [_Constants.COLOR_BACKGROUND, _Constants.COLOR_FILL_COLOR, _Constants.COLOR_STROKE_COLOR];
 	CanvasTools.toolsTransforms = [_Constants.TRANSFORM_WIDTH_STROKE];
 	
 	var sameSet = (_sameSet = {}, _defineProperty(_sameSet, _Constants.TOOLS_GROUP_COLORS, [_Constants.COLOR_FILL_COLOR, _Constants.COLOR_STROKE_COLOR, _Constants.COLOR_BACKGROUND]), _defineProperty(_sameSet, _Constants.TOOLS_GROUP_TRANSFORMS, [_Constants.TRANSFORM_WIDTH_STROKE]), _sameSet);
 	
-	CanvasTools.sets = (_CanvasTools$sets = {}, _defineProperty(_CanvasTools$sets, _Constants.PAINT_SET_DEFAULT, (_PAINT_SET_DEFAULT = {}, _defineProperty(_PAINT_SET_DEFAULT, _Constants.TOOLS_GROUP_COLORS, [_Constants.COLOR_FILL_COLOR, _Constants.COLOR_STROKE_COLOR, _Constants.COLOR_BACKGROUND]), _defineProperty(_PAINT_SET_DEFAULT, _Constants.TOOLS_GROUP_TRANSFORMS, [_Constants.TRANSFORM_WIDTH_STROKE]), _PAINT_SET_DEFAULT)), _defineProperty(_CanvasTools$sets, _Constants.BRUSH_TOOL, (_BRUSH_TOOL = {}, _defineProperty(_BRUSH_TOOL, _Constants.TOOLS_GROUP_COLORS, [_Constants.COLOR_STROKE_COLOR]), _defineProperty(_BRUSH_TOOL, _Constants.TOOLS_GROUP_TRANSFORMS, [_Constants.TRANSFORM_WIDTH_STROKE]), _BRUSH_TOOL)), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_RECTANGLE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_TRIANGLE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_CIRCLE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_ELLIPSE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_LINE, sameSet), _CanvasTools$sets);
+	CanvasTools.sets = (_CanvasTools$sets = {}, _defineProperty(_CanvasTools$sets, _Constants.PAINT_SET_DEFAULT, (_PAINT_SET_DEFAULT = {}, _defineProperty(_PAINT_SET_DEFAULT, _Constants.TOOLS_GROUP_COLORS, [_Constants.COLOR_FILL_COLOR, _Constants.COLOR_STROKE_COLOR, _Constants.COLOR_BACKGROUND]), _defineProperty(_PAINT_SET_DEFAULT, _Constants.TOOLS_GROUP_TRANSFORMS, [_Constants.TRANSFORM_WIDTH_STROKE]), _PAINT_SET_DEFAULT)), _defineProperty(_CanvasTools$sets, _Constants.BRUSH_TOOL, (_BRUSH_TOOL = {}, _defineProperty(_BRUSH_TOOL, _Constants.TOOLS_GROUP_COLORS, [_Constants.COLOR_STROKE_COLOR, _Constants.COLOR_BACKGROUND, _Constants.COLOR_LINE_COLOR]), _defineProperty(_BRUSH_TOOL, _Constants.TOOLS_GROUP_TRANSFORMS, [_Constants.TRANSFORM_WIDTH_STROKE, _Constants.TRANSFORM_WIDTH_LINE]), _BRUSH_TOOL)), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_TEXT, (_SHAPE_TEXT = {}, _defineProperty(_SHAPE_TEXT, _Constants.TOOLS_GROUP_COLORS, [_Constants.COLOR_BACKGROUND, _Constants.COLOR_TEXT_COLOR]), _defineProperty(_SHAPE_TEXT, _Constants.TOOLS_GROUP_TRANSFORMS, [_Constants.TRANSFORM_FONT_SIZE]), _SHAPE_TEXT)), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_RECTANGLE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_TRIANGLE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_CIRCLE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_ELLIPSE, sameSet), _defineProperty(_CanvasTools$sets, _Constants.SHAPE_LINE, sameSet), _CanvasTools$sets);
 	
 	exports.default = CanvasTools;
 

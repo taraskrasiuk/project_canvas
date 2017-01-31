@@ -12,17 +12,14 @@ class VideoFrame {
 	constructor(url, changeUrl) {
 		this.url = url || TEST_YOUTUBE_VIDEO_URL;
 		this.changeUrl = changeUrl;
+		this.player = null;
+		this.done = false;
 	}
 
 	renderIframe () {
-		const frame = $(ELEMENT_IFRAME, {
-			"class" : "iframe-video",
-			"src": this.url,
-			"controls": true,
-			"allowfullscreen": true,
-			"frameborder": 0
+		return $(ELEMENT_DIV, {
+			id: "player"
 		});
-		return frame;
 	}
 
 	renderUrlField () {
@@ -40,8 +37,8 @@ class VideoFrame {
 		}).on("click", (e) => {
 			const i = $("#video-input");
 			if (i.val() != null) {
-				this.setVideoUrl(i.val());
-				// this.changeUrl();
+				const videoId = i.val().split("?v=")[1];
+				this.player.loadVideoById(videoId);
 				const currentIframe = $(".iframe-video");
 				currentIframe.attr("src", this.url);
 			}
@@ -52,9 +49,45 @@ class VideoFrame {
 
 	init (elementId) {
 		const element = $(elementId);
+		this.initYoutubeApi();
 		element.append(this.renderUrlField());
 		element.append(this.renderIframe());
+		this.initPlayer();
 		return element
+	}
+
+	initYoutubeApi () {
+		const scriptTag = document.createElement("script");
+		scriptTag.setAttribute("src", "https://www.youtube.com/iframe_api");
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+      	firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag);
+	}
+	initPlayer () {
+		const self = this;
+		const videoWrapper = $(".video-wrapper");
+		window.onYouTubeIframeAPIReady = () => {
+			this.player = new YT.Player("player", {
+				height: "360",
+				width: videoWrapper.width(),
+				videoId: "uxIF8upjjRA",
+				events: {
+					onReady: self.onReadyPlayer,
+					onStateChange: self.onStateChangePlayer
+				}
+			});
+		};
+	}
+	onReadyPlayer (e) {
+		e.target.playVideo();
+	}
+	onStateChangePlayer(e) {
+		if (e.data == YT.PlayerState.PLAYING && !this.done) {
+          setTimeout(stopVideo, 6000);
+          this.done = true;
+        }
+	}
+	stopVideo () {
+		this.player.stopVideo();
 	}
 
 	getVideoUrl () {

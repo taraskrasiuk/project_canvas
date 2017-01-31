@@ -31,15 +31,15 @@ html, body {
 	
 	display: flex;
 	flex-direction: column;
-	width: 600px;
-	height: 600px;
+	width: 1024px;
+	height: 640px;
 	background: #ddd;
 	min-width: 600px;
 	min-height: 400px;
 
 position: absolute;
-	top: 30%;
-	left: 30%;
+	top: 10%;
+	left: 10%;
 	border: 1px solid #333;
 
 }
@@ -143,6 +143,7 @@ position: absolute;
 	flex: 1;
 	background: #ddd;
 	padding: 1rem;
+	position: relative;
 }
 /*#main_board .main-board .board-window .board-content .video-wrapper.open {
 	flex: 1;
@@ -160,9 +161,9 @@ position: absolute;
 	
 }
 
-.asidePanel-switchButton,
-.asidePanel-toggleButton,
-.asidePanel-fileButton {
+.asidePanel-VideoButton,
+.asidePanel-PaintButton,
+.asidePanel-FilesButton {
 	min-width: 5rem;
 	padding: .5rem;
     background: inherit;
@@ -182,6 +183,7 @@ position: absolute;
 /* files */
 .files-wrapper {
 	position: relative;
+	width: 100%;
 }
 .file-list {
 	position: absolute;
@@ -195,12 +197,12 @@ position: absolute;
     list-style-type: none;
 }
 .iframe-file {
-	position: absolute;
-    width: 80%;
-    height: 80%;
-    top: 10%;
-    margin: 0 auto;
-    left: 10%;
+	/*position: absolute;*/
+    width: 100%;
+    height: 100%;
+    /*top: 10%;*/
+    /*margin: 0 auto;*/
+    /*left: 10%;*/
 }
  
 /* canvas */
@@ -222,6 +224,7 @@ position: absolute;
 
 .canvas-wrapper {
 	width: 100%;
+	position: relative;
 }
 .canvas-container {
 	width: 100%;
@@ -239,20 +242,26 @@ position: absolute;
 	height: 100%;
 }
 /* canvas tools */
-.tools {
-	display: flex;
-	flex-direction: column;
-}
+
 .tool-group {
 	display: flex;
 	max-width: 3rem;
 	flex-direction: column;
 	align-items: center;
 	/*padding: 1rem;*/
-	margin: .2rem 0;
-	border: 1px solid #333;
-	border-radius: .5rem;
+	margin: .5rem 0;
+	/*border: 1px solid #333;*/
+	/*border-radius: .5rem;*/
 }
+.tools-wrapper {
+	display: flex;
+	flex-direction: column;
+	background: #ccc;
+	padding: .5rem;
+	box-shadow: -1px 1px 2px rgba(0, 0, 0, 1);
+    outline: 1px solid rgba(0,0,0,.5);
+}
+
 .tool-button {
 	display: flex;
     align-items: center;
@@ -335,4 +344,39 @@ position: absolute;
 }
 .topDrag.drag {
 	background: #f00;
+}
+
+
+.tool-absolute {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: #ccc;
+    color: #333;
+    padding: 1rem;
+    z-index: 999;
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 1);
+    outline: 1px solid rgba(0,0,0,.5);
+}
+
+.tools-wrapper .tool-group.Shapes {
+	justify-content: space-around;
+    height: 100%;	
+    max-width: auto;
+}
+
+
+.tool-absolute .tool-group.toolsColors,
+.tool-absolute .tool-group.toolsTransforms {
+	max-width: none;
+	align-items: stretch;
+	padding: 0;
+	border: none;
+	margin: .5rem 0;
+}
+.tool-absolute .tool-group.toolsColors .tool-label,
+.tool-absolute .tool-group.toolsTransforms .tool-label {
+	flex-direction: row;
+	font-size: inherit;
+	justify-content: space-between;
 }

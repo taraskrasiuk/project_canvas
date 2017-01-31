@@ -28,6 +28,8 @@ export const SHAPE_TRIANGLE = "Triangle";
 export const SHAPE_ELLIPSE = "Ellipse";
 export const SHAPE_LINE = "Line";
 
+export const SHAPE_TEXT = "IText";
+
 export const BRUSH_TOOL = "Brush"; 
 // brush
 export const BRUSH_PENCIL = "pencil";
@@ -35,8 +37,12 @@ export const BRUSH_PENCIL = "pencil";
 export const COLOR_FILL_COLOR = "fillColor";
 export const COLOR_STROKE_COLOR = "strokeColor";
 export const COLOR_BACKGROUND = "backgroundColor";
+export const COLOR_LINE_COLOR = "lineColor";
+export const COLOR_TEXT_COLOR = "textColor";
 // Transform
 export const TRANSFORM_WIDTH_STROKE = "strokeWidth";
+export const TRANSFORM_WIDTH_LINE = "lineWidth";
+export const TRANSFORM_FONT_SIZE = "fontSize";
 // Sets
 export const PAINT_SET_DEFAULT = "default";
 export const PAINT_SET_BRUSH = BRUSH_TOOL;

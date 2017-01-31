@@ -12,7 +12,9 @@ import {
 	COLOR_FILL_COLOR,
 	COLOR_BACKGROUND,
 	COLOR_STROKE_COLOR,
+	COLOR_LINE_COLOR,
 	TRANSFORM_WIDTH_STROKE,
+	TRANSFORM_WIDTH_LINE,
 	BRUSH_TOOL,
 	ELEMENT_INPUT,
 	ELEMENT_LABEL,
@@ -21,7 +23,10 @@ import {
 	PAINT_SET_PENCIL,
 	TOOLS_GROUP_COLORS,
 	TOOLS_GROUP_TRANSFORMS,
-	TOOLS_GROUP_SHAPES
+	TOOLS_GROUP_SHAPES,
+	SHAPE_TEXT,
+	COLOR_TEXT_COLOR,
+	TRANSFORM_FONT_SIZE
 } from './Constants';
 import $ from "jquery";
 
@@ -37,6 +42,15 @@ class CanvasTools {
 		this.currentSet = CanvasTools.sets[PAINT_SET_DEFAULT];
 		if (props.handleBackgroundColorChange) {
 			this.handleBackgroundColorChange = props.handleBackgroundColorChange;
+		}
+		if (props.handleDrawing) {
+			this.handleDrawing = props.handleDrawing;
+		}
+		if (props.handleShape) {
+			this.handleShape = props.handleShape;
+		}
+		if (props.handleText) {
+			this.handleText = props.handleText;
 		}
 	}
 
@@ -58,6 +72,15 @@ class CanvasTools {
 			});
 			e.currentTarget.classList.add("active");
 			cb(name);
+			if (name == "Brush") {
+				this.handleDrawing(name);
+			}
+			if (name != "Brush" && name != "IText") {
+				this.handleShape(name);
+			}
+			if (name == "IText") {
+				this.handleText(name);
+			}
 		});
 		return button;
 	}
@@ -106,6 +129,9 @@ class CanvasTools {
 		});
 	 	resultTools.push(grShapes);
 	 	const fromSet = Object.keys(this.currentSet);
+	 	const positionAbsoluteDiv = $(ELEMENT_DIV, {
+	 		"class": "tool-absolute"
+	 	});
 	 	for(let s of fromSet){
 		 	const toolGroup = this.currentSet[s];
 		 	let forPush = null;
@@ -123,7 +149,7 @@ class CanvasTools {
 		 			console.log("UNKNOWN");
 		 			break;
 		 	}
-		 	resultTools.push(this.toolGroup(s, toolGroup, forPush.bind(this), (e) => {
+		 	positionAbsoluteDiv.append(this.toolGroup(s, toolGroup, forPush.bind(this), (e) => {
 		 		this[e.currentTarget.name] = e.currentTarget.value;
 		 		if (e.currentTarget.name == "backgroundColor") {
 		 			this.handleBackgroundColorChange(e.currentTarget.value);
@@ -131,6 +157,7 @@ class CanvasTools {
 		 		console.log(e.currentTarget.name + "||" + e.currentTarget.value);
 		 	}));
 	 	}
+	 	resultTools.push(positionAbsoluteDiv);
 	 	const toolsWrapper = $("<div></div>", {
 	 		"class": "tools-wrapper"
 	 	}).append(resultTools);
@@ -166,7 +193,7 @@ class CanvasTools {
 	}
 }
 CanvasTools.toolsShapes = [
-	BRUSH_TOOL, SHAPE_RECTANGLE, SHAPE_TRIANGLE, SHAPE_CIRCLE, SHAPE_ELLIPSE
+	BRUSH_TOOL, SHAPE_RECTANGLE, SHAPE_TRIANGLE, SHAPE_CIRCLE, SHAPE_ELLIPSE, SHAPE_TEXT
 ];
 CanvasTools.toolsColors = [
 	COLOR_BACKGROUND, COLOR_FILL_COLOR, COLOR_STROKE_COLOR
@@ -186,8 +213,12 @@ CanvasTools.sets = {
 		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE]
 	},
 	[BRUSH_TOOL]: {
-		[TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR],
-		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE]
+		[TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR, COLOR_BACKGROUND, COLOR_LINE_COLOR],
+		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE, TRANSFORM_WIDTH_LINE]
+	},
+	[SHAPE_TEXT] : {
+		[TOOLS_GROUP_COLORS]: [COLOR_BACKGROUND, COLOR_TEXT_COLOR],
+		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_FONT_SIZE]	
 	},
 	[SHAPE_RECTANGLE]: sameSet,
 	[SHAPE_TRIANGLE]: sameSet,

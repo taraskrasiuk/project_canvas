@@ -35,9 +35,6 @@ class Canvas extends Block{
 			wrapper = $(ELEMENT_DIV, {
 				"class": `${this.key}-wrapper`
 			}).addClass("init");
-			// wrapper.resize(e => {
-			// 	console.log("**" + e);
-			// });
 			const initButton = this.getInitButton((e) => {
 				let currentWrapper = $("." + currentKey);
 				currentWrapper.empty();
