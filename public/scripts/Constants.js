@@ -19,6 +19,7 @@ export const ELEMENT_BTN = "<button></button>";
 export const ELEMENT_CANVAS = "<canvas></canvas>";
 export const ELEMENT_INPUT = "<input />";
 export const ELEMENT_LABEL = "<label></label>";
+export const ELEMENT_RADIO = "<input type=\"radio\" />";
 
 
 // Shapes

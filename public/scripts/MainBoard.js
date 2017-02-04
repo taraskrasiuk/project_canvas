@@ -13,6 +13,7 @@ import CanvasPaint from "./CanvasPaint";
 
 class MainBoard {
 	constructor(isBoard) {
+		
 		this.boards = [];
 		if (isBoard) {
 			this._currentBoard = new BoardWindow("Board 1");
@@ -236,28 +237,7 @@ function resize() {
 			   p.style.height = (startHeight + e.clientY - startY) + 'px';
 
 			   const canvasWrapper = $(".canvas-wrapper");
-			   // if (canvasWrapper != null) {
-			   // 		// console.log(canvasWrapper.children());
-			   // 		const contaier = $(".canvas-container");
-			   // 		if (container != null && this._currentBoard._currentView != null) {
-			   // 			const c = this._currentBoard._currentView.canvas.canvas;
-			   // 			if (c != null) {
-			   // 				const scale = canvasWrapper.width() / $(container).width();
-			   // 				const objects = c.getObject();
-			   // 				for (let k in objects) {
-						// 		objects[i].scaleX = objects[i].scaleX * scale;
-				  //               objects[i].scaleY = objects[i].scaleY * scale;
-				  //               objects[i].left = objects[i].left * scale;
-				  //               objects[i].top = objects[i].top * scale;
-				  //               objects[i].setCoords();       
-			   // 				}
-			   // 				c.setWidth(c.getWidth() * scale);
-				  //           c.setHeight(c.getHeight() * scale);
-				  //           c.renderAll();
-				  //           c.calcOffset();
-			   // 			}
-			   // 		}
-			   // }
+			  
 
 			}
 

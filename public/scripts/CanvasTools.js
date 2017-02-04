@@ -26,20 +26,23 @@ import {
 	TOOLS_GROUP_SHAPES,
 	SHAPE_TEXT,
 	COLOR_TEXT_COLOR,
-	TRANSFORM_FONT_SIZE
+	TRANSFORM_FONT_SIZE,
+	ELEMENT_RADIO
 } from './Constants';
 import $ from "jquery";
 
 class CanvasTools {
 	constructor(props = {}) {
-		const {activeShape, strokeWidth, strokeColor, fillColor, backgroundColor} = props;
-		this.activeShape = activeShape || null;
+		const {activeTool, strokeWidth, strokeColor, fillColor, backgroundColor, globalAlpha} = props;
+		this.activeTool = activeTool || null;
 		this.strokeWidth = strokeWidth || 5;
 		this.strokeColor = strokeColor || "#ddd";
 		this.fillColor = fillColor || "#299";
 		this.backgroundColor = backgroundColor || "#8cf";
+		this.globalAlpha = globalAlpha || 1;
+		this.subTool = null;
 
-		this.currentSet = CanvasTools.sets[PAINT_SET_DEFAULT];
+		this.currentSet = CanvasTools.sets[BRUSH_TOOL];
 		if (props.handleBackgroundColorChange) {
 			this.handleBackgroundColorChange = props.handleBackgroundColorChange;
 		}
@@ -63,7 +66,7 @@ class CanvasTools {
 			"class": "tool-button"
 		}).append(img).on("click", (e) => {
 			e.preventDefault();
-			this.activeShape = name;
+			this.activeTool = name;
 			const p = e.currentTarget.parentElement;
 			Array.prototype.forEach.call(p.children, (el) => {
 				if (el.classList.contains("active")) {
@@ -72,15 +75,15 @@ class CanvasTools {
 			});
 			e.currentTarget.classList.add("active");
 			cb(name);
-			if (name == "Brush") {
-				this.handleDrawing(name);
-			}
-			if (name != "Brush" && name != "IText") {
-				this.handleShape(name);
-			}
-			if (name == "IText") {
-				this.handleText(name);
-			}
+			// if (name == "Brush") {
+			// 	this.handleDrawing(name);
+			// }
+			// if (name != "Brush" && name != "IText") {
+			// 	this.handleShape(name);
+			// }
+			// if (name == "IText") {
+			// 	this.handleText(name);
+			// }
 		});
 		return button;
 	}
@@ -111,10 +114,38 @@ class CanvasTools {
 		const wrapper = $(ELEMENT_DIV, {
 			"class": `tool-group ${groupName}`
 		});
-		array.forEach(el => {
-			wrapper.append(method(el, cb));
-		});
+		if (groupName == "subSet") {
+			wrapper.append(this.dropDown(groupName, array));
+		} else {
+			array.forEach(el => {
+				wrapper.append(method(el, cb));	
+			});
+		}
 		return wrapper;
+	}
+
+	dropDown (name, array) {
+		const dp = $("<select></select>", {
+			"class": "tool-select",
+			"selected": array[0] != null ? array[0] : ""
+		}).on("change", (e) => {
+			this.subTool = e.currentTarget.value;
+		});
+		const options = array.map((op, i, a) => {
+			const optionElement = $("<option></option>", {
+				value: op,
+				"class": "tool-select_option",
+				text: op
+			});
+			if (i == 0) {
+				optionElement.attr("selected", true);
+			}
+			return optionElement;
+		});
+		for(let o of options) {
+			dp.append(o);
+		}
+		return dp;
 	}
 
 	render () {
@@ -132,22 +163,26 @@ class CanvasTools {
 	 	const positionAbsoluteDiv = $(ELEMENT_DIV, {
 	 		"class": "tool-absolute"
 	 	});
-	 	for(let s of fromSet){
-		 	const toolGroup = this.currentSet[s];
+	 	if (fromSet[0] == "subSet") {
+	 		positionAbsoluteDiv.push(this.toolGroup("subSet", this.currentSet["subSet"], this.dropDown, (e) => {
+	 			this.subTool = e.currentTarget.value;
+	 		}));
+	 	}
+	 	for(let s of this.currentSet["subSet"]){
+		 	const toolGroup = CanvasTools.subSets[s];
 		 	let forPush = null;
-		 	switch(s) {
-		 		case TOOLS_GROUP_COLORS:
-		 			forPush = this.renderColors;
-		 			break;
-		 		case TOOLS_GROUP_TRANSFORMS:
-		 			forPush = this.renderTransform;
-		 			break;
-		 		case TOOLS_GROUP_SHAPES:
-		 			forPush = this.renderTool;
-		 			break;
-		 		default :
-		 			console.log("UNKNOWN");
-		 			break;
+		 	for(let z in toolGroup) {
+			 	switch(z) {
+			 		case TOOLS_GROUP_COLORS:
+			 			forPush = this.renderColors;
+			 			break;
+			 		case TOOLS_GROUP_TRANSFORMS:
+			 			forPush = this.renderTransform;
+			 			break;
+			 		default :
+			 			console.log("UNKNOWN");
+			 			break;
+			 	}
 		 	}
 		 	positionAbsoluteDiv.append(this.toolGroup(s, toolGroup, forPush.bind(this), (e) => {
 		 		this[e.currentTarget.name] = e.currentTarget.value;
@@ -213,8 +248,10 @@ CanvasTools.sets = {
 		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE]
 	},
 	[BRUSH_TOOL]: {
-		[TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR, COLOR_BACKGROUND, COLOR_LINE_COLOR],
-		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE, TRANSFORM_WIDTH_LINE]
+		"subSet": ["pencil", "brush"]
+		// [TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR, COLOR_BACKGROUND, COLOR_LINE_COLOR],
+		// [TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE, TRANSFORM_WIDTH_LINE]
+		
 	},
 	[SHAPE_TEXT] : {
 		[TOOLS_GROUP_COLORS]: [COLOR_BACKGROUND, COLOR_TEXT_COLOR],
@@ -226,6 +263,57 @@ CanvasTools.sets = {
 	[SHAPE_ELLIPSE]: sameSet,
 	[SHAPE_LINE]: sameSet
 };
+CanvasTools.subSets = {
+	"brush": {
+		[TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR, COLOR_LINE_COLOR],
+		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_STROKE, TRANSFORM_WIDTH_LINE, "globalAlpha"]
+	},
+	"pencil": {
+		[TOOLS_GROUP_COLORS]: [COLOR_STROKE_COLOR],
+		[TOOLS_GROUP_TRANSFORMS]: [TRANSFORM_WIDTH_LINE, "globalAlpha"]
+	}
+}
 
+CanvasTools.tools = ["Brush", "Shape", "Erase", "Fill", "Text", "Image"];
+CanvasTools.subTools = {
+	"Brush"
+};
+
+class Tool {
+	constructor(name) {
+		this.name = name;
+	}
+}
+class SubTool {
+	constructor(name, subTools) {
+		this.toolName = name;
+		this.subTools = subTools;
+	}
+
+	renderDropDown() {
+		const dp = $("<select></select>", {
+			"class": "tool-select",
+			"selected": array[0] != null ? array[0] : ""
+		}).on("change", (e) => {
+			this.subTool = e.currentTarget.value;
+		});
+		const options = array.map((op, i, a) => {
+			const optionElement = $("<option></option>", {
+				value: op,
+				"class": "tool-select_option",
+				text: op
+			});
+			if (i == 0) {
+				optionElement.attr("selected", true);
+			}
+			return optionElement;
+		});
+		for(let o of options) {
+			dp.append(o);
+		}
+		return dp;
+	}
+
+}
 
 export default CanvasTools;

@@ -77,23 +77,151 @@ var board =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	console.log(_fabric.fabric);
-	var options = {
-	  startBoard: true,
-	  user: {}
-	};
-	var main = new _MainBoard2.default(true);
-	var btn = document.getElementById("initButton");
-	btn.addEventListener("click", function (e) {
-	  var d = document.getElementById("content");
-	  if (d.children.length == 0) {
-	    main.init();
-	  }
-	}, false);
+	// console.log(fabric);
+	// const options = {
+	// 	startBoard: true,
+	// 	user: {
+	
+	// 	}
+	// }
+	// const main = new MainBoard(true);
+	// var btn = document.getElementById("initButton");
+	//   btn.addEventListener("click", function(e) {
+	//     var d = document.getElementById("content");
+	//     if (d.children.length == 0) {
+	//       main.init();
+	//     }
+	//   }, false);
+	
 	
 	var mainRender = function mainRender(targetElement, element) {
 	  (0, _jquery2.default)(targetElement).empty().append(element);
 	};
+	
+	var elem = (0, _jquery2.default)("<canvas></canvas>", { id: "canvas" });
+	mainRender("#content", elem);
+	var canvas = new _fabric.fabric.StaticCanvas("canvas", {
+	  // isDrawingMode: true,
+	  selection: false
+	});
+	// const t = new fabric.IText("aasd", {
+	// 	left: 10,
+	// 	top: 20
+	// });
+	// canvas.add(t);
+	// canvas.add(new fabric.Rect({top:50, left: 30, width: 40, height: 50, fillColor: "#333"}));
+	// canvas.observe("mouse:up", (o) => {
+	// 	canvas.isDrawingMode = false;
+	// 	canvas.selection = false;
+	// });
+	_fabric.fabric.SprayBrush = _fabric.fabric.util.createClass(_fabric.fabric.BaseBrush, {
+	
+	  opacity: .2,
+	  width: 30,
+	
+	  _baseWidth: 5,
+	  _drips: [],
+	  _dripThreshold: 15,
+	  _inkAmount: 0,
+	  _interval: 20,
+	  _lastPoint: null,
+	  _point: null,
+	  _strokeId: 0,
+	  brush: null,
+	  brushCol: '/static/img/creation_room/textures/texture2.png',
+	
+	  initialize: function initialize(canvas, opt) {
+	    var context = this;
+	    opt = opt || {};
+	
+	    this.canvas = canvas;
+	    this.width = opt.width || canvas.freeDrawingBrush.width;
+	    this.opacity = opt.opacity || canvas.contextTop.globalAlpha;
+	    this.color = opt.color || canvas.freeDrawingBrush.color;
+	
+	    this.canvas.contextTop.lineJoin = "round";
+	    this.canvas.contextTop.lineCap = "round";
+	
+	    this._reset();
+	
+	    _fabric.fabric.Image.fromURL(this.brushCol, function (brush) {
+	      console.log(brush);
+	      context.brush = brush;
+	      context.brush.filters = [];
+	      context.changeColor(context.color || this.color);
+	    }, { crossOrigin: "anonymous" });
+	  },
+	
+	  changeColor: function changeColor(color) {
+	    this.color = color;
+	    this.brush.filters[0] = new _fabric.fabric.Image.filters.Tint({ color: color });
+	    this.brush.applyFilters(this.canvas.renderAll.bind(this.canvas));
+	  },
+	
+	  changeOpacity: function changeOpacity(value) {
+	    this.opacity = value;
+	    this.canvas.contextTop.globalAlpha = value;
+	  },
+	
+	  onMouseDown: function onMouseDown(pointer) {
+	    this._point = new _fabric.fabric.Point(pointer.x, pointer.y);
+	    this._lastPoint = this._point;
+	
+	    this.size = this.width + this._baseWidth;
+	    this._strokeId = +new Date();
+	    this._inkAmount = 0;
+	
+	    this.changeColor(this.color);
+	    this._render();
+	  },
+	
+	  onMouseMove: function onMouseMove(pointer) {
+	    this._lastPoint = this._point;
+	    this._point = new _fabric.fabric.Point(pointer.x, pointer.y);
+	  },
+	
+	  onMouseUp: function onMouseUp(pointer) {},
+	
+	  _render: function _render() {
+	    var context = this;
+	
+	    setTimeout(draw, this._interval);
+	
+	    function draw() {
+	      var point, distance, angle, amount, x, y;
+	
+	      point = new _fabric.fabric.Point(context._point.x || 0, context._point.y || 0);
+	      distance = point.distanceFrom(context._lastPoint);
+	      angle = point.angleBetween(context._lastPoint);
+	      amount = 100 / context.size / (Math.pow(distance, 2) + 1);
+	
+	      context._inkAmount += amount;
+	      context._inkAmount = Math.max(context._inkAmount - distance / 10, 0);
+	      if (context._inkAmount > context._dripThreshold) {
+	        context._drips.push(new _fabric.fabric.Drip(context.canvas.contextTop, point, context._inkAmount / 2, context.color, context._strokeId));
+	        context._inkAmount = 0;
+	      }
+	
+	      x = context._lastPoint.x + Math.sin(angle) - context.size / 2;
+	      y = context._lastPoint.y + Math.cos(angle) - context.size / 2;
+	      context.canvas.contextTop.drawImage(context.brush._element, x, y, context.size, context.size);
+	
+	      if (context.canvas._isCurrentlyDrawing) {
+	        setTimeout(draw, context._interval);
+	      } else {
+	        context._reset();
+	      }
+	    }
+	  },
+	
+	  _reset: function _reset() {
+	    this._drips.length = 0;
+	    this._point = null;
+	    this._lastPoint = null;
+	  }
+	});
+	
+	canvas.freeDrawingBrush = new _fabric.fabric.SprayBrush(canvas, { width: 70, opacity: 0.6, color: "transparent" });
 	
 	//  const targetDiv = $("<div></div>", {"class": "targetDiv"});
 	//  const topDrag = $("<div></div>", {"class": "topDrag"}).appendTo(targetDiv);
@@ -427,28 +555,6 @@ var board =
 			p.style.height = startHeight + e.clientY - startY + 'px';
 	
 			var canvasWrapper = (0, _jquery2.default)(".canvas-wrapper");
-			// if (canvasWrapper != null) {
-			// 		// console.log(canvasWrapper.children());
-			// 		const contaier = $(".canvas-container");
-			// 		if (container != null && this._currentBoard._currentView != null) {
-			// 			const c = this._currentBoard._currentView.canvas.canvas;
-			// 			if (c != null) {
-			// 				const scale = canvasWrapper.width() / $(container).width();
-			// 				const objects = c.getObject();
-			// 				for (let k in objects) {
-			// 		objects[i].scaleX = objects[i].scaleX * scale;
-			//               objects[i].scaleY = objects[i].scaleY * scale;
-			//               objects[i].left = objects[i].left * scale;
-			//               objects[i].top = objects[i].top * scale;
-			//               objects[i].setCoords();       
-			// 				}
-			// 				c.setWidth(c.getWidth() * scale);
-			//           c.setHeight(c.getHeight() * scale);
-			//           c.renderAll();
-			//           c.calcOffset();
-			// 			}
-			// 		}
-			// }
 		}
 	
 		function stopDrag(e) {
@@ -11523,7 +11629,8 @@ var board =
 					_this.drawText(val);
 				}
 			});
-			this.socket = (0, _socket2.default)();
+			// this.socket = io(); 
+	
 	
 			this.isDrawing = false;
 			this.isDragging = false;
@@ -11533,12 +11640,12 @@ var board =
 			this.startLocations = {};
 		}
 	
+		// socketSend () {
+		// 	// this.socket.emit("draw", JSON.stringify(this.canvas));
+		// 	this.socket.emit("draw", this.canvas.toSVG());
+		// }
+	
 		_createClass(CanvasPaint, [{
-			key: 'socketSend',
-			value: function socketSend() {
-				this.socket.emit("draw", JSON.stringify(this.canvas));
-			}
-		}, {
 			key: 'renderCanvas',
 			value: function renderCanvas() {
 				var canvasWrapper = (0, _jquery2.default)(".canvas-wrapper");
@@ -11705,6 +11812,9 @@ var board =
 				this.canvas.freeDrawingBrush.color = this.tools.strokeColor;
 				this.canvas.freeDrawingBrush.width = this.tools.strokeWidth;
 				this.canvas.observe(_Constants.MOUSE_MOVE, function (option) {
+	
+					// console.log(this.canvas.toSVG());
+	
 					_this5.canvas.renderAll();
 					_this5.socketSend();
 					_this5.canvas.observe(_Constants.MOUSE_UP, function (option) {
