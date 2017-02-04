@@ -31,15 +31,15 @@ html, body {
 	
 	display: flex;
 	flex-direction: column;
-	width: 500px;
-	height: 400px;
+	width: 1024px;
+	height: 640px;
 	background: #ddd;
-	min-width: 400px;
-	min-height: 200px;
+	min-width: 600px;
+	min-height: 400px;
 
 position: absolute;
-	top: 20%;
-	left: 0%;
+	top: 10%;
+	left: 10%;
 	border: 1px solid #333;
 
 }
@@ -128,27 +128,31 @@ position: absolute;
 	display: flex;
 	flex: 10;
 }
-#main_board .main-board .board-window .board-content.reverse {
+/*#main_board .main-board .board-window .board-content.reverse {
 	flex-direction: row-reverse;
-}
+}*/
 /* video */
-#main_board .main-board .board-window .board-content .video-wrapper.init {
+#main_board .main-board .board-window .board-content .video-wrapper.init,
+#main_board .main-board .board-window .board-content .canvas-wrapper.init {
 	display: flex;
 	align-items: center;
+	flex-direction: column;
 }
-#main_board .main-board .board-window .board-content .video-wrapper {
-	/*flex: 1;*/
+#main_board .main-board .board-window .board-content .video-wrapper,
+#main_board .main-board .board-window .board-content .canvas-wrapper {
+	flex: 1;
 	background: #ddd;
-	/*padding: 1rem;*/
+	padding: 1rem;
+	position: relative;
 }
-#main_board .main-board .board-window .board-content .video-wrapper.open {
+/*#main_board .main-board .board-window .board-content .video-wrapper.open {
 	flex: 1;
 }
 #main_board .main-board .board-window .board-content .video-wrapper.close {
 	flex: 0;
 	width: 0;
 	display: none;
-}
+}*/
 .iframe-video {
 	width: 84%;
 	height: auto;
@@ -157,9 +161,9 @@ position: absolute;
 	
 }
 
-.asidePanel-switchButton,
-.asidePanel-toggleButton,
-.asidePanel-fileButton {
+.asidePanel-VideoButton,
+.asidePanel-PaintButton,
+.asidePanel-FilesButton {
 	min-width: 5rem;
 	padding: .5rem;
     background: inherit;
@@ -179,6 +183,7 @@ position: absolute;
 /* files */
 .files-wrapper {
 	position: relative;
+	width: 100%;
 }
 .file-list {
 	position: absolute;
@@ -192,19 +197,17 @@ position: absolute;
     list-style-type: none;
 }
 .iframe-file {
-	position: absolute;
-    width: 80%;
-    height: 80%;
-    top: 10%;
-    margin: 0 auto;
-    left: 10%;
+	/*position: absolute;*/
+    width: 100%;
+    height: 100%;
+    /*top: 10%;*/
+    /*margin: 0 auto;*/
+    /*left: 10%;*/
 }
  
 /* canvas */
-#main_board .main-board .board-window .board-content .canvas-wrapper {
-	/*flex: 1;*/
+/*#main_board .main-board .board-window .board-content .canvas-wrapper {
 	background: #bbb;
-	/*padding: 1rem;*/
 	display: flex;
 	align-items: flex-start;
 }
@@ -215,18 +218,50 @@ position: absolute;
 	flex: 0;
 	width: 0;
 	display: none;
+}*/
+
+/* TEST */
+
+.canvas-wrapper {
+	width: 100%;
+	position: relative;
 }
+.canvas-container {
+	width: 100%;
+	height: 100%;
+}
+/* END test */
 
 .canvas-element {
 	width: 100%;
 	height: 100%;
 	/*border: 1px solid #333;*/
 }
+#canvas-element {
+	width: 100%;
+	height: 100%;
+}
 /* canvas tools */
-.tools {
+
+.tool-group {
+	display: flex;
+	max-width: 3rem;
+	flex-direction: column;
+	align-items: center;
+	/*padding: 1rem;*/
+	margin: .5rem 0;
+	/*border: 1px solid #333;*/
+	/*border-radius: .5rem;*/
+}
+.tools-wrapper {
 	display: flex;
 	flex-direction: column;
+	background: #ccc;
+	padding: .5rem;
+	box-shadow: -1px 1px 2px rgba(0, 0, 0, 1);
+    outline: 1px solid rgba(0,0,0,.5);
 }
+
 .tool-button {
 	display: flex;
     align-items: center;
@@ -234,16 +269,32 @@ position: absolute;
     cursor: pointer;
     width: 2rem;
     height: 2rem;
+    background: none;
+    border: none;
+    outline: none;
+    margin: .2rem 0;
 }
 
 .tool-button.active {
-	background: #ccc;
+	border: 1px solid #333;
+	border-radius: .5rem;
+	padding: .2rem;
+
 }
 
 .tool-img {
 	display: block;
 	width: 100%;
 	height: auto;
+}
+.tool-label {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: .6rem;
+}
+.tool-range {
+	max-width: 3.5rem;
 }
 /* Bottom panel*/
 #main_board .bottom-panel {
@@ -262,4 +313,70 @@ position: absolute;
 }
 .init-btn .init-img {
 
+}
+
+#canvas {
+	width: 100%;
+	height: 100%;
+}
+.canvas-container {
+	width: 100%;
+	height: 100%;
+
+}
+
+
+/*TEST*/
+
+.targetDiv { 
+	width: 400px;
+	height: 200px;
+	position: absolute;
+	background: #333;
+}
+.topDrag {
+	width: 100%;
+	height: 10px;
+	background: #0f0;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.topDrag.drag {
+	background: #f00;
+}
+
+
+.tool-absolute {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: #ccc;
+    color: #333;
+    padding: 1rem;
+    z-index: 999;
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 1);
+    outline: 1px solid rgba(0,0,0,.5);
+}
+
+.tools-wrapper .tool-group.Shapes {
+	justify-content: space-around;
+    height: 100%;	
+    max-width: auto;
+}
+
+
+.tool-absolute .tool-group.toolsColors,
+.tool-absolute .tool-group.toolsTransforms {
+	max-width: none;
+	align-items: stretch;
+	padding: 0;
+	border: none;
+	margin: .5rem 0;
+}
+.tool-absolute .tool-group.toolsColors .tool-label,
+.tool-absolute .tool-group.toolsTransforms .tool-label {
+	flex-direction: row;
+	font-size: inherit;
+	justify-content: space-between;
 }

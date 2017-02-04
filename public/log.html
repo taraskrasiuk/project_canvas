@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+	<div id="customForm">
+		<label for="name">
+			<input type="text" id="name" placeholder="name">
+		</label>
+		<label for="password">
+			<input type="password" id="password">
+		</label>
+		<button id="logButton">Login</button>
+	</div>
+<script type="text/javascript">
+	var logButton = document.getElementById("logButton");
+	logButton.addEventListener("click", function(e) {
+		var name = document.getElementById("name");
+		var password = document.getElementById("password");
+		if (name.value.length > 0 && password.value.length > 0) {
+			makeRequest("GET", "users").then(function(data){
+				var current = JSON.parse(data).users.filter(function(el, id) {
+					if (el.name == name.value && el.password == password.value) {
+						window.location.assign("/");
+					};
+				})
+			});
+		}
+	});
+
+	function makeRequest(method, url) {
+		return new Promise(function(res, rej) {
+			var xhr = new XMLHttpRequest();
+			xhr.open(method, url);
+			xhr.onload = function () {
+				if (this.status >= 200 && this.status < 300) {
+					res(xhr.response);
+				} else {
+					rej({
+						status: this.status,
+						statusText: xhr.statusText
+					});
+				}
+			};
+			xhr.onerror = function() {
+				rej({
+					status: this.status,
+					statusText: xhr.statusText
+				});
+			};
+			xhr.send();
+		});
+	}
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 "use strict";
 
-define("UI", [], function() {
-	return {
+// define("UI", [], function() {
+	const UI = {
 		createElement: function(options) {
 			var el, type, name, id, className, child, eventType, event;
 			name = options.name;
@@ -61,4 +61,5 @@ define("UI", [], function() {
 		
 
 	};
-});
+	export default UI;
+// });

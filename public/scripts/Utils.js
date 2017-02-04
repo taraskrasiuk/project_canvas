@@ -1,10 +1,7 @@
-
-"use strict";
-
-define("Utils", ["BoardWindow"], function(BoardWindow) {
-	return {
-		isBoard : function(board) {
-			return board != null && board instanceof BoardWindow;
-		}
-	};
-});
+import BoardWindow from './BoardWindow';
+const Utils = {
+	isBoard: (board) => {
+		return board != null && board instanceof BoardWindow;
+	}
+}
+export default Utils;

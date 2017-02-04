@@ -1,0 +1,22 @@
+{
+	"users": [
+		{
+			"id": "default_user_@123_**",
+			"name": "default",
+			"password": "123",
+			"permission": "default"
+		},
+		{
+			"id": "admin_user_@999_##",
+			"name": "admin",
+			"password": "@@@",
+			"permission": "admin"
+		},
+		{
+			"id": "lolo_user_@333_**",
+			"name": "lolo",
+			"password": "lolo",
+			"permission": "default"
+		}
+	]
+}
