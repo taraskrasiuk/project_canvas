@@ -9,20 +9,22 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <!-- styles -->
   <link rel="stylesheet" href="styles/style.css">
-  <!-- /styles -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.3/fabric.min.js"></script>
+	<script type="text/javascript" src="scripts/pdf.js"></script>
+	<script type="text/javascript">
+		PDFJS.workerSrc = "scripts/pdf.worker.js";
+	</script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-</head>
+</head>s
 
 <body>
 
-<button id="initButton">START</button>
 
-<div id="content">
-	
+
+<div id="content" >
+	<!-- <canvas id="canvasElement"></canvas> -->
 </div>
-  <script data-main="main" src="scripts/require.js">
-   </script>
+<script src="build/bundle.js"></script>
 
 </body>
 </html>

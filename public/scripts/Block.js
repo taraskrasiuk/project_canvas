@@ -1,27 +1,54 @@
 "use strict";
+import $ from 'jquery';
+import {
+	ELEMENT_DIV,
+	ELEMENT_IMG,
+	ELEMENT_BTN,
+	STATIC_PATH,
+	IMAGES_PATH
+} from './Constants';
 
-define("Block", ["UI"], function(UI){
-	var Block = function(key, el) {
+class Block {
+	constructor(options) {
+		const {key, el, isActive, createElement, startElement} = options;
 		this.key = key;
-		this.isActive = false;
 		this.element = el;
+		this.isActive = isActive;
+		this.isInit = false;
+		this.createElement = (createElement != null) ? createElement : $(ELEMENT_DIV);
+		this.startElement = startElement;
 	};
-	Block.prototype.setIsActive = function(boolean) {
+
+	getInitButton(cb) {
+		const img = $(ELEMENT_IMG, {
+			"class": "init-img",
+			"src": `${STATIC_PATH}${IMAGES_PATH}init_${this.key}.png`
+		});
+
+		const btn = $(ELEMENT_BTN, {
+			"class": "init-btn"
+		}).append(img).on("click", cb);
+		return btn;
+	}
+
+	setIsActive (boolean) {
 		this.isActive = boolean;
 		return this;
 	};
-	Block.prototype.getIsActive = function() {
+
+	getIsActive () {
 		return this.isActive;
 	};
-	Block.prototype.getElement = function() {
+
+	getElement () {
 		return this.element;
 	};
-	Block.prototype.render = function () {
-		var wrapper = UI.createElement({
-			type: "div",
-			className: "block block-" + this.key
-		});
-		return wrapper;
+
+	setElement (el) {
+		this.element = el;
+		return this;
 	};
 
-});
+	
+};
+export default Block;
