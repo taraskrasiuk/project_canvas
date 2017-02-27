@@ -6,10 +6,10 @@ class Canvas_View extends View {
     constructor(props = {}) {
         super({className: props.className, active: props.active});
         this.canvas = document.createElement("canvas");
-        this.canvas.width = 600;
-        this.canvas.height = 300;
-        this.canvas.style.width = "100%";
-        this.canvas.style.height = "100%";
+        // this.canvas.width = 600;
+        // this.canvas.height = 300;
+        // this.canvas.style.width = "100%";
+        // this.canvas.style.height = "100%";
         this.controller = new props.controller({canvas: this.canvas, modelConstructor: props.modelConstructor});
         this.showTools = props.showTools || false;
         this.tools = new ToolsView({
@@ -115,8 +115,8 @@ class Canvas_View extends View {
             h = test.offsetHeight;
             this.canvas.width = w;
             this.canvas.height = h;
-            this.canvas.style.width = w + "px";
-            this.canvas.style.height = h + "px";
+            this.canvas.style.width = w;
+            this.canvas.style.height = h;
         }
         return this.canvas;
     }

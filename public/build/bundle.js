@@ -11938,8 +11938,8 @@ var Canvas_View = function (_View) {
         var _this = _possibleConstructorReturn(this, (Canvas_View.__proto__ || Object.getPrototypeOf(Canvas_View)).call(this, { className: props.className, active: props.active }));
 
         _this.canvas = document.createElement("canvas");
-        // this.canvas.width = 300;
-        // this.canvas.height = 150;
+        // this.canvas.width = 600;
+        // this.canvas.height = 300;
         // this.canvas.style.width = "100%";
         // this.canvas.style.height = "100%";
         _this.controller = new props.controller({ canvas: _this.canvas, modelConstructor: props.modelConstructor });
