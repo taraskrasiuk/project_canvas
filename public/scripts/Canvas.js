@@ -1,14 +1,19 @@
-import CanvasPaint from "./CanvasPaint";
+import CanvasPaint from "./trash/CanvasPaint";
 import Block from './Block';
 import $ from "jquery";
 import {
 	ELEMENT_DIV,
 	ELEMENT_CANVAS
 } from './Constants';
+import PaintView from "./painting/PaintView";
+import PaintController from "./painting/PaintController";
+import PaintState from "./painting/PaintState";
+
 class Canvas extends Block{
 	constructor() {
 		super({key: "canvas", element: null, isActive: true});
-		this.canvas = new CanvasPaint();
+		this.canvas = new PaintView({elementId: "canvas-element"});
+
 	}
 
 	renderCanvas () {
@@ -21,32 +26,25 @@ class Canvas extends Block{
 
 		return _div;
 	}
+
+	_init () {
+		this.canvas.init();
+	}
 	// ** ALMOST DUPLICATE
 	render () {
-		const currentKey = `${this.key}-wrapper`;
-		let wrapper = null;
-		if (this.isInit) {
-			const existWrapper = $(currentKey);
-			if (existWrapper.hasClass("init")) {
-				existWrapper.removeClass("init");
-			}
+		if (this.element == null) {
+			const currentKey = `${this.key}-wrapper`;
+			let wrapper = $(ELEMENT_DIV, {
+				"class": `${this.key}-wrapper`
+			});
+			this._init();
+			wrapper.append(this.canvas.render());
+			this.element = wrapper;
 			return this.element;
 		} else {
-			wrapper = $(ELEMENT_DIV, {
-				"class": `${this.key}-wrapper`
-			}).addClass("init");
-			const initButton = this.getInitButton((e) => {
-				let currentWrapper = $("." + currentKey);
-				currentWrapper.empty();
-				const canvas = this.renderCanvas();
-				currentWrapper.append(canvas);
-				this.canvas.init("canvas-element");
-				this.element = currentWrapper;
-				this.isInit = true;
-			});
-			wrapper.append(initButton);
+			return this.element;
 		}
-		return wrapper;
+
 	}
 
 };

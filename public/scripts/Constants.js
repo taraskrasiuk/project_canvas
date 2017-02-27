@@ -20,7 +20,14 @@ export const ELEMENT_CANVAS = "<canvas></canvas>";
 export const ELEMENT_INPUT = "<input />";
 export const ELEMENT_LABEL = "<label></label>";
 export const ELEMENT_RADIO = "<input type=\"radio\" />";
-
+export const ELEMENT_OPTION = "<option></option>";
+export const ELEMENT_SELECT = "<select></select>";
+//Cursors
+export const CURSOR_TOP_LEFT = "nw-resize";
+export const CURSOR_TOP_RIGHT = "ne-resize";
+export const CURSOR_BOTTOM_LEFT = "sw-resize";
+export const CURSOR_BOTTOM_RIGHT = "se-resize";
+export const CURSOR_DEFAULT = "default";
 
 // Shapes
 export const SHAPE_CIRCLE = "Circle";
@@ -31,12 +38,12 @@ export const SHAPE_LINE = "Line";
 
 export const SHAPE_TEXT = "IText";
 
-export const BRUSH_TOOL = "Brush"; 
+export const BRUSH_TOOL = "Brush";
 // brush
 export const BRUSH_PENCIL = "pencil";
 // Colors
-export const COLOR_FILL_COLOR = "fillColor";
-export const COLOR_STROKE_COLOR = "strokeColor";
+export const COLOR_FILL_STYLE = "fillStyle";
+export const COLOR_STROKE_STYLE = "strokeStyle";
 export const COLOR_BACKGROUND = "backgroundColor";
 export const COLOR_LINE_COLOR = "lineColor";
 export const COLOR_TEXT_COLOR = "textColor";
@@ -57,4 +64,12 @@ export const MOUSE_DOWN = "mouse:down";
 export const MOUSE_UP = "mouse:up";
 export const MOUSE_MOVE = "mouse:move";
 
+export const MOUSE_CLICK = "click";
 
+
+// CSS classes
+export const CSS_TOOLS_SET = "tools-set";
+export const CSS_MAIN_TOOL_IMAGE = "tool-img";
+export const CSS_MAIN_TOOL_ELEMENT = "tool-element";
+export const CSS_MAIN_TOOL_ACTIVE = "tool-active";
+export const CSS_TOOL_LABEL = "tool-label";
