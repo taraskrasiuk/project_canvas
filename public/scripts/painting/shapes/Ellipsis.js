@@ -4,8 +4,6 @@ class Ellipsis extends Shape {
     constructor({x, y, w, h, ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill}) {
         super({x, y, w, h, ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill});
         this.isBounded = false;
-
-
     }
 
     draw () {

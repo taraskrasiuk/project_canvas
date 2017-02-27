@@ -1,5 +1,4 @@
 import Path from "./Path";
-import Rx from "rxjs/Rx";
 
 class Brush extends Path {
     constructor(props) {

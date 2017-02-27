@@ -6,11 +6,6 @@ class AppModel {
         this._id = props.id;
         this._boards = props.boards || [];
 
-        // this._currentBoard = null;
-        // if (this._boards.length > 0) {
-        //     this._currentBoard = this._boards[0];
-        // }
-
         this.MAX_BOARDS = props.MAX_BOARDS || 3;
 
     }
@@ -19,22 +14,6 @@ class AppModel {
     getMaxBoards () {
         return this.MAX_BOARDS;
     }
-
-    // getCurrentBoard (){
-    //     return this._currentBoard;
-    // };
-
-    // setCurrentBoard (b) {
-    //     if (Utils.isBoard(b) && this._currentBoard != b) {
-    //         var notify = Notifications.currentBoard(b);
-    //         AppModel.log(notify);
-    //         this._currentBoard = b;
-    //     } else if(b == null) {
-    //         this._currentBoard = b;
-    //     }
-    //     // this.update(b);
-    //     return this;
-    // };
 
     addBoard(board) {
         this._boards.push(board);

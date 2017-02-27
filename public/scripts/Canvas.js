@@ -1,13 +1,13 @@
-import CanvasPaint from "./trash/CanvasPaint";
+// import CanvasPaint from "./trash/CanvasPaint";
 import Block from './Block';
 import $ from "jquery";
 import {
 	ELEMENT_DIV,
 	ELEMENT_CANVAS
 } from './Constants';
-import PaintView from "./painting/PaintView";
-import PaintController from "./painting/PaintController";
-import PaintState from "./painting/PaintState";
+// import PaintView from "./painting/PaintView";
+// import PaintController from "./painting/PaintController";
+// import PaintState from "./painting/PaintState";
 
 class Canvas extends Block{
 	constructor() {

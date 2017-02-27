@@ -76,14 +76,6 @@ class BoardView extends View {
                     e.preventDefault();
                     this.handleSelect(e.target.textContent);
                 }
-            },
-            {
-                name: "Files",
-                onClick: (e) => {
-                    // console.log("files");
-                    e.preventDefault();
-                    this.handleSelect(e.target.textContent);
-                }
             }
         ];
         buttons.forEach((btn) => {
@@ -97,19 +89,6 @@ class BoardView extends View {
     };
 
     update () {
-        // const main = $("#" + this._id);
-        // const boardContent = $(".board-content");
-        // const content = this.controller.getCurrentView().render();
-        // if (content != null) {
-        //     const ch = $(boardContent).children()[0];
-        //     if (ch != null) {
-        //         $(ch).replaceWith(content);
-        //     } else {
-        //         $(boardContent).append(content);
-        //     }
-        // }
-        // $(".board-view").append(this.renderBottomPanel());
-
         $(".board-view").replaceWith(this.render());
     }
 

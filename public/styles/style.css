@@ -33,7 +33,7 @@ html, body {
 	flex-direction: column;
 	width: 1024px;
 	height: 640px;
-	background: #ddd;
+	/*background: #ddd;*/
 	min-width: 600px;
 	min-height: 400px;
 
@@ -258,14 +258,14 @@ position: absolute;
 	/*border: 1px solid #333;*/
 	/*border-radius: .5rem;*/
 }
-.tools-wrapper {
-	display: flex;
-	flex-direction: column;
-	background: #ccc;
-	padding: .5rem;
-	box-shadow: -1px 1px 2px rgba(0, 0, 0, 1);
-    outline: 1px solid rgba(0,0,0,.5);
-}
+/*.tools-wrapper {*/
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*background: #ccc;*/
+	/*padding: 0 .5rem;*/
+	/*box-shadow: -1px 1px 2px rgba(0, 0, 0, 1);*/
+    /*outline: 1px solid rgba(0,0,0,.5);*/
+/*}*/
 
 .tool-button {
 	display: flex;
@@ -373,7 +373,7 @@ position: absolute;
 	display: flex;
 	flex-direction: column;
 	background: #ccc;
-	padding: .5rem;
+	padding: 0 .5rem;
 	max-width: 4rem;
 	height: 100%;
 	outline: 1px solid rgba(0,0,0,.3);
@@ -396,7 +396,7 @@ position: absolute;
 	outline: 1px solid rgba(0,0,0,.3);
 	box-shadow: 1px 1px 3px rgba(0,0,0,.4);
 	top: 0;
-	right: 0;
+	left: -200%;
 }
 
 .tools-set {
@@ -477,7 +477,7 @@ position: absolute;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
-	flex: 3;
+	flex: 1;
 	overflow-x: scroll;
 	border-top: 1px solid #333;
 }
