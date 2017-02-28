@@ -485,9 +485,8 @@ position: absolute;
 /*Buttons*/
 .button {
 	/*min-width: 5rem;*/
-	background: #fff;
+	background: red;
 	padding: .5rem;
-	background: inherit;
 	box-shadow: none;
 	outline: none;
 	border: 1px solid #333;

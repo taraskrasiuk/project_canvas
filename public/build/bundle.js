@@ -11938,6 +11938,15 @@ var Canvas_View = function (_View) {
         var _this = _possibleConstructorReturn(this, (Canvas_View.__proto__ || Object.getPrototypeOf(Canvas_View)).call(this, { className: props.className, active: props.active }));
 
         _this.canvas = document.createElement("canvas");
+        var test = document.querySelector(".board-content");
+        var w = 0,
+            h = 0;
+        if (test != null) {
+            w = test.offsetWidth;
+            h = test.offsetHeight;
+            _this.canvas.width = w;
+            _this.canvas.height = h;
+        }
         // this.canvas.width = 600;
         // this.canvas.height = 300;
         // this.canvas.style.width = "100%";
@@ -12077,8 +12086,8 @@ var Canvas_View = function (_View) {
                 h = test.offsetHeight;
                 this.canvas.width = w;
                 this.canvas.height = h;
-                this.canvas.style.width = w + "px";
-                this.canvas.style.height = h + "px";
+                // this.canvas.style.width = w;
+                // this.canvas.style.height = h;
             }
             return this.canvas;
         }
@@ -12135,7 +12144,7 @@ var PaintController = function (_Controller) {
 
         _classCallCheck(this, PaintController);
 
-        var _this = _possibleConstructorReturn(this, (PaintController.__proto__ || Object.getPrototypeOf(PaintController)).call(this, { model: new props.modelConstructor({ context: prepare(props.canvas, 1), width: props.canvas.width, height: props.canvas.height }) }));
+        var _this = _possibleConstructorReturn(this, (PaintController.__proto__ || Object.getPrototypeOf(PaintController)).call(this, { model: new props.modelConstructor({ context: props.canvas.getContext("2d"), width: props.canvas.width, height: props.canvas.height }) }));
 
         _this.props = props;
         _this.selectedTool = null;

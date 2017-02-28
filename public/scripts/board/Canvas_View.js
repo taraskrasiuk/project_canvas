@@ -6,6 +6,14 @@ class Canvas_View extends View {
     constructor(props = {}) {
         super({className: props.className, active: props.active});
         this.canvas = document.createElement("canvas");
+        let test = document.querySelector(".board-content");
+        let w = 0, h = 0;
+        if (test != null) {
+            w = test.offsetWidth;
+            h = test.offsetHeight;
+            this.canvas.width = w;
+            this.canvas.height = h;
+        }
         // this.canvas.width = 600;
         // this.canvas.height = 300;
         // this.canvas.style.width = "100%";
@@ -115,8 +123,6 @@ class Canvas_View extends View {
             h = test.offsetHeight;
             this.canvas.width = w;
             this.canvas.height = h;
-            this.canvas.style.width = w;
-            this.canvas.style.height = h;
         }
         return this.canvas;
     }

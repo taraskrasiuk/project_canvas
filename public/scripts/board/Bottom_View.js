@@ -39,6 +39,11 @@ class Bottom_View extends View{
         }
     }
 
+    update () {
+        const bottomWrapper = $(`.${this.className}`);
+        return bottomWrapper.replaceWith(this.render());
+    }
+
     render () {
         const bottomWrapper = this.renderWrapper();
         return bottomWrapper.append(this.renderButtons(this.items));
