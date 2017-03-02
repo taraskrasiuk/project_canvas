@@ -1,7 +1,7 @@
 import $ from "jquery";
 import View from "../global/View";
-// import videojs from "video.js";
-// import Youtube from "videojs-youtube/dist/Youtube.min.js";
+import videojs from "video.js";
+import Youtube from "videojs-youtube/dist/Youtube.min.js";
 
 
 class VideoView extends View {

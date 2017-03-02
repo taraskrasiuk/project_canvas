@@ -47,42 +47,51 @@ class BoardView extends View {
     };
 
     renderBottomPanel () {
+
         const currentView = this.controller.getCurrentView();
-        const bottom = new Bottom_View();
+        const bottomPanel = $(".bottom-panel");
         if (currentView != null) {
             if (currentView.bottomItems != null && currentView.bottomItems.length > 0) {
-                bottom.items = currentView.bottomItems;
+                // bottom.items = currentView.bottomItems;
             }
         }
-        return bottom.render();
+        // return bottom.render();
     }
 
     renderAsidePanel () {
         const asidePanel = $("<div></div>", {
-            "class": "board-asidePanel"
+            "class": "aside-list"
         });
 
         const buttons = [
             {
-                name: "Paint",
+                name: "Canvas",
                 onClick: (e) => {
                     e.preventDefault();
-                    this.handleSelect(e.target.textContent);
+                    this.handleSelect("Canvas");
                 }
             },
             {
                 name: "PDF",
                 onClick: (e) => {
                     e.preventDefault();
-                    this.handleSelect(e.target.textContent);
+                    this.handleSelect("PDF");
+                }
+            },
+            {
+                name: "Video",
+                onClick: (e) => {
+                    e.preventDefault();
+                    this.handleSelect("Video");
                 }
             }
         ];
         buttons.forEach((btn) => {
-            const b = $("<button></button>", {
-                "class": "button",
-                text: btn.name
-            }).on("click", btn.onClick.bind(this)).appendTo(asidePanel);
+            const b = $("<div></div>", {
+                "class": "tool-element",
+            }).on("click", btn.onClick.bind(this))
+                .append(Bottom_View.getImage(btn.name.toLowerCase()))
+                .appendTo(asidePanel);
 
         });
         return asidePanel;
@@ -99,8 +108,8 @@ class BoardView extends View {
         const div = $("<div></div>").addClass("board-main");
         const content = this.renderContent();
         const asidePanel = this.renderAsidePanel();
-        const bottom = this.renderBottomPanel();
-        wrapper.append(div.append(asidePanel, content), bottom);
+        // const bottom = this.renderBottomPanel();
+        wrapper.append(div.append(asidePanel, content));
         return wrapper;
     }
 }

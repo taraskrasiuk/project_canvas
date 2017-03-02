@@ -58,7 +58,7 @@ class Canvas_Context {
             this.context.restore();
         }
         if (this.backgroundImage != null && this.backgroundColor == null) {
-            this.context.save();
+            this.context.save()
             if (this.backgroundImage.data != null) {
                 this.context.putImageData(this.backgroundImage, 0, 0);
             } else {

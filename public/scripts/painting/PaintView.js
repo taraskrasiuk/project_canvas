@@ -2,6 +2,7 @@ import $ from "jquery";
 import PaintController from "./PaintController";
 import PaintState from "./PaintState";
 import Canvas_View from "../board/Canvas_View";
+import Bottom_View from "../board/Bottom_View";
 
 class PaintView extends Canvas_View{
     constructor (props ={}) {
@@ -16,10 +17,10 @@ class PaintView extends Canvas_View{
         this._element = elementId;
         this.currentTool = null;
         const self = this;
-        this.bottomItems = [
+        this.controlsItems = [
             {
                 type: "link",
-                label: "to PNG",
+                label: "download",
                 onClick: (e) => {
                     let dt = this.canvas.toDataURL("image/png");
                     dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
@@ -28,14 +29,23 @@ class PaintView extends Canvas_View{
                 }
             }, {
                 type: "button",
-                label: "toggleControls",
+                label: "toggle",
                 onClick: (e) => {
                     e.preventDefault();
                     self.showTools = !self.showTools;
                     self.update();
                 }
             }
-        ]
+        ];
+        this._bottomControls  = {
+            items: this.controlsItems || [],
+            optionItems: []
+        };
+        this.bottomControl = new Bottom_View(this._bottomControls);
+
+        // this.controls = new Bottom_View({
+        //     items: this.controlsItems
+        // });
     }
     /**
      *
@@ -46,14 +56,25 @@ class PaintView extends Canvas_View{
         this.controller.setSelectTool(toolName);
     }
 
+    updateBottomControls () {
+        this.bottomControl.update();
+    }
+
+
     /**
      *
      * @returns {jQuery|HTMLElement}
      */
     render () {
-        return $("<div></div>", {
+        this.bottomControl.update();
+        if (this.element != null) {
+            return this.element;
+        }
+        const div =  $("<div></div>", {
             "class": "paint"
         }).append(this.renderCanvasView());
+        this.element = div;
+        return div;
 
     }
 }

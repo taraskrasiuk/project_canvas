@@ -4,49 +4,88 @@ import FileUploadField from "../painting/tools/InputFields/FileUploadField";
 
 class Bottom_View extends View{
     constructor(props = {}) {
-        super({className: "bottom-wrapper", active: true});
-        const {items} = props;
-        this.items = items;
+        super({className: "bottom-panel", active: true});
+        const {items, optionsItems} = props;
+        this.option = {
+            items: items || [],
+            optionsItems: optionsItems || []
+        };
 
     }
 
+    renderOptionItems (items = []) {
+        return $("<ul></ul>", {
+            "class": "bottom-option-list",
+        }).append(items.map(i => this.renderOptionItem(i)));
+    }
+
+    renderOptionItem (item = {}) {
+        const {text, className} = item;
+        return $("<span></span>", {
+            "class": "bottom-option-item",
+            text: text
+        });
+    }
+
     renderButtons(items = []) {
-        return items.map(btn => this.renderItem({
+        return $("<ul></ul>", {
+            "class": "bottom-list"
+        }).append(items.map(btn => this.renderItem({
             label: btn.label,
             onClick: btn.onClick,
             onUpload: btn.onUpload,
             className: "bottom-view_button",
             type: btn.type
-        }));
+        })));
+    }
+
+    static getImage(name) {
+        return $("<img />", {
+            src: `static/images/${name}.png`,
+            "class": "tool-img"
+        });
     }
 
     renderItem(props = {}) {
         const {type, label, onClick, className, onUpload} = props;
         if (type == "button") {
-            return $("<button></button>", {
-                text: label,
-                "class": "button"
-            }).on("click", onClick);
+            return $("<div></div>", {
+                "class": "tool-element"
+            }).on("click", onClick).append(Bottom_View.getImage(label));
         } else if (type == "input") {
-            return new FileUploadField({name: label, onUpload: onUpload != null ? onUpload : null, value: ""}).render((e) => {
+            return  $("<li></li>", {
+                "class": "bottom-list_item"
+            }).append(new FileUploadField({name: label, onUpload: onUpload != null ? onUpload : null, value: ""}).render((e) => {
                 console.log(e);
-            });
+            }));
         } else if (type == "link") {
-            return $("<a donwload='canvas.png' href='#'>download</a>", {
+            return $("<li></li>", {
+                "class": "bottom-list_item"
+            }).append($("<a donwload='canvas.png' href='#'>download</a>", {
                 "class": "button",
                 text: label
-            }).on("click", onClick).addClass("button");
+            }).on("click", onClick).addClass("button"));
         }
     }
 
     update () {
+        const {items, optionsItems} = this.option;
         const bottomWrapper = $(`.${this.className}`);
-        return bottomWrapper.replaceWith(this.render());
+        bottomWrapper.empty();
+        if (optionsItems.length > 0) {
+            bottomWrapper.append(this.renderOptionItems(optionsItems));
+        }
+        bottomWrapper.append(this.renderButtons(items));
+        return bottomWrapper;
     }
 
     render () {
+        const {items, optionsItems} = this.option;
         const bottomWrapper = this.renderWrapper();
-        return bottomWrapper.append(this.renderButtons(this.items));
+        if (optionsItems.length > 0) {
+            bottomWrapper.append(this.renderOptionItems(optionsItems));
+        }
+        return bottomWrapper.append(this.renderButtons(items));
     }
 }
 
