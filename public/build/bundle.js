@@ -12100,8 +12100,9 @@ var Canvas_View = function (_View) {
 
         _this.canvas = document.createElement("canvas");
         _this.canvas.setAttribute("id", "canvas");
+        // TODO find way for dynamic width and height canvas
         _this.canvas.width = 542;
-        _this.canvas.height = 336;
+        _this.canvas.height = 376;
         _this.controller = new props.controller({ canvas: _this.canvas, modelConstructor: props.modelConstructor });
         _this.showTools = props.showTools || false;
         _this.tools = new _ToolsView2.default({
@@ -15548,7 +15549,8 @@ var PaintView = function (_Canvas_View) {
             modelConstructor: _PaintState2.default,
             className: "paint-view",
             active: props.active,
-            showTools: true
+            showTools: true,
+            position: "right"
         }));
 
         var elementId = props.elementId,
@@ -18489,6 +18491,15 @@ var VideoView = function (_View) {
                 label: "url",
                 onChange: function onChange(val) {
                     return _this.onYouTubeIframeAPIReady(val);
+                }
+            }, {
+                type: "button",
+                label: "video",
+                onClick: function onClick(e) {
+                    var val = (0, _jquery2.default)(e.currentTarget).prev().val();
+                    if (val.trim().length != 0) {
+                        _this.onYouTubeIframeAPIReady(val);
+                    }
                 }
             }]
         };
@@ -29937,9 +29948,9 @@ var _AppView2 = _interopRequireDefault(_AppView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// SET youtube API
+// SET youtube AP
 
-new _AppView2.default().render("content");
+new _AppView2.default().render();
 
 exports.MainBoard = _AppView2.default;
 

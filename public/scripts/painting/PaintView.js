@@ -11,7 +11,8 @@ class PaintView extends Canvas_View{
             modelConstructor: PaintState,
             className: "paint-view",
             active: props.active,
-            showTools: true
+            showTools: true,
+            position: "right"
         });
         const {elementId, tools} = props;
         this._element = elementId;

@@ -1,7 +1,7 @@
 import AppView from "./scripts/app/AppView";
-// SET youtube API
+// SET youtube AP
 
-new AppView().render("content");
+new AppView().render();
 
 
 exports.MainBoard = AppView;

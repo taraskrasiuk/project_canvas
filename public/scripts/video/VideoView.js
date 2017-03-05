@@ -20,7 +20,18 @@ class VideoView extends View {
                 type: "text",
                 label: "url",
                 onChange: val => this.onYouTubeIframeAPIReady(val)
-            }
+            },
+                {
+                    type: "button",
+                    label: "video",
+                    onClick: (e) => {
+                        const val = $(e.currentTarget).prev().val();
+                        if (val.trim().length != 0) {
+                            this.onYouTubeIframeAPIReady(val);
+                        }
+
+                    }
+                }
         ]
         };
 
