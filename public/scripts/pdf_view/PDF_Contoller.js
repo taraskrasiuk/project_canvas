@@ -109,7 +109,10 @@ class PDF_Controller extends PaintController{
     static _getViewport (page, canvas, scale) {
         // TODO: need to rewrite
         const viewport = page.getViewport(scale);
-        const _scale = canvas.height /  viewport.height;
+        // canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        const _scale = canvas.width / viewport.width;
         return page.getViewport(_scale);
     }
     static _calcCanvasOffset () {

@@ -67,9 +67,6 @@ class PaintView extends Canvas_View{
      */
     render () {
         this.bottomControl.update();
-        if (this.element != null) {
-            return this.element;
-        }
         const div =  $("<div></div>", {
             "class": "paint"
         }).append(this.renderCanvasView());
