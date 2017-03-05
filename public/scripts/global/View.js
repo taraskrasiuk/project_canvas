@@ -15,6 +15,10 @@ class View {
         }
     }
 
+    onResize (e) {
+        //
+    }
+
     renderWrapper () {
         return $("<div></div>", {
             "class": this.className

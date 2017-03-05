@@ -24769,7 +24769,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     /**
      * Creates markup containing SVG font faces,
      * font URLs for font faces must be collected by developers
-     * and are not extracted from the DOM by fabricjs
+     * and are not handleClear from the DOM by fabricjs
      * @param {Array} objects Array of fabric objects
      * @return {String}
      */

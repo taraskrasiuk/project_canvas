@@ -10,20 +10,28 @@ import {
 } from "../../Constants";
 import ToolsController from "./ToolsController";
 import draggable from 'jquery-ui/ui/widgets/draggable';
+import Bottom_View from "../../board/Bottom_View";
 
 
 class ToolsView {
     constructor(props = {}) {
-        const {handleTool, handleOption} = props;
+        const {handleTool, handleOption, position} = props;
         this.props = props;
         this.controller = new ToolsController({
             tools: props.tools || ["brush"],
             handleTool: this.props.handleTool,
             handleOption: this.props.handleOption
         });
+        this.position = position;
 
         this.absolutePositions = {};
 
+    }
+
+    handleToggleOptions (e) {
+        e.preventDefault();
+        this.controller.toggleOptions();
+        this.update();
     }
 
     handleTool(tool) {
@@ -115,36 +123,44 @@ class ToolsView {
             "class": "tools"
         });
 
+        if (this.position == "right") {
+            wrapper.addClass("right");
+        } else {
+            wrapper.addClass("left");
+        }
+
         for (let t of this.controller.getTools()) {
             tools.append(this.renderTool(t));
         }
 
         wrapper.append(tools);
-        if (this.controller.getCurrentTool() != null) {
-            let topDrag = $(ELEMENT_DIV, {
-                "class": "topDrag"
-            });
+        const $button = $("<div></div>", {
+            "class": "tool-element"
+        }).on("click", this.handleToggleOptions.bind(this)).append(Bottom_View.getImage("toggle"));
+            wrapper.append($button);
+        if (this.controller.getCurrentTool() != null && !this.controller.isOptionsHide) {
+            // let topDrag = $(ELEMENT_DIV, {
+            //     "class": "topDrag"
+            // });
 
-            var appendTo = $(".tools-wrapper").parent();
-            console.log(appendTo);
-            const self = this;
-            draggable({
-                appendTo: "paint-wrapper",
-                containment: appendTo,
-                helper: 'clone',
-                drag: ( event, ui ) => {
-                    self.absolutePositions.left = ui.position.left;
-                    self.absolutePositions.top = ui.position.top;
-                    $(".tools-absolute").css({left: ui.position.left, top: ui.position.top});
-                }
-            }, topDrag);
+            // var appendTo = $(".tools-wrapper").parent();
+            // console.log(appendTo);
+            // const self = this;
+            // TODO: disable drag for time
+            // draggable({
+            //     appendTo: "paint-wrapper",
+            //     containment: appendTo,
+            //     helper: 'clone',
+            //     drag: ( event, ui ) => {
+            //         self.absolutePositions.left = ui.position.left;
+            //         self.absolutePositions.top = ui.position.top;
+            //         $(".tools-absolute").css({left: ui.position.left, top: ui.position.top});
+            //     }
+            // }, topDrag);
 
             let absoluteWrapper = $(ELEMENT_DIV, {
                 "class": "tools-absolute"
-            }).css({
-                top: self.absolutePositions.top,
-                left: self.absolutePositions.left
-            }).append(topDrag, this.renderToolDropDown(), this.renderToolOptions())
+            }).append(this.renderToolDropDown(), this.renderToolOptions())
                 .appendTo(wrapper);
         }
 

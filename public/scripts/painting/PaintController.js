@@ -22,7 +22,7 @@ const prepare = (canvas, scaleFactor) => {
 
 class PaintController extends Controller{
     constructor(props = {}) {
-        super({model: new props.modelConstructor({context: prepare(props.canvas, 1), width: props.canvas.width, height: props.canvas.height})});
+        super({model: new props.modelConstructor({context: props.canvas.getContext("2d"), width: props.canvas.width, height: props.canvas.height})});
         this.props = props;
         this.selectedTool = null;
         this.startPositions = {};
@@ -45,12 +45,26 @@ class PaintController extends Controller{
         return ctx;
     }
 
+    historyNext () {
+        this.model.historyNext();
+    }
+
+    historyBack () {
+        this.model.historyBack();
+    }
+
     getControl() {
         return this.control;
     }
 
     _checkExistingControl(type) {
         return this.controls[type] != null;
+    }
+
+    clearAll () {
+        this.model.clearAll();
+        // this.activeControl = null;
+        // this.selectedTool = null;
     }
 
     setControl(tool) {

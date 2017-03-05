@@ -46,70 +46,58 @@ class BoardView extends View {
         return boardContent;
     };
 
-    renderBottomPanel () {
-        const currentView = this.controller.getCurrentView();
-        const bottom = new Bottom_View();
-        if (currentView != null) {
-            if (currentView.bottomItems != null && currentView.bottomItems.length > 0) {
-                bottom.items = currentView.bottomItems;
-            }
-        }
-        return bottom.render();
-    }
+    // renderBottomPanel () {
+    //
+    //     const currentView = this.controller.getCurrentView();
+    //     const bottomPanel = $(".bottom-panel");
+    //     if (currentView != null) {
+    //         if (currentView.bottomItems != null && currentView.bottomItems.length > 0) {
+    //             // bottom.items = currentView.bottomItems;
+    //         }
+    //     }
+    //     // return bottom.render();
+    // }
 
     renderAsidePanel () {
         const asidePanel = $("<div></div>", {
-            "class": "board-asidePanel"
+            "class": "aside-list"
         });
 
         const buttons = [
             {
-                name: "Paint",
+                name: "Canvas",
                 onClick: (e) => {
                     e.preventDefault();
-                    this.handleSelect(e.target.textContent);
+                    this.handleSelect("Canvas");
                 }
             },
             {
                 name: "PDF",
                 onClick: (e) => {
                     e.preventDefault();
-                    this.handleSelect(e.target.textContent);
+                    this.handleSelect("PDF");
                 }
             },
             {
-                name: "Files",
+                name: "Video",
                 onClick: (e) => {
-                    // console.log("files");
                     e.preventDefault();
-                    this.handleSelect(e.target.textContent);
+                    this.handleSelect("Video");
                 }
             }
         ];
         buttons.forEach((btn) => {
-            const b = $("<button></button>", {
-                "class": "button",
-                text: btn.name
-            }).on("click", btn.onClick.bind(this)).appendTo(asidePanel);
+            const b = $("<div></div>", {
+                "class": "tool-element",
+            }).on("click", btn.onClick.bind(this))
+                .append(Bottom_View.getImage(btn.name.toLowerCase()))
+                .appendTo(asidePanel);
 
         });
         return asidePanel;
     };
 
     update () {
-        // const main = $("#" + this._id);
-        // const boardContent = $(".board-content");
-        // const content = this.controller.getCurrentView().render();
-        // if (content != null) {
-        //     const ch = $(boardContent).children()[0];
-        //     if (ch != null) {
-        //         $(ch).replaceWith(content);
-        //     } else {
-        //         $(boardContent).append(content);
-        //     }
-        // }
-        // $(".board-view").append(this.renderBottomPanel());
-
         $(".board-view").replaceWith(this.render());
     }
 
@@ -120,8 +108,8 @@ class BoardView extends View {
         const div = $("<div></div>").addClass("board-main");
         const content = this.renderContent();
         const asidePanel = this.renderAsidePanel();
-        const bottom = this.renderBottomPanel();
-        wrapper.append(div.append(asidePanel, content), bottom);
+        // const bottom = this.renderBottomPanel();
+        wrapper.append(div.append(asidePanel, content));
         return wrapper;
     }
 }

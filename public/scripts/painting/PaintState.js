@@ -7,7 +7,44 @@ class PaintState {
         this.holder = new ShapesHolder();
         this.selected = null;
     }
+
+    historyNext () {
+            this.holder._history.next();
+            this.drawWithHistory();
+        // else {
+        //     this.holder.shapes = this.holder.getShapes();
+        //     this.holder._history.step = 0;
+        //     this.draw();
+        // }
+    }
+
+    historyBack () {
+            this.holder._history.back();
+            this.drawWithHistory();
+
+    }
+
+    drawWithHistory() {
+        this.context.clearContext();
+        let shapesWithHistory = this.holder.getShapes();
+        shapesWithHistory.forEach(sh => {
+            if (sh == this.selected) {
+                sh.isBounded = true;
+            } else {
+                sh.isBounded = false;
+            }
+            sh.draw();
+        });
+    }
+
     draw() {
+        this.holder._history.clear();
+        // TODO : need to be rebuild; Too hard for every mls update
+
+        if (this.holder._history.step != 0) {
+            this.holder.shapes = this.holder.getShapes();
+            this.holder._history.step = 0;
+        }
         this.context.clearContext();
         this.holder.shapes.forEach(sh => {
             if (sh == this.selected) {
@@ -17,6 +54,10 @@ class PaintState {
             }
             sh.draw();
         });
+    }
+    clearAll () {
+        this.holder.clearAll();
+        this.context.clearAll();
     }
     updateContext(optionData) {
         this.context.update(optionData);

@@ -1,30 +1,88 @@
 import $ from "jquery";
 import View from "../global/View";
-import videojs from "video.js";
-import Youtube from "videojs-youtube/dist/Youtube.min.js";
-// require("videojs-youtube");
+import Bottom_View from "../board/Bottom_View";
 
 
 class VideoView extends View {
     constructor(props = {}) {
-        super(props);
+        super({
+            className: "video-view",
+            active: true
+        });
+
+        this.player = null;
+
+
+
+        this._bottomControls = {
+            items: [
+            {
+                type: "text",
+                label: "url",
+                onChange: val => this.onYouTubeIframeAPIReady(val)
+            },
+                {
+                    type: "button",
+                    label: "video",
+                    onClick: (e) => {
+                        const val = $(e.currentTarget).prev().val();
+                        if (val.trim().length != 0) {
+                            this.onYouTubeIframeAPIReady(val);
+                        }
+
+                    }
+                }
+        ]
+        };
+
+        this.bottomControl = new Bottom_View(this._bottomControls);
     }
 
 
-    render () {
-        console.log(Youtube);
-        const wrapper = this.renderWrapper();
-        const video = $("<video></video>", {
+    getVideo () {
+        const video = $("<div></div>", {
+            id: "video"
+        }).css({
+            height: "100%",
+            width: "100%"
+        });
+        return video;
+    }
 
-        }).addClass("video-js");
-        video.attr("src", "https://www.youtube.com/watch?v=Qwgw89p4Yao&list=PL7oSbenj_s6qus7uy7u9vZ85Qt2Qz0B0U");
-        video.attr("controls", true);
-        video.attr("autoplay", true);
-        video.width(640).height(264);
-        // video.attr("poster", "MY_VIDEO_POSETER");
-        video.attr("data-setup",
-            '{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/watch?v=Qwgw89p4Yao&list=PL7oSbenj_s6qus7uy7u9vZ85Qt2Qz0B0U"}] }');
-        return wrapper.append(video);
+    onYouTubeIframeAPIReady(val) {
+        const self = this;
+        this.player = new YT.Player('video', {
+            height: '100%',
+            width: '100%',
+            videoId: val.split("?v=")[1],
+            events: {
+                'onReady': self.onPlayerReady.bind(self),
+                'onStateChange': self.onPlayerStateChange.bind(self)
+            }
+        });
+    }
+
+    onPlayerReady (event) {
+        event.target.playVideo();
+    }
+
+    onPlayerStateChange (event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            // setTimeout(stopVideo, 6000);
+        }
+    }
+
+
+
+    render () {
+        const wrapper = this.renderWrapper();
+        this.bottomControl.update();
+        if (this.element != null) {
+            return this.element;
+        }
+        wrapper.append(this.getVideo());
+        this.element = wrapper;
+        return wrapper;
     }
 
 }

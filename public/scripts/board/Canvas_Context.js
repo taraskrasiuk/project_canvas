@@ -1,3 +1,15 @@
+
+const defaultPropsForConext = {
+    strokeStyle: "#332211",
+    lineWidth: 1,
+    fillStyle: "#224455",
+    shadowBlur: 0,
+    shadowColor: null,
+    globalAlpha: 1,
+    lineCap: "round",
+    globalComposition: "source-over"
+};
+
 class Canvas_Context {
     constructor(props = {}) {
         this.context = props.context;
@@ -34,6 +46,23 @@ class Canvas_Context {
         console.log("CONTEXT, new value: ", type, value);
     }
 
+    clearAll () {
+        const self = this;
+        const map  = Object.keys(defaultPropsForConext).map(val => {
+            return {
+                type: val,
+                value: defaultPropsForConext[val]
+            };
+        });
+        map.forEach.call(this, m => {
+            self.update(m);
+        });
+        this.backgroundImage = null;
+        this.backgroundColor = null;
+        this.fillShape = false;
+        this.clearContext();
+    }
+
     mergeValueWithContext() {
         Object.assign(this.context, {
             strokeStyle: this.strokeStyle,
@@ -58,7 +87,7 @@ class Canvas_Context {
             this.context.restore();
         }
         if (this.backgroundImage != null && this.backgroundColor == null) {
-            this.context.save();
+            this.context.save()
             if (this.backgroundImage.data != null) {
                 this.context.putImageData(this.backgroundImage, 0, 0);
             } else {

@@ -6,6 +6,11 @@ class ToolsController {
         this.props = props;
         this.currentTool = null;
         this.model = new ToolsModel({tools: this.props.tools});
+        this.isOptionsHide = true;
+    }
+
+    toggleOptions () {
+        this.isOptionsHide = !this.isOptionsHide;
     }
 
     handleToolOption(option) {

@@ -19,6 +19,9 @@
   },
   "dependencies": {
     "jquery": "^3.1.1",
-    "video.js": "^5.16.0"
+    "jquery-ui": "^1.12.1",
+    "pdfjs-dist": "^1.7.337",
+    "video.js": "^5.16.0",
+    "videojs-youtube": "^2.3.2"
   }
 }

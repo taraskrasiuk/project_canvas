@@ -9,6 +9,8 @@ import {
     ELEMENT_UL
 } from "../Constants";
 import BoardView from "../board/BoardView";
+import Top_View from "../board/Top_View";
+import Bottom_View from "../board/Bottom_View";
 
 class AppView extends View {
     constructor(props = {}) {
@@ -16,33 +18,60 @@ class AppView extends View {
             className: "main-app",
             active: true
         });
+        this.bottomPanel = new Bottom_View({
+            items: []
+        });
+
+        var boardView = new BoardView({
+            name: "Board 1",
+            // updateBottom: this.updateBottomPanel.bind(this)
+        });
         this.controller = new AppController({
+            currentBoard: boardView,
             model: new AppModel({
                 id: "mainApp",
-                boards: [new BoardView({
-                    name: "Board 1"
-                })]
+                boards: [].concat(boardView)
             })
         });
         this._id = "main_board";
+
+        this.topPanel = new Top_View({
+            items: this.getTopItems(),
+            head: "Board"
+        });
+
+
+
     }
 
+    // updateBottomPanel (items = []) {
+    //     this.bottomPanel.items = items;
+    //     this.bottomPanel.update();
+    // }
+
     render (id) {
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
         const main = $(ELEMENT_DIV, {
             id: this._id
         });
         const targetElement = $("#" + id);
-        const topPanel = this.renderTopPanel();
+        const topPanel = this.topPanel.render();
+        const bottomPanel = this.bottomPanel.render();
         const content = this.renderMainContent();
-        if (this.controller.getCu != null) {
-            $(content).append(this._currentBoard.render());
+        var currentBoard = this.controller.getCurrentBoard();
+        if (currentBoard != null) {
+            $(content).append(currentBoard.render());
         }
         if (id != null) {
-            $(main).append(topPanel, content).appendTo(targetElement);
+            $(main).append(topPanel, content, bottomPanel).appendTo(targetElement);
         } else {
-            $(main).append(topPanel, content).appendTo("body");
+            $(main).append(topPanel, content, bottomPanel).appendTo("body");
         }
-        resizable({}, $(main));
+        // resizable({}, $(main));
     };
 
     topDrag () {
@@ -62,49 +91,49 @@ class AppView extends View {
         // return top;
     }
 
-    renderTopPanel () {
+    getBottomItems () {
+        var currentBoard = this.controller.getCurrentBoard();
+        if (currentBoard != null) {
+            return currentBoard.bottomItems;
+        } else return null;
+    }
+
+    getTopItems () {
         const self = this;
-        const topPanel = $(ELEMENT_DIV, {
-            "class": "top-panel"
-        }).append(this.topDrag());
-        const topPanelHead = $("<h3></h3>", {
-            "class": "top-panel_head",
-            text: "Board"
-        }).appendTo(topPanel);
-        const ul = $(ELEMENT_UL, {
-            "class": "top-panel_list"
-        }).appendTo(topPanel);
-        const liArray = this.controller.model.getBoards().map((el, idx) => {
-            const span = $("<span></span>", {
-                "class": "close",
-                "text": "x"
-            }).on("click", (e) => {
-                self.controller.deleteBoard(el, this.update.bind(this));
-                this.update()
-            });
-            const li = $("<li></li>", {
-                "class": "list_item",
-                text: el.getName()
-            }).on("click", (e) => {
-                self.controller.setCurrentBoard(el, this.update.bind(this));
-            }).append(span).toggleClass("active", self.controller.getCurrentBoard() == el);
+        const boards = this.controller.model.getBoards();
+        const items = boards.map(b => {
+            return {
+                className: "board-item",
+                text: b.getName(),
+                active: b == self.controller.getCurrentBoard(),
+                child: {
+                    text: "x",
+                    className: "board-item_delete",
+                    onClick: (e) => {
+                        e.preventDefault();
+                        self.controller.deleteBoard(b, self.update.bind(self));
+                        e.stopPropagation();
+                    }
+                },
+                onClick: (e) => {
+                    e.preventDefault();
+                    self.controller.setCurrentBoard(b, self.update.bind(self));
 
-            return li;
+                }
+            }
         });
-        if (this.controller.model.getBoards().length < this.controller.model.getMaxBoards()) {
-            const addSpan = $("<li></li>", {
-                "class": "list_item",
-                text: "+"
-            }).on("click", (e) => {
-                self.controller.addBoard(new BoardView({name: "Board " + (self.controller.model.getBoards().length + 1)}), this.update.bind(this));
-            });
-
-            liArray.push(addSpan);
+        if (boards.length < this.controller.model.getMaxBoards()) {
+            items.push({
+                className: "board-item .add",
+                text: "+",
+                onClick: (e) => {
+                    e.preventDefault();
+                    self.controller.addBoard(new BoardView({name: "Board " + (boards.length + 1)}), self.update.bind(self));
+                },
+                child: null
+            })
         }
-        liArray.forEach(el => {
-            el.appendTo(ul);
-        });
-        return topPanel;
+        return items;
     };
 
     renderMainContent () {
@@ -116,14 +145,22 @@ class AppView extends View {
 
     update (board) {
         const main = $("#" + this._id);
-        $(main).empty();
-        const topPanel = this.renderTopPanel();
-        const content = this.renderMainContent();
+        // $(main).empty();
+        this.topPanel.items = this.getTopItems();
+        const topPanel = this.topPanel.update();
+        const bottomPanel = this.bottomPanel.update();
+        let content = null;
         if (board != null) {
-            const b = board.render();
-            content.append(b);
+            content = board.render();
         }
-        $(main).append(topPanel, content);
+
+        // if (board != null) {
+        //     const b = board.render();
+        //     content.append(b);
+        // }
+        $(main).replaceWith($("<div></div>", {
+            id: this._id
+        }).append(topPanel, content, bottomPanel));
     }
 }
 
