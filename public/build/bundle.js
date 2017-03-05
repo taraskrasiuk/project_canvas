@@ -14541,6 +14541,11 @@ var AppView = function (_View) {
     _createClass(AppView, [{
         key: 'render',
         value: function render(id) {
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
             var main = (0, _jquery2.default)(_Constants.ELEMENT_DIV, {
                 id: this._id
             });
@@ -29727,11 +29732,6 @@ var _AppView2 = _interopRequireDefault(_AppView);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // SET youtube API
-
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 new _AppView2.default().render("content");
 

@@ -50,6 +50,11 @@ class AppView extends View {
     // }
 
     render (id) {
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
         const main = $(ELEMENT_DIV, {
             id: this._id
         });

@@ -3,13 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="944885a8-180c-453a-99b7-c4b30fc9af15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/0.bundle.js" afterPath="$PROJECT_DIR$/public/build/0.bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/0.bundle.js.map" afterPath="$PROJECT_DIR$/public/build/0.bundle.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/bundle.js" afterPath="$PROJECT_DIR$/public/build/bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/bundle.js.map" afterPath="$PROJECT_DIR$/public/build/bundle.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/PaintView.js" afterPath="$PROJECT_DIR$/public/scripts/painting/PaintView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Contoller.js" afterPath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Contoller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/styles/style.css" afterPath="$PROJECT_DIR$/public/styles/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/main.js" afterPath="$PROJECT_DIR$/public/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/app/AppView.js" afterPath="$PROJECT_DIR$/public/scripts/app/AppView.js" />
     </list>
     <ignored path="project_canvas.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,30 +29,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PDF_View.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="218" column="38" selection-start-line="218" selection-start-column="38" selection-end-line="218" selection-end-column="38" />
-              <folding>
-                <marker date="1488418817000" expanded="true" signature="6654:6835" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VideoView.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/scripts/video/VideoView.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PaintController.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintController.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -66,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PaintView.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PaintView.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintView.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
+            <state relative-caret-position="327">
+              <caret line="68" column="29" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -96,6 +69,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="AppView.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/scripts/app/AppView.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
+              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ToolsController.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/tools/ToolsController.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -111,6 +94,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
               <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/public/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -178,7 +171,6 @@
         <option value="$PROJECT_DIR$/public/scripts/app/AppController.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Model.js" />
-        <option value="$PROJECT_DIR$/public/scripts/app/AppView.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/tools/ToolsController.js" />
         <option value="$PROJECT_DIR$/public/scripts/board/Canvas_Context.js" />
         <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" />
@@ -187,7 +179,6 @@
         <option value="$PROJECT_DIR$/public/scripts/board/BoardModel.js" />
         <option value="$PROJECT_DIR$/public/scripts/video/VideoController.js" />
         <option value="$PROJECT_DIR$/public/scripts/video/VideoModel.js" />
-        <option value="$PROJECT_DIR$/public/main.js" />
         <option value="$PROJECT_DIR$/public/scripts/board/Bottom_View.js" />
         <option value="$PROJECT_DIR$/public/scripts/board/BoardView.js" />
         <option value="$PROJECT_DIR$/public/scripts/video/VideoView.js" />
@@ -195,6 +186,8 @@
         <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Contoller.js" />
         <option value="$PROJECT_DIR$/public/styles/style.css" />
         <option value="$PROJECT_DIR$/public/scripts/painting/PaintView.js" />
+        <option value="$PROJECT_DIR$/public/scripts/app/AppView.js" />
+        <option value="$PROJECT_DIR$/public/main.js" />
       </list>
     </option>
   </component>
@@ -551,12 +544,12 @@
       <workItem from="1488395273334" duration="19556000" />
       <workItem from="1488473450579" duration="181000" />
       <workItem from="1488711221186" duration="8867000" />
-      <workItem from="1488731486848" duration="3160000" />
+      <workItem from="1488731486848" duration="3462000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="169878000" />
+    <option name="totallyTimeSpent" value="170180000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1436" height="877" extended-state="6" />
@@ -830,26 +823,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/board/Bottom_View.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/scripts/app/AppView.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1980">
-          <caret line="144" column="48" selection-start-line="144" selection-start-column="48" selection-end-line="144" selection-end-column="48" />
           <folding />
         </state>
       </provider>
@@ -948,8 +925,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
+        <state relative-caret-position="327">
+          <caret line="68" column="29" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/scripts/app/AppView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
