@@ -12310,6 +12310,16 @@ var PaintController = function (_Controller) {
             return ctx;
         }
     }, {
+        key: "historyNext",
+        value: function historyNext() {
+            this.model.historyNext();
+        }
+    }, {
+        key: "historyBack",
+        value: function historyBack() {
+            this.model.historyBack();
+        }
+    }, {
         key: "getControl",
         value: function getControl() {
             return this.control;
@@ -12318,6 +12328,13 @@ var PaintController = function (_Controller) {
         key: "_checkExistingControl",
         value: function _checkExistingControl(type) {
             return this.controls[type] != null;
+        }
+    }, {
+        key: "clearAll",
+        value: function clearAll() {
+            this.model.clearAll();
+            // this.activeControl = null;
+            // this.selectedTool = null;
         }
     }, {
         key: "setControl",
@@ -12456,12 +12473,30 @@ var PaintState = function () {
     }
 
     _createClass(PaintState, [{
-        key: "draw",
-        value: function draw() {
+        key: "historyNext",
+        value: function historyNext() {
+            this.holder._history.next();
+            this.drawWithHistory();
+            // else {
+            //     this.holder.shapes = this.holder.getShapes();
+            //     this.holder._history.step = 0;
+            //     this.draw();
+            // }
+        }
+    }, {
+        key: "historyBack",
+        value: function historyBack() {
+            this.holder._history.back();
+            this.drawWithHistory();
+        }
+    }, {
+        key: "drawWithHistory",
+        value: function drawWithHistory() {
             var _this = this;
 
             this.context.clearContext();
-            this.holder.shapes.forEach(function (sh) {
+            var shapesWithHistory = this.holder.getShapes();
+            shapesWithHistory.forEach(function (sh) {
                 if (sh == _this.selected) {
                     sh.isBounded = true;
                 } else {
@@ -12469,6 +12504,34 @@ var PaintState = function () {
                 }
                 sh.draw();
             });
+        }
+    }, {
+        key: "draw",
+        value: function draw() {
+            var _this2 = this;
+
+            this.holder._history.clear();
+            // TODO : need to be rebuild; Too hard for every mls update
+
+            if (this.holder._history.step != 0) {
+                this.holder.shapes = this.holder.getShapes();
+                this.holder._history.step = 0;
+            }
+            this.context.clearContext();
+            this.holder.shapes.forEach(function (sh) {
+                if (sh == _this2.selected) {
+                    sh.isBounded = true;
+                } else {
+                    sh.isBounded = false;
+                }
+                sh.draw();
+            });
+        }
+    }, {
+        key: "clearAll",
+        value: function clearAll() {
+            this.holder.clearAll();
+            this.context.clearAll();
         }
     }, {
         key: "updateContext",
@@ -15191,6 +15254,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var defaultPropsForConext = {
+    strokeStyle: "#332211",
+    lineWidth: 1,
+    fillStyle: "#224455",
+    shadowBlur: 0,
+    shadowColor: null,
+    globalAlpha: 1,
+    lineCap: "round",
+    globalComposition: "source-over"
+};
+
 var Canvas_Context = function () {
     function Canvas_Context() {
         var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -15229,6 +15303,24 @@ var Canvas_Context = function () {
                 c[type] = this[type];
             }
             console.log("CONTEXT, new value: ", type, value);
+        }
+    }, {
+        key: "clearAll",
+        value: function clearAll() {
+            var self = this;
+            var map = Object.keys(defaultPropsForConext).map(function (val) {
+                return {
+                    type: val,
+                    value: defaultPropsForConext[val]
+                };
+            });
+            map.forEach.call(this, function (m) {
+                self.update(m);
+            });
+            this.backgroundImage = null;
+            this.backgroundColor = null;
+            this.fillShape = false;
+            this.clearContext();
         }
     }, {
         key: "mergeValueWithContext",
@@ -15482,6 +15574,27 @@ var PaintView = function (_Canvas_View) {
                 self.showTools = !self.showTools;
                 self.update();
             }
+        }, {
+            type: "button",
+            label: "clear",
+            onClick: function onClick(e) {
+                e.preventDefault();
+                _this.controller.clearAll();
+            }
+        }, {
+            type: "button",
+            label: "prev",
+            onClick: function onClick(e) {
+                e.preventDefault();
+                _this.controller.historyBack();
+            }
+        }, {
+            type: "button",
+            label: "next",
+            onClick: function onClick(e) {
+                e.preventDefault();
+                _this.controller.historyNext();
+            }
         }];
         _this._bottomControls = {
             items: _this.controlsItems || [],
@@ -15555,6 +15668,90 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var PaintHistory = function () {
+    function PaintHistory(_ref) {
+        var max = _ref.max;
+
+        _classCallCheck(this, PaintHistory);
+
+        this._shapes = [];
+        this.MAX_SIZE_HISORY = max || 10;
+        this.step = 0;
+        this.pristine = true;
+    }
+
+    _createClass(PaintHistory, [{
+        key: "add",
+        value: function add(shape) {
+            if (this._shapes.length < this.MAX_SIZE_HISORY) {
+                this._shapes.push(shape);
+            } else {
+                this._shapes.shift();
+                this._shapes.push(shape);
+            }
+        }
+    }, {
+        key: "clear",
+        value: function clear() {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this._shapes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var sh = _step.value;
+
+                    sh = null;
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            this._shapes = [];
+        }
+    }, {
+        key: "next",
+        value: function next() {
+            if (this.step > 0) {
+                this.step--;
+            }
+        }
+    }, {
+        key: "back",
+        value: function back() {
+            if (this.step < this.MAX_SIZE_HISORY) {
+                this.step++;
+            }
+        }
+    }, {
+        key: "getLast",
+        value: function getLast() {
+            return this._shapes[this._shapes.length - 1];
+        }
+    }, {
+        key: "setPristine",
+        value: function setPristine(bool) {
+            this.pristine = bool;
+            if (!this.pristine) {
+                this._shapes = [];
+            }
+        }
+    }]);
+
+    return PaintHistory;
+}();
+
 var ShapesHolder = function () {
     function ShapesHolder() {
         var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -15565,21 +15762,57 @@ var ShapesHolder = function () {
 
         this.shapes = shapes || [];
 
-        this.MAX_SIZE_HISTORY = 10;
-        this._history = [];
+        this._history = new PaintHistory({
+            max: 10
+        });
     }
 
     _createClass(ShapesHolder, [{
+        key: "getShapes",
+        value: function getShapes() {
+            if (this.shapes.length == 1) {
+                return this.shapes;
+            } else {
+                return this.shapes.slice(0, Math.abs(this._history.step - this.shapes.length));
+            }
+        }
+    }, {
+        key: "clearAll",
+        value: function clearAll() {
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this.shapes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var sh = _step2.value;
+
+                    sh = null;
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            this.shapes = [];
+            this._history.clear();
+        }
+    }, {
         key: "addShape",
         value: function addShape(shape) {
             if (ShapesHolder._check(shape)) {
                 this.shapes.push(shape);
-                if (this._history.length < this.MAX_SIZE_HISTORY) {
-                    this._history.push(shape);
-                } else {
-                    this._history.shift();
-                    this._history.push(shape);
-                }
+                this._history.add(shape);
             } else {
                 console.log("SHAPE is not instance of PAINT_OBJECT");
             }
@@ -15607,9 +15840,9 @@ var ShapesHolder = function () {
         }
     }, {
         key: "getShapeFromPosition",
-        value: function getShapeFromPosition(_ref) {
-            var x = _ref.x,
-                y = _ref.y;
+        value: function getShapeFromPosition(_ref2) {
+            var x = _ref2.x,
+                y = _ref2.y;
 
             if (this.shapes.length > 0) {
                 var filtered = this.shapes.filter(function (sh) {
@@ -18134,33 +18367,6 @@ var PDF_Vew = function (_Canvas_View) {
                 return _this2._currentBottomView.buttons.indexOf(b.label) != -1;
             });
         }
-
-        // updateBottomControls () {
-        //     this.controls.update();
-        // }
-        //
-        // /**
-        //  *
-        //  * @param props
-        //  * @private
-        //  */
-        // _handlePDFUpdate(props = {}) {
-        //
-        //
-        // }
-        //
-        // /**
-        //  * update pdf view
-        //  */
-        // update () {
-        //
-        //
-        //     this.controls.update();
-        // }
-        //
-        // handleLoadPDFFile (e) {
-        //     this.controller.uploadPDFFile(e);
-        // }
 
         /**
          * upload file

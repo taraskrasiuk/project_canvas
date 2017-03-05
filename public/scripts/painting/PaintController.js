@@ -45,12 +45,26 @@ class PaintController extends Controller{
         return ctx;
     }
 
+    historyNext () {
+        this.model.historyNext();
+    }
+
+    historyBack () {
+        this.model.historyBack();
+    }
+
     getControl() {
         return this.control;
     }
 
     _checkExistingControl(type) {
         return this.controls[type] != null;
+    }
+
+    clearAll () {
+        this.model.clearAll();
+        // this.activeControl = null;
+        // this.selectedTool = null;
     }
 
     setControl(tool) {

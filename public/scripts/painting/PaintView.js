@@ -35,6 +35,30 @@ class PaintView extends Canvas_View{
                     self.showTools = !self.showTools;
                     self.update();
                 }
+            },
+            {
+                type: "button",
+                label: "clear",
+                onClick: (e) => {
+                    e.preventDefault();
+                    this.controller.clearAll();
+                }
+            },
+            {
+                type: "button",
+                label: "prev",
+                onClick: (e) => {
+                    e.preventDefault();
+                    this.controller.historyBack();
+                }
+            },
+            {
+                type: "button",
+                label: "next",
+                onClick: (e) => {
+                    e.preventDefault();
+                    this.controller.historyNext();
+                }
             }
         ];
         this._bottomControls  = {

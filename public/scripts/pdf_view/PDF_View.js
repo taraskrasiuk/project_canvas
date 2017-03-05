@@ -144,32 +144,6 @@ class PDF_Vew extends Canvas_View {
         return this.bottomItems.filter(b => this._currentBottomView.buttons.indexOf(b.label) != -1);
     }
 
-    // updateBottomControls () {
-    //     this.controls.update();
-    // }
-    //
-    // /**
-    //  *
-    //  * @param props
-    //  * @private
-    //  */
-    // _handlePDFUpdate(props = {}) {
-    //
-    //
-    // }
-    //
-    // /**
-    //  * update pdf view
-    //  */
-    // update () {
-    //
-    //
-    //     this.controls.update();
-    // }
-    //
-    // handleLoadPDFFile (e) {
-    //     this.controller.uploadPDFFile(e);
-    // }
 
     /**
      * upload file
