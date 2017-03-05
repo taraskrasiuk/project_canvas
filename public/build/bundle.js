@@ -17906,9 +17906,6 @@ var ToolsView = function () {
 
                 var absoluteWrapper = (0, _jquery2.default)(_Constants.ELEMENT_DIV, {
                     "class": "tools-absolute"
-                }).css({
-                    top: 0,
-                    right: 0
                 }).append(this.renderToolDropDown(), this.renderToolOptions()).appendTo(wrapper);
             }
 

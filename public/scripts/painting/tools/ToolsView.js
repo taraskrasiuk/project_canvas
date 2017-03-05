@@ -160,9 +160,6 @@ class ToolsView {
 
             let absoluteWrapper = $(ELEMENT_DIV, {
                 "class": "tools-absolute"
-            }).css({
-                top: 0,
-                right: 0
             }).append(this.renderToolDropDown(), this.renderToolOptions())
                 .appendTo(wrapper);
         }
