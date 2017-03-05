@@ -125,18 +125,37 @@ class PDF_Controller extends PaintController{
     zoomIn () {
         this.scale-=.5;
         this.renderPage();
+        this.model.clearContext();
     }
 
     zoomOut () {
         this.scale+=.5;
         this.renderPage();
+        this.model.context.clearContext();
     }
 
     clear () {
         this.model.pdf = null;
         this.model.context.clearContext();
     }
-
+    _image (p) {
+        const self = this;
+        const _p = new Promise((res, rej) => {
+            self.pageRendering = false;
+            self.updateViewCallback(self._getPropsFileProps());
+            if (self.pageNumPending !== null) {
+                self.renderPage();
+                self.pageNumPending = null;
+            }
+            res({})
+        });
+        _p.then(p => {
+            console.log(p);
+            const c = self.model.getContext();
+            self.model.context.backgroundImage = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
+            self.model.context.clearContext();
+        })
+    }
     renderPage() {
         this.pageRendering = true;
         const self = this;
@@ -152,17 +171,8 @@ class PDF_Controller extends PaintController{
                 viewport: viewport
             };
             let render = page.render(renderContext);
-            const c = self.model.getContext();
-            self.model.context.backgroundImage = c.canvas.toDataURL(0, 0, c.canvas.width, c.canvas.height);
-            self.model.context.clearContext();
-            render.promise.then(() => {
-                self.pageRendering = false;
-                self.updateViewCallback(self._getPropsFileProps());
-                if (self.pageNumPending !== null) {
-                    self.renderPage();
-                    self.pageNumPending = null;
-                }
-            });
+
+            render.promise.then(self._image.bind(self));
         });
 
     }

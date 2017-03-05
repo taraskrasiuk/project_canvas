@@ -34,6 +34,7 @@ class Bottom_View extends View{
             label: btn.label,
             onClick: btn.onClick,
             onUpload: btn.onUpload,
+            onChange: btn.onChange,
             className: "bottom-view_button",
             type: btn.type
         })));
@@ -47,7 +48,7 @@ class Bottom_View extends View{
     }
 
     renderItem(props = {}) {
-        const {type, label, onClick, className, onUpload} = props;
+        const {type, label, onClick, className, onUpload, onChange} = props;
         if (type == "button") {
             return $("<div></div>", {
                 "class": "tool-element"
@@ -65,6 +66,16 @@ class Bottom_View extends View{
                 "class": "button",
                 text: label
             }).on("click", onClick).addClass("button"));
+        }
+        else if (type == "text") {
+            return $("<input type=\"text\"/ >").on("keypress", (e) => {
+                if (e.which == 13) {
+                    if (onChange != null) {
+                        onChange(e.target.value);
+                    }
+                }
+                console.log(e.which);
+            })
         }
     }
 
