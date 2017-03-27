@@ -28,13 +28,36 @@ class Canvas_Context {
         this.backgroundImage = null;
         this.backgroundColor = null;
         this.fillShape = false;
+        this.text = "";
+        this.font = props.font || 12;
 
         this.mergeValueWithContext();
 
     }
 
     static _except(type) {
-        return type != "fillShape";
+        return type != "fillShape" || type != "text";
+    }
+
+    stringify () {
+        return JSON.stringify({
+            context : this.context,
+            width : this.width,
+            height : this.height,
+            strokeStyle : this.strokeStyle,
+            lineWidth : this.lineWidth,
+            fillStyle : this.fillStyle,
+            shadowBlur : this.shadowBlur,
+            shadowColor : this.shadowColor,
+            globalAlpha : this.globalAlpha,
+            lineCap : this.lineCap,
+            globalComposition : this.globalComposition,
+            backgroundImage : this.backgroundImage,
+            backgroundColor : this.backgroundColor,
+            fillShape : this.fillShape,
+            text : this.text,
+            font : this.font
+        });
     }
 
     update({type, value}) {
@@ -87,7 +110,7 @@ class Canvas_Context {
             this.context.restore();
         }
         if (this.backgroundImage != null && this.backgroundColor == null) {
-            this.context.save()
+            this.context.save();
             if (this.backgroundImage.data != null) {
                 this.context.putImageData(this.backgroundImage, 0, 0);
             } else {

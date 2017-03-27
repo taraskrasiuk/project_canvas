@@ -3,6 +3,7 @@ import RangeInputField from "./InputFields/RangeInputField";
 import CheckBoxField from "./InputFields/CheckBoxFiled";
 import DropDownTool from "./InputFields/DropDownTool";
 import FileUploadField from "./InputFields/FileUploadField";
+import TextInputField from "./InputFields/TextInputField";
 
 const options = {
     "strokeStyle": {
@@ -50,6 +51,9 @@ const dropDownSet = {
     "shapes": {
         types: ["rectangle", "circle","triangle"]
     },
+    "line": {
+      types: ["line"]
+    },
     "background": {
         types: ["fill", "upload"]
     },
@@ -58,6 +62,9 @@ const dropDownSet = {
     },
     "select": {
         types: ["select"]
+    },
+    "text": {
+        types: ["textField"]
     }
 };
 const toolOptions = {
@@ -89,7 +96,7 @@ const toolOptions = {
         "range": ["scale"],
     },
     "deleteShape": {
-        range: ["lineWidth"],
+        "range": ["lineWidth"],
         "check": ["fullDelete"],
     },
     "select": {
@@ -97,6 +104,15 @@ const toolOptions = {
     },
     "upload": {
         "fileUpload": ["upload"]
+    },
+    "textField": {
+        "color": ["fillStyle", "strokeStyle"],
+        "text": ["text", "font"],
+        "check": ["fillShape"]
+    },
+    "line": {
+        "color": ["strokeStyle", "shadowColor"],
+        "range": ["lineWidth", "globalAlpha", "shadowBlur"]
     }
 };
 
@@ -139,6 +155,9 @@ class OptionTool {
                     break;
                 case "fileUpload":
                     return options[o].map(x=>OptionTool.option(x, FileUploadField));
+                    break;
+                case "text":
+                    return options[o].map(x=>OptionTool.option(x, TextInputField));
                     break;
             }
         });

@@ -138,7 +138,7 @@ class ToolsView {
             "class": "tool-element"
         }).on("click", this.handleToggleOptions.bind(this)).append(Bottom_View.getImage("toggle"));
             wrapper.append($button);
-        if (this.controller.getCurrentTool() != null && !this.controller.isOptionsHide) {
+        if (this.controller.getCurrentTool() != null) {
             // let topDrag = $(ELEMENT_DIV, {
             //     "class": "topDrag"
             // });
@@ -158,7 +158,7 @@ class ToolsView {
             //     }
             // }, topDrag);
 
-            let absoluteWrapper = $(ELEMENT_DIV, {
+            $(ELEMENT_DIV, {
                 "class": "tools-absolute"
             }).append(this.renderToolDropDown(), this.renderToolOptions())
                 .appendTo(wrapper);

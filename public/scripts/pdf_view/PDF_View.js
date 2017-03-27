@@ -14,16 +14,18 @@ const BUTTON_LOAD = "load";
 const BUTTON_ZOOM_IN = "zoom-in";
 const BUTTON_ZOOM_OUT = "zoom-out";
 const BUTTON_UPLOAD = "upload";
+const BUTTON_DOWNLOAD = "download";
 const BUTTON_SAVE = "save";
 const BUTTON_TOGGLE = "toggle";
 const BUTTON_CLEAR = "clear";
+const BUTTON_RECORD = "record";
 const PDF_BUTTONS_TYPE = [BUTTON_NEXT, BUTTON_PREV, BUTTON_LOAD, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_UPLOAD, BUTTON_SAVE, BUTTON_TOGGLE, BUTTON_CLEAR];
 
 const START_POINT = {
-  buttons: [BUTTON_UPLOAD, BUTTON_TOGGLE]
+  buttons: [BUTTON_UPLOAD, BUTTON_TOGGLE, BUTTON_RECORD, BUTTON_LOAD]
 };
 const PDF_LOAD = {
-    buttons: [BUTTON_NEXT, BUTTON_PREV, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE]
+    buttons: [BUTTON_DOWNLOAD, BUTTON_PREV, BUTTON_NEXT, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE]
 };
 
 class PDF_Vew extends Canvas_View {
@@ -35,9 +37,10 @@ class PDF_Vew extends Canvas_View {
             active: props.active,
             showTools: false,
             tools: props.tools,
-            position: "right"
+            position: "right",
         });
         this.controller.updateViewCallback = this.update.bind(this);
+        this.controller.canvas = this.canvas;
         this.totalPages = 0;
         this.currentPage = 0;
         const self = this;
@@ -72,7 +75,9 @@ class PDF_Vew extends Canvas_View {
                 {
                     type: "button",
                     label: "load",
-                    // onClick: this.handleLoadPDFFile.bind(this),
+                    onClick: (e) => {
+                        this.controller.load("ng-book.pdf");
+                    },
                     className: "bottom-button"
                 }, {
                     type: "button",
@@ -113,12 +118,19 @@ class PDF_Vew extends Canvas_View {
                         e.target.href = dt;
                     }
                 }, {
+                type: "button",
+                label: "toggle",
+                onClick: (e) => {
+                    e.preventDefault();
+                    self.showTools = !self.showTools;
+                    super.update();
+                }
+            },
+                {
                     type: "button",
-                    label: "toggle",
+                    label: "record",
                     onClick: (e) => {
-                        e.preventDefault();
-                        self.showTools = !self.showTools;
-                        super.update();
+                        this.controller.startRecordDraw();
                     }
                 }];
         this._bottomControls = {

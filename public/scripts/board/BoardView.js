@@ -46,18 +46,6 @@ class BoardView extends View {
         return boardContent;
     };
 
-    // renderBottomPanel () {
-    //
-    //     const currentView = this.controller.getCurrentView();
-    //     const bottomPanel = $(".bottom-panel");
-    //     if (currentView != null) {
-    //         if (currentView.bottomItems != null && currentView.bottomItems.length > 0) {
-    //             // bottom.items = currentView.bottomItems;
-    //         }
-    //     }
-    //     // return bottom.render();
-    // }
-
     renderAsidePanel () {
         const asidePanel = $("<div></div>", {
             "class": "aside-list"

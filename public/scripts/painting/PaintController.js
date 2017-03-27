@@ -3,7 +3,9 @@ import {
     BackgroundControl,
     ShapeControl,
     BrushControl,
-    SelectControl
+    SelectControl,
+    TextControl,
+    LinesControl
 } from "./paint-controls/PaintControls"
 import Controller from "../global/Controller";
 
@@ -22,7 +24,7 @@ const prepare = (canvas, scaleFactor) => {
 
 class PaintController extends Controller{
     constructor(props = {}) {
-        super({model: new props.modelConstructor({context: props.canvas.getContext("2d"), width: props.canvas.width, height: props.canvas.height})});
+        super({model: new props.modelConstructor({context: props.canvas.getContext("2d"), canvas:props.canvas, width: props.canvas.width, height: props.canvas.height})});
         this.props = props;
         this.selectedTool = null;
         this.startPositions = {};
@@ -30,6 +32,17 @@ class PaintController extends Controller{
 
         this.controls = {};
         this.activeControl = null;
+
+
+        // this.isStartPaint = false;
+    }
+
+    startRecordDraw () {
+        this.model.recStart();
+    }
+
+    stopRecordDraw () {
+        this.model.recStop();
     }
 
     prepare (canvas, scaleFactor) {
@@ -63,8 +76,6 @@ class PaintController extends Controller{
 
     clearAll () {
         this.model.clearAll();
-        // this.activeControl = null;
-        // this.selectedTool = null;
     }
 
     setControl(tool) {
@@ -92,6 +103,13 @@ class PaintController extends Controller{
                         canvas: this.props.canvas
                     }));
                     break;
+                case "text" :
+                    this.controls[type] = new TextControl(props);
+                    break;
+                case "line" :
+                    this.controls[type] = new LinesControl(props);
+                    break;
+
                 default:
                     break;
             }

@@ -12,7 +12,8 @@ class PaintView extends Canvas_View{
             className: "paint-view",
             active: props.active,
             showTools: true,
-            position: "right"
+            position: "right",
+            tools: props.tools
         });
         const {elementId, tools} = props;
         this._element = elementId;
@@ -59,6 +60,13 @@ class PaintView extends Canvas_View{
                 onClick: (e) => {
                     e.preventDefault();
                     this.controller.historyNext();
+                }
+            },
+            {
+                type: "button",
+                lable: "record",
+                onClick: (e) => {
+                    this.controller.startRecordDraw();
                 }
             }
         ];

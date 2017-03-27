@@ -1,27 +1,154 @@
 import Canvas_Context from "../board/Canvas_Context";
 import ShapesHolder from "./ShapesHolder";
+import io from "socket.io-client";
+
+class CanvasRecord {
+    constructor(props = {}) {
+        this.isRecord = props.record || true;
+        const h = "http://localhost:";
+        const self = this;
+        this.props = props;
+            this.socket = io();
+
+    }
+
+    startRecord() {
+        const self = this;
+        this.isRecord = true;
+        this.socket.connect("http://localhost:3000");
+        this.socket.emit("draw", self.props.socketEmit());
+        this.socket.on("draw", (data) => {
+            self.props.socketUpdate(data);
+        });
+    }
+    stopRecord () {
+        this.isRecord = false;
+        this.socket.disconnect();
+    }
+
+    sendData () {
+        const self = this;
+        this.socket.emit("draw", self.props.socketEmit());
+    }
+
+    emitData () {
+
+    }
+
+
+}
 
 class PaintState {
     constructor(props = {}) {
+        //TODO: FPS check
         this.context = new Canvas_Context({context: props.context, width: props.width, height: props.height});
         this.holder = new ShapesHolder();
         this.selected = null;
+        this.canvas = props.canvas;
+        this.FPS = 60;
+
+        const self = this;
+
+
+        this.socketRecord = new CanvasRecord({
+           record: false,
+            host: "3000",
+            socketUpdate: self.getSnapShot.bind(self),
+            socketEmit: self.takeSnapShot.bind(self)
+        });
+
+        this.__last = null;
+
+        this.isRecord = false;
+        this.stateValid = true;
+        this.stateInterval = window.setInterval(() => {
+            if (!self.stateValid) {
+                self.draw();
+                self.stateValid = true;
+                console.log("INTERVAL STARS");
+            }
+        }, self.FPS);
+    }
+    recStart () {
+        this.socketRecord.startRecord();
+    }
+    recStop () {
+        this.socketRecord.stopRecord();
     }
 
-    historyNext () {
-            this.holder._history.next();
-            this.drawWithHistory();
-        // else {
-        //     this.holder.shapes = this.holder.getShapes();
-        //     this.holder._history.step = 0;
-        //     this.draw();
-        // }
+    takeSnapShot () {
+        // TODO:
+        return this.canvas.toDataURL("image/png");
     }
 
-    historyBack () {
-            this.holder._history.back();
-            this.drawWithHistory();
+    getSnapShot (dataUrl) {
 
+        const img = new Image();
+        img.src = dataUrl;
+        var context = this.context.getContext();
+        this.context.clearContext();
+        context.drawImage(img, 0, 0);
+    }
+
+    startUpdateState () {
+        const self = this;
+       this.stateValid = false;
+        if (this.stateInterval == null) {
+            this.stateInterval = setInterval(() => {
+                if (!self.stateValid) {
+                    self.draw();
+                    self.stateValid = true;
+                    console.log("INTERVAL STARS");
+                }
+            }, self.FPS);
+        }
+
+
+    }
+
+    stopUpdateState () {
+        this.stateValid = true;
+        this.stateInterval = clearInterval(this.stateInterval);
+        this.stateInterval = null;
+    }
+
+    _diff(obj1, obj2) {
+        var result = {};
+        obj1 = Object.keys(obj1).map(o => JSON.parse(obj1[o]));
+        obj2 = Object.keys(obj2).map(o => JSON.parse(obj2[o]));
+        for(var key in obj1) {
+            if(obj2[key] != obj1[key]) result[key] = obj2[key];
+            if(typeof obj2[key] == 'array' && typeof obj1[key] == 'array')
+                result[key] = this._diff(obj1[key], obj2[key]);
+            if(typeof obj2[key] == 'object' && typeof obj1[key] == 'object')
+                result[key] = this._diff(obj1[key], obj2[key]);
+        }
+        return result;
+    }
+
+    stringify () {
+        var o = {
+            canvasContext: this.context.stringify(),
+            shapesHolder: this.holder.stringify()
+        };
+
+        return JSON.stringify(o);
+
+    }
+
+    show() {
+        var res = this._diff(JSON.parse(o.canvasContext), JSON.parse(o.shapesHolder));
+        console.log(res);
+    }
+
+    historyNext() {
+        this.holder._history.next();
+        this.drawWithHistory();
+    }
+
+    historyBack() {
+        this.holder._history.back();
+        this.drawWithHistory();
     }
 
     drawWithHistory() {
@@ -37,7 +164,19 @@ class PaintState {
         });
     }
 
+    lastChange () {
+
+    }
+
     draw() {
+
+        // TODO: need to rebuild MVC. Should be : view -> controller; controller -> view; controller -> model
+
+        const toolsWrapper = document.querySelector(".tools-absolute");
+        if (toolsWrapper != null) {
+            toolsWrapper.parentNode.removeChild(toolsWrapper);
+        }
+
         this.holder._history.clear();
         // TODO : need to be rebuild; Too hard for every mls update
 
@@ -54,6 +193,9 @@ class PaintState {
             }
             sh.draw();
         });
+        if (this.socketRecord.isRecord) {
+            this.socketRecord.sendData(this.takeSnapShot());
+        }
     }
     clearAll () {
         this.holder.clearAll();
@@ -80,7 +222,7 @@ class PaintState {
     }
     setUpload(img) {
         if (this.context.backgroundColor != null) {
-            this.context.backgroundColor == null;
+            this.context.backgroundColor = null;
         }
         this.context.backgroundImage = img;
         this.context.clearContext();

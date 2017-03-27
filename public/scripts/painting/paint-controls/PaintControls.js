@@ -4,6 +4,8 @@ import Pencil from "../shapes/Pencil";
 import Rectangle from "../shapes/Rectangle";
 import Ellipsis from "../shapes/Ellipsis";
 import Triangle from "../shapes/Triangle";
+import Text from "../shapes/Text";
+import Line from "../shapes/Line";
 import {
     CURSOR_TOP_LEFT,
     CURSOR_TOP_RIGHT,
@@ -136,7 +138,6 @@ export class ShapeControl extends Control{
         }
     }
     update (data) {
-
         this.state.updateContext(data);
     }
 
@@ -190,7 +191,8 @@ export class BrushControl extends Control {
                 this.state.holder.pop();
             }
             this.temp.addPath({x, y});
-            this.state.draw();
+            this.state.stateValid = true;
+            // this.state.stopUpdateState();
         }
         this.temp = null;
     }
@@ -198,7 +200,7 @@ export class BrushControl extends Control {
     onMouseMove({x, y}) {
         if (this.isDown) {
             this.temp.addPath({x, y});
-            this.state.draw();
+            this.state.stateValid = false;
         }
     }
     update (data) {
@@ -372,5 +374,86 @@ export class EraseControl extends Control {
     }
     update (data) {
         this.state.updateContext(data);
+    }
+}
+
+export class TextControl extends Control{
+    constructor(props = {}) {
+        super(props);
+        this.listenersOn = true;
+
+    }
+
+    update(data) {
+        this.state.updateContext(data);
+    }
+
+    onMouseDown ({x,y}) {
+        const context = this.state.getContext();
+        const font = this.state.context.font;
+        const fillShape = this.state.context.fillShape;
+        const strokeStyle = this.state.context.strokeStyle;
+        let text = this.state.context.text;
+        if (text.length > 0) {
+            let textCls = new Text({ctx: context, fillShape, font, text, x, y});
+            this.state.holder.addShape(textCls);
+            this.state.draw();
+        }
+    }
+    onMouseUp ({x,y}) {
+        return ;
+    }
+    onMouseMove({x,y}) {
+        return;
+    }
+}
+
+export class LinesControl extends Control {
+    constructor(props = {}) {
+        super(props);
+        this.listenersOn = true;
+        this.temp = null;
+    }
+
+    update(data) {
+        this.state.updateContext(data);
+    }
+
+    onMouseDown({x, y}) {
+        const context = this.state.getContext();
+        this.temp = new Line({
+            ctx: context,
+            strokeStyle: context.strokeStyle,
+            lineWidth: context.lineWidth,
+            globalAlpha: context.globalAlpha,
+            shadowBlur: null,
+            shadowColor: null
+        });
+        this.isDown = true;
+        console.log(this.tool);
+        this.temp.setX(x).setY(y);
+        this.state.holder.addShape(this.temp);
+    }
+
+    onMouseUp({x, y}) {
+        this.isDown = false;
+        if (this.temp != null) {
+            if (this.temp != null && this.temp.paths.length < 2) {
+                this.state.holder.pop();
+            }
+            this.temp.addPath({x, y});
+            this.temp.paths[0] = x;
+            this.temp.paths[1] = y;
+            this.state.draw();
+        }
+        this.temp = null;
+    }
+
+    onMouseMove({x, y}) {
+        if (this.isDown) {
+            this.temp.paths[0] = x;
+            this.temp.paths[1] = y;
+            this.state.draw();
+        }
     }
 }

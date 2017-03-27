@@ -58,6 +58,10 @@ class ShapesHolder {
 
     }
 
+    stringify () {
+        return JSON.stringify(this.shapes);
+    }
+
     getShapes() {
         if (this.shapes.length == 1) {
             return this.shapes;

@@ -9,22 +9,21 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <!-- styles -->
   <link rel="stylesheet" href="styles/style.css">
-	<!--<script type="text/javascript" src="scripts/pdf.js"></script>-->
-	<!--<script type="text/javascript">-->
-		<!--PDFJS.workerSrc = "scripts/pdf.worker.js";-->
-	<!--</script>-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script type="text/javascript" src="build/bundle.js"></script>
+	<script type="text/javascript" src="build/0.bundle.js"></script>
 
-</head>s
+
+</head>
 
 <body>
 
 
-
-<div id="content" >
-	<!-- <canvas id="canvasElement"></canvas> -->
+<div id="content">
+	
 </div>
-<script src="build/bundle.js"></script>
-
+<script type="text/javascript">
+	new board.MainBoard().render();
+</script>
 </body>
 </html>

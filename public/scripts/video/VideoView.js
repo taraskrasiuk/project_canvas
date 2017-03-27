@@ -18,7 +18,7 @@ class VideoView extends View {
             items: [
             {
                 type: "text",
-                label: "url",
+                label: "Video url",
                 onChange: val => this.onYouTubeIframeAPIReady(val)
             },
                 {

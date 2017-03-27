@@ -20,11 +20,6 @@ class Canvas_View extends View {
         });
     }
 
-    /**
-     *
-     * @param
-     * @returns {{x: number, y: number}}
-     */
     getMouse(e) {
         const rect = this.canvas.getBoundingClientRect();
         return {
@@ -33,40 +28,24 @@ class Canvas_View extends View {
         }
     }
 
-    /**
-     *
-     * @param e
-     */
     handleMouseDown (e) {
         console.log("down");
         const pos = this.getMouse(e);
         this.controller.setStartPositions(pos);
     }
 
-    /**
-     *
-     * @param e
-     */
     handleMouseMove (e) {
         console.log('move');
         const pos = this.getMouse(e);
         this.controller.setUpdatedPositions(pos);
     }
 
-    /**
-     *
-     * @param e
-     */
     handleMouseUp (e) {
         console.log("up");
         const pos = this.getMouse(e);
         this.controller.handleMouseUp(pos);
     }
 
-    /**
-     *
-     * @param e
-     */
     handleDoubleClick (e) {
         e.preventDefault();
         return ;
@@ -87,15 +66,19 @@ class Canvas_View extends View {
 
     }
 
-    /**
-     *
-     * @returns {jQuery|HTMLElement}
-     */
+
+    handleCanvasResize (e) {
+
+        console.log("canvas start resize" , e);
+    }
+
     renderCanvasView () {
         $(this.canvas).on("mousedown", this.handleMouseDown.bind(this));
         $(this.canvas).on("mousemove", this.handleMouseMove.bind(this));
         $(this.canvas).on("mouseup", this.handleMouseUp.bind(this));
         $(this.canvas).on("doubleclick", this.handleDoubleClick.bind(this));
+
+        $(this.canvas).on("resize", this.handleCanvasResize.bind(this));
         const wrapper = this.renderWrapper();
         if (this.showTools) {
             wrapper.append(this.tools.render());

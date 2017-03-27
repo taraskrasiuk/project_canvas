@@ -1,21 +1,25 @@
 "use strict";
 const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpack = require('webpack');
 
 
+
+
+console.log("DIRNAME " + __dirname);
 module.exports = {
-    context: __dirname,
-    entry: __dirname + "/public/main.js",
+    context: __dirname + "/public",
+    entry: "./main.js",
     output: {
         path: path.join(__dirname, 'public/build'),
         filename: 'bundle.js',
         publicPath: '/build/',
         library: 'board'
     },
-    devServer: {
-        headers: {"Access-Control-Allow-Origin": "*"}
-    },
-
+    // output: {
+    //     path: "/build",
+    //     filename: 'bundle.js',
+    //     library: 'board'
+    // },
     // watch: true,
     devtool: "source-map",
     watch: true,
@@ -24,22 +28,15 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /.jsx?$/,
+                test: /.js?$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
                     presets: ['es2015', 'react']
                 }
 
-            },
-            {
-                test: /\.(scss)$/,
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap')
-            },
-            {
-                test: /\.(css)$/,
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[local]!postcss')
             }
+
         ],
     },
 };
