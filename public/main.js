@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 'use strict';
 
 requirejs.config({
@@ -16,6 +17,9 @@ requirejs.config({
   }
 
 });
+=======
+import AppView from "./scripts/app/AppView";
+>>>>>>> Stashed changes
 
 require(["MainBoard"], function(MainBoard){
   console.log("RUN...");
