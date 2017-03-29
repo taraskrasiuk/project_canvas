@@ -11435,7 +11435,62 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Utils = __webpack_require__(10);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Controller = function () {
+    function Controller() {
+        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _classCallCheck(this, Controller);
+
+        this.model = props.model;
+        this.view = null;
+    }
+
+    _createClass(Controller, [{
+        key: "getModel",
+        value: function getModel() {
+            return this.model;
+        }
+    }, {
+        key: "setModel",
+        value: function setModel(m) {
+            this.model = m;
+        }
+    }, {
+        key: "getView",
+        value: function getView() {
+            if (this.view == null) {
+                throw new Error("Expected controller has view, but view is null.");
+            }
+            return this.view;
+        }
+    }, {
+        key: "setView",
+        value: function setView(v) {
+            this.view = v;
+        }
+    }]);
+
+    return Controller;
+}();
+
+exports.default = Controller;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Utils = __webpack_require__(11);
 
 var _Utils2 = _interopRequireDefault(_Utils);
 
@@ -11489,7 +11544,7 @@ var PaintObject = function () {
 exports.default = PaintObject;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11505,7 +11560,7 @@ var _BoundBox = __webpack_require__(59);
 
 var _BoundBox2 = _interopRequireDefault(_BoundBox);
 
-var _PaintObject2 = __webpack_require__(8);
+var _PaintObject2 = __webpack_require__(9);
 
 var _PaintObject3 = _interopRequireDefault(_PaintObject2);
 
@@ -11674,7 +11729,7 @@ var Shape = function (_PaintObject) {
 exports.default = Shape;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11722,7 +11777,7 @@ var Utils = function () {
 exports.default = Utils;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 
@@ -11734,7 +11789,7 @@ module.exports = function(a, b){
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {
@@ -11915,10 +11970,10 @@ function localstorage(){
   } catch (e) {}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {
@@ -12099,10 +12154,10 @@ function localstorage(){
   } catch (e) {}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -12288,42 +12343,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Controller = function () {
-    function Controller() {
-        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        _classCallCheck(this, Controller);
-
-        this.model = props.model;
-    }
-
-    _createClass(Controller, [{
-        key: "getModel",
-        value: function getModel() {
-            return this.model;
-        }
-    }]);
-
-    return Controller;
-}();
-
-exports.default = Controller;
-
-/***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12336,7 +12355,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _PaintObject2 = __webpack_require__(8);
+var _PaintObject2 = __webpack_require__(9);
 
 var _PaintObject3 = _interopRequireDefault(_PaintObject2);
 
@@ -14211,6 +14230,11 @@ var Canvas_View = function (_View) {
         _this.canvas.width = 542;
         _this.canvas.height = 376;
         _this.controller = new props.controller({ canvas: _this.canvas, modelConstructor: props.modelConstructor });
+        // set view to controller
+        _this.controller.setView(_this);
+        //
+
+
         _this.showTools = props.showTools || false;
         _this.tools = new _ToolsView2.default({
             tools: props.tools || ["brush", "shapes", "background", "erase", "select"],
@@ -14333,7 +14357,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _PaintControls = __webpack_require__(58);
 
-var _Controller2 = __webpack_require__(15);
+var _Controller2 = __webpack_require__(8);
 
 var _Controller3 = _interopRequireDefault(_Controller2);
 
@@ -14364,7 +14388,13 @@ var PaintController = function (_Controller) {
 
         _classCallCheck(this, PaintController);
 
-        var _this = _possibleConstructorReturn(this, (PaintController.__proto__ || Object.getPrototypeOf(PaintController)).call(this, { model: new props.modelConstructor({ context: props.canvas.getContext("2d"), canvas: props.canvas, width: props.canvas.width, height: props.canvas.height }) }));
+        var _this = _possibleConstructorReturn(this, (PaintController.__proto__ || Object.getPrototypeOf(PaintController)).call(this, { model: new props.modelConstructor({ context: props.canvas.getContext("2d"),
+                canvas: props.canvas,
+                width: props.canvas.width,
+                height: props.canvas.height
+            }),
+            view: props.view
+        }));
 
         _this.props = props;
         _this.selectedTool = null;
@@ -15135,9 +15165,9 @@ function polling (opts) {
 var Transport = __webpack_require__(17);
 var parseqs = __webpack_require__(21);
 var parser = __webpack_require__(6);
-var inherit = __webpack_require__(11);
+var inherit = __webpack_require__(12);
 var yeast = __webpack_require__(46);
-var debug = __webpack_require__(12)('engine.io-client:polling');
+var debug = __webpack_require__(13)('engine.io-client:polling');
 
 /**
  * Module exports.
@@ -17218,7 +17248,7 @@ var Emitter = __webpack_require__(43);
 var parser = __webpack_require__(22);
 var on = __webpack_require__(41);
 var bind = __webpack_require__(30);
-var debug = __webpack_require__(13)('socket.io-client:manager');
+var debug = __webpack_require__(14)('socket.io-client:manager');
 var indexOf = __webpack_require__(34);
 var Backoff = __webpack_require__(79);
 
@@ -17813,7 +17843,7 @@ var Emitter = __webpack_require__(43);
 var toArray = __webpack_require__(111);
 var on = __webpack_require__(41);
 var bind = __webpack_require__(30);
-var debug = __webpack_require__(13)('socket.io-client:socket');
+var debug = __webpack_require__(14)('socket.io-client:socket');
 var hasBin = __webpack_require__(33);
 
 /**
@@ -18825,11 +18855,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Controller2 = __webpack_require__(15);
+var _Controller2 = __webpack_require__(8);
 
 var _Controller3 = _interopRequireDefault(_Controller2);
 
-var _Utils = __webpack_require__(10);
+var _Utils = __webpack_require__(11);
 
 var _Utils2 = _interopRequireDefault(_Utils);
 
@@ -18935,7 +18965,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Utils = __webpack_require__(10);
+var _Utils = __webpack_require__(11);
 
 var _Utils2 = _interopRequireDefault(_Utils);
 
@@ -19011,7 +19041,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Controller2 = __webpack_require__(15);
+var _Controller2 = __webpack_require__(8);
 
 var _Controller3 = _interopRequireDefault(_Controller2);
 
@@ -19466,6 +19496,7 @@ var PaintView = function (_Canvas_View) {
 
         _classCallCheck(this, PaintView);
 
+        // set view to controller
         var _this = _possibleConstructorReturn(this, (PaintView.__proto__ || Object.getPrototypeOf(PaintView)).call(this, {
             controller: _PaintController2.default,
             modelConstructor: _PaintState2.default,
@@ -19476,6 +19507,8 @@ var PaintView = function (_Canvas_View) {
             tools: props.tools
         }));
 
+        _this.controller.setView(_this);
+        //
         var elementId = props.elementId,
             tools = props.tools;
 
@@ -19591,7 +19624,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _PaintObject = __webpack_require__(8);
+var _PaintObject = __webpack_require__(9);
 
 var _PaintObject2 = _interopRequireDefault(_PaintObject);
 
@@ -19820,7 +19853,7 @@ exports.LinesControl = exports.TextControl = exports.EraseControl = exports.Sele
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Utils = __webpack_require__(10);
+var _Utils = __webpack_require__(11);
 
 var _Utils2 = _interopRequireDefault(_Utils);
 
@@ -20625,7 +20658,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Shape2 = __webpack_require__(9);
+var _Shape2 = __webpack_require__(10);
 
 var _Shape3 = _interopRequireDefault(_Shape2);
 
@@ -20891,7 +20924,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Shape2 = __webpack_require__(9);
+var _Shape2 = __webpack_require__(10);
 
 var _Shape3 = _interopRequireDefault(_Shape2);
 
@@ -20978,11 +21011,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _PaintObject2 = __webpack_require__(8);
+var _PaintObject2 = __webpack_require__(9);
 
 var _PaintObject3 = _interopRequireDefault(_PaintObject2);
 
-var _Shape = __webpack_require__(9);
+var _Shape = __webpack_require__(10);
 
 var _Shape2 = _interopRequireDefault(_Shape);
 
@@ -21062,7 +21095,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Shape2 = __webpack_require__(9);
+var _Shape2 = __webpack_require__(10);
 
 var _Shape3 = _interopRequireDefault(_Shape2);
 
@@ -21617,24 +21650,34 @@ var _ToolsModel = __webpack_require__(74);
 
 var _ToolsModel2 = _interopRequireDefault(_ToolsModel);
 
+var _Controller2 = __webpack_require__(8);
+
+var _Controller3 = _interopRequireDefault(_Controller2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ToolsController = function () {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ToolsController = function (_Controller) {
+    _inherits(ToolsController, _Controller);
+
     function ToolsController() {
         var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
         _classCallCheck(this, ToolsController);
 
-        var tools = props.tools,
-            handleTool = props.handleTool,
-            handleOption = props.handleOption;
+        var _this = _possibleConstructorReturn(this, (ToolsController.__proto__ || Object.getPrototypeOf(ToolsController)).call(this, {
+            model: new _ToolsModel2.default({ tools: props.tools })
+        }));
 
-        this.props = props;
-        this.currentTool = null;
-        this.model = new _ToolsModel2.default({ tools: this.props.tools });
-        this.isOptionsHide = true;
+        _this.props = props;
+        _this.currentTool = null;
+        _this.isOptionsHide = true;
+        return _this;
     }
 
     _createClass(ToolsController, [{
@@ -21677,7 +21720,7 @@ var ToolsController = function () {
     }]);
 
     return ToolsController;
-}();
+}(_Controller3.default);
 
 exports.default = ToolsController;
 
@@ -22087,6 +22130,9 @@ var ToolsView = function () {
             handleTool: this.props.handleTool,
             handleOption: this.props.handleOption
         });
+        //set view to controller
+        this.controller.setView(this);
+
         this.position = position;
 
         this.absolutePositions = {};
@@ -22242,7 +22288,7 @@ var ToolsView = function () {
                 "class": "tool-element"
             }).on("click", this.handleToggleOptions.bind(this)).append(_Bottom_View2.default.getImage("toggle"));
             wrapper.append($button);
-            if (this.controller.getCurrentTool() != null) {
+            if (this.controller.getCurrentTool() != null && !this.controller.isOptionsHide) {
                 // let topDrag = $(ELEMENT_DIV, {
                 //     "class": "topDrag"
                 // });
@@ -22539,6 +22585,7 @@ var PDF_Vew = function (_Canvas_View) {
 
         _classCallCheck(this, PDF_Vew);
 
+        // set view to controller
         var _this = _possibleConstructorReturn(this, (PDF_Vew.__proto__ || Object.getPrototypeOf(PDF_Vew)).call(this, {
             controller: _PDF_Contoller2.default,
             modelConstructor: _PDF_Model2.default,
@@ -22548,6 +22595,9 @@ var PDF_Vew = function (_Canvas_View) {
             tools: props.tools,
             position: "right"
         }));
+
+        _this.controller.setView(_this);
+        //
 
         _this.controller.updateViewCallback = _this.update.bind(_this);
         _this.controller.canvas = _this.canvas;
@@ -22783,7 +22833,6 @@ var VideoView = function (_View) {
         }));
 
         _this.player = null;
-
         _this._bottomControls = {
             items: [{
                 type: "text",
@@ -23334,7 +23383,7 @@ module.exports.parser = __webpack_require__(6);
 
 var transports = __webpack_require__(31);
 var Emitter = __webpack_require__(19);
-var debug = __webpack_require__(12)('engine.io-client:socket');
+var debug = __webpack_require__(13)('engine.io-client:socket');
 var index = __webpack_require__(34);
 var parser = __webpack_require__(6);
 var parseuri = __webpack_require__(39);
@@ -24079,7 +24128,7 @@ Socket.prototype.filterUpgrades = function (upgrades) {
  */
 
 var Polling = __webpack_require__(32);
-var inherit = __webpack_require__(11);
+var inherit = __webpack_require__(12);
 
 /**
  * Module exports.
@@ -24318,8 +24367,8 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 var XMLHttpRequest = __webpack_require__(18);
 var Polling = __webpack_require__(32);
 var Emitter = __webpack_require__(19);
-var inherit = __webpack_require__(11);
-var debug = __webpack_require__(12)('engine.io-client:polling-xhr');
+var inherit = __webpack_require__(12);
+var debug = __webpack_require__(13)('engine.io-client:polling-xhr');
 
 /**
  * Module exports.
@@ -24749,9 +24798,9 @@ function unloadHandler () {
 var Transport = __webpack_require__(17);
 var parser = __webpack_require__(6);
 var parseqs = __webpack_require__(21);
-var inherit = __webpack_require__(11);
+var inherit = __webpack_require__(12);
 var yeast = __webpack_require__(46);
-var debug = __webpack_require__(12)('engine.io-client:websocket');
+var debug = __webpack_require__(13)('engine.io-client:websocket');
 var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 var NodeWebSocket;
 if (typeof window === 'undefined') {
@@ -37610,7 +37659,7 @@ exports.addLinkAttributes = pdfjsDisplayDOMUtils.addLinkAttributes;
 /***/ })
 /******/ ]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
 /* 103 */
@@ -37624,7 +37673,7 @@ exports.addLinkAttributes = pdfjsDisplayDOMUtils.addLinkAttributes;
 var url = __webpack_require__(104);
 var parser = __webpack_require__(22);
 var Manager = __webpack_require__(40);
-var debug = __webpack_require__(13)('socket.io-client');
+var debug = __webpack_require__(14)('socket.io-client');
 
 /**
  * Module exports.
@@ -37737,7 +37786,7 @@ exports.Socket = __webpack_require__(42);
  */
 
 var parseuri = __webpack_require__(39);
-var debug = __webpack_require__(13)('socket.io-client:url');
+var debug = __webpack_require__(14)('socket.io-client:url');
 
 /**
  * Module exports.

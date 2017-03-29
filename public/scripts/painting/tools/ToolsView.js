@@ -13,7 +13,7 @@ import draggable from 'jquery-ui/ui/widgets/draggable';
 import Bottom_View from "../../board/Bottom_View";
 
 
-class ToolsView {
+class ToolsView{
     constructor(props = {}) {
         const {handleTool, handleOption, position} = props;
         this.props = props;
@@ -22,6 +22,9 @@ class ToolsView {
             handleTool: this.props.handleTool,
             handleOption: this.props.handleOption
         });
+        //set view to controller
+        this.controller.setView(this);
+
         this.position = position;
 
         this.absolutePositions = {};
@@ -138,7 +141,7 @@ class ToolsView {
             "class": "tool-element"
         }).on("click", this.handleToggleOptions.bind(this)).append(Bottom_View.getImage("toggle"));
             wrapper.append($button);
-        if (this.controller.getCurrentTool() != null) {
+        if (this.controller.getCurrentTool() != null && !this.controller.isOptionsHide) {
             // let topDrag = $(ELEMENT_DIV, {
             //     "class": "topDrag"
             // });

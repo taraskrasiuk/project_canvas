@@ -11,9 +11,6 @@ class VideoView extends View {
         });
 
         this.player = null;
-
-
-
         this._bottomControls = {
             items: [
             {

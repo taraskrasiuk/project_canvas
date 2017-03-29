@@ -39,6 +39,10 @@ class PDF_Vew extends Canvas_View {
             tools: props.tools,
             position: "right",
         });
+        // set view to controller
+        this.controller.setView(this);
+        //
+
         this.controller.updateViewCallback = this.update.bind(this);
         this.controller.canvas = this.canvas;
         this.totalPages = 0;

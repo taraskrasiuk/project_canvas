@@ -15,6 +15,10 @@ class PaintView extends Canvas_View{
             position: "right",
             tools: props.tools
         });
+
+        // set view to controller
+        this.controller.setView(this);
+        //
         const {elementId, tools} = props;
         this._element = elementId;
         this.currentTool = null;

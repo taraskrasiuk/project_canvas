@@ -1,11 +1,13 @@
 import ToolsModel from "./ToolsModel";
+import Controller from "../../global/Controller";
 
-class ToolsController {
+class ToolsController extends Controller{
     constructor(props = {}) {
-        const {tools, handleTool, handleOption} = props;
+        super({
+            model: new ToolsModel({tools: props.tools})
+        });
         this.props = props;
         this.currentTool = null;
-        this.model = new ToolsModel({tools: this.props.tools});
         this.isOptionsHide = true;
     }
 

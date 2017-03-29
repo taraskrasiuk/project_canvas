@@ -11,6 +11,11 @@ class Canvas_View extends View {
         this.canvas.width = 542;
         this.canvas.height = 376;
         this.controller = new props.controller({canvas: this.canvas, modelConstructor: props.modelConstructor});
+        // set view to controller
+        this.controller.setView(this);
+        //
+
+
         this.showTools = props.showTools || false;
         this.tools = new ToolsView({
             tools: props.tools || ["brush", "shapes", "background", "erase", "select"],

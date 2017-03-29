@@ -24,7 +24,13 @@ const prepare = (canvas, scaleFactor) => {
 
 class PaintController extends Controller{
     constructor(props = {}) {
-        super({model: new props.modelConstructor({context: props.canvas.getContext("2d"), canvas:props.canvas, width: props.canvas.width, height: props.canvas.height})});
+        super({model: new props.modelConstructor({context: props.canvas.getContext("2d"),
+            canvas:props.canvas,
+            width: props.canvas.width,
+            height: props.canvas.height
+        }),
+            view: props.view
+        });
         this.props = props;
         this.selectedTool = null;
         this.startPositions = {};
