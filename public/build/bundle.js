@@ -22132,9 +22132,7 @@ var ToolsView = function () {
         });
         //set view to controller
         this.controller.setView(this);
-
         this.position = position;
-
         this.absolutePositions = {};
     }
 

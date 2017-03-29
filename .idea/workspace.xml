@@ -3,17 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="944885a8-180c-453a-99b7-c4b30fc9af15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/0.bundle.js" afterPath="$PROJECT_DIR$/public/build/0.bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/bundle.js" afterPath="$PROJECT_DIR$/public/build/bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/bundle.js.map" afterPath="$PROJECT_DIR$/public/build/bundle.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/board/Canvas_View.js" afterPath="$PROJECT_DIR$/public/scripts/board/Canvas_View.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/global/Controller.js" afterPath="$PROJECT_DIR$/public/scripts/global/Controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/PaintController.js" afterPath="$PROJECT_DIR$/public/scripts/painting/PaintController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/PaintView.js" afterPath="$PROJECT_DIR$/public/scripts/painting/PaintView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/tools/ToolsController.js" afterPath="$PROJECT_DIR$/public/scripts/painting/tools/ToolsController.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js" afterPath="$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" afterPath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/video/VideoView.js" afterPath="$PROJECT_DIR$/public/scripts/video/VideoView.js" />
     </list>
     <ignored path="project_canvas.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -119,8 +111,8 @@
       <file leaf-file-name="ToolsView.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state relative-caret-position="330">
+              <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -202,8 +194,8 @@
         <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" />
         <option value="$PROJECT_DIR$/public/scripts/board/Canvas_View.js" />
         <option value="$PROJECT_DIR$/public/scripts/video/VideoView.js" />
-        <option value="$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/tools/ToolsController.js" />
+        <option value="$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js" />
       </list>
     </option>
   </component>
@@ -296,64 +288,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="styles" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_canvas" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_canvas" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_canvas" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_canvas" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_canvas" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_canvas" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scss" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -715,12 +649,12 @@
       <workItem from="1490350101709" duration="4108000" />
       <workItem from="1490625410455" duration="903000" />
       <workItem from="1490641704334" duration="960000" />
-      <workItem from="1490794607626" duration="92000" />
+      <workItem from="1490794607626" duration="568000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="220393000" />
+    <option name="totallyTimeSpent" value="220869000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1436" height="877" extended-state="6" />
@@ -1109,8 +1043,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state relative-caret-position="330">
+          <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
           <folding />
         </state>
       </provider>
