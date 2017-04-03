@@ -22286,26 +22286,7 @@ var ToolsView = function () {
                 "class": "tool-element"
             }).on("click", this.handleToggleOptions.bind(this)).append(_Bottom_View2.default.getImage("toggle"));
             wrapper.append($button);
-            if (this.controller.getCurrentTool() != null && !this.controller.isOptionsHide) {
-                // let topDrag = $(ELEMENT_DIV, {
-                //     "class": "topDrag"
-                // });
-
-                // var appendTo = $(".tools-wrapper").parent();
-                // console.log(appendTo);
-                // const self = this;
-                // TODO: disable drag for time
-                // draggable({
-                //     appendTo: "paint-wrapper",
-                //     containment: appendTo,
-                //     helper: 'clone',
-                //     drag: ( event, ui ) => {
-                //         self.absolutePositions.left = ui.position.left;
-                //         self.absolutePositions.top = ui.position.top;
-                //         $(".tools-absolute").css({left: ui.position.left, top: ui.position.top});
-                //     }
-                // }, topDrag);
-
+            if (this.controller.getCurrentTool() != null) {
                 (0, _jquery2.default)(_Constants.ELEMENT_DIV, {
                     "class": "tools-absolute"
                 }).append(this.renderToolDropDown(), this.renderToolOptions()).appendTo(wrapper);
