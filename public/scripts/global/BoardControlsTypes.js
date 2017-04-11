@@ -1,11 +1,10 @@
-/**
- * Created by taras on 4/10/17.
- */
+import $ from "jquery";
 import {
     BOARD_CONTROL_PDF,
     BOARD_CONTROL_CANVAS,
     BOARD_CONTROL_VIDEO
 } from "../Constants";
+import Bottom_View from "../board/Bottom_View";
 
 class BoardType {
     constructor(props = {}) {
@@ -16,16 +15,25 @@ class BoardType {
 
     handleSelect (e) {
         e.preventDefault();
-        console.log(this._type + "// selected");
+        this.handler(this._type);
     }
 
     getTypeIcon () {
-        const loverType = this._type.toLowerCase();
-        return `board-${loverType}.png`;
+        // const loverType = this._type.toLowerCase();
+        // return `board-${loverType}.png`;
+        return Bottom_View.getImage(this._type.toLowerCase());
     }
 
     getType () {
         return this._type;
+    }
+
+    isActive (type) {
+        return this._type === type;
+    }
+
+    render () {
+
     }
 }
 
@@ -33,13 +41,12 @@ class BoardType {
 
 class BoardTypesControls {
     constructor(props = {}) {
-        const {types} = props;
+        const {types, handler} = props;
         this._types = types || [];
         this.currentType = null;
-    }
-
-    static typeCheck (type) {
-        return [BOARD_CONTROL_PDF, BOARD_CONTROL_VIDEO, BOARD_CONTROL_CANVAS].some(_type => _type === type);
+        this._types = this._types.map(type => {
+            return new BoardType({type, handler});
+        });
     }
 
     getTypes () {
@@ -55,4 +62,6 @@ class BoardTypesControls {
             this.currentType = type;
         }
     }
-};
+}
+
+export default BoardTypesControls;

@@ -48,6 +48,9 @@ const dropDownSet = {
     "brush": {
         types: ["pencil", "brush"]
     },
+    "laser": {
+      types: ["laser"]
+    },
     "shapes": {
         types: ["rectangle", "circle","triangle"]
     },
@@ -75,6 +78,9 @@ const toolOptions = {
     "brush": {
         "color": ["strokeStyle", "shadowColor"],
         "range": ["lineWidth", "globalAlpha", "shadowBlur"]
+    },
+    "laser": {
+        "range": ["lineWidth"]
     },
     "rectangle": {
         "color": ["strokeStyle", "fillStyle", "shadowColor"],

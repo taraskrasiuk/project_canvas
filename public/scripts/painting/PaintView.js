@@ -12,7 +12,7 @@ class PaintView extends Canvas_View{
             className: "paint-view",
             active: props.active,
             showTools: true,
-            position: "right",
+            position: "left",
             tools: props.tools
         });
 

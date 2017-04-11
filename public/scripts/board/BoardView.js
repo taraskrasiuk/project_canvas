@@ -3,6 +3,7 @@ import View from "../global/View";
 import BoardController from "./BoardController";
 import BoardModel from "./BoardModel";
 import Bottom_View from "./Bottom_View";
+import BoardControlsTypes from "../global/BoardControlsTypes";
 import {
     MOUSE_CLICK,
     CLASS_NAME,
@@ -11,12 +12,15 @@ import {
     CSS_BOARD_CONTENT,
     CSS_BOARD_ELEMENT,
     CSS_TOOL_ELEMENT,
-    CSS_ASIDE_LIST
+    CSS_ASIDE_LIST,
+    BOARD_CONTROL_CANVAS,
+    BOARD_CONTROL_PDF,
+    BOARD_CONTROL_VIDEO
 } from "../Constants";
 
-const BOARD_CONTROL_CANVAS = "Canvas";
-const BOARD_CONTROL_PDF = "PDF";
-const BOARD_CONTROL_VIDEO = "Video";
+// const BOARD_CONTROL_CANVAS = "Canvas";
+// const BOARD_CONTROL_PDF = "PDF";
+// const BOARD_CONTROL_VIDEO = "Video";
 
 class BoardView extends View {
     constructor(props ={}) {
@@ -28,6 +32,12 @@ class BoardView extends View {
             model: new BoardModel({
                 name: props.name,
                 id: props.name + "_id"
+            })
+        });
+        this.boardControls = new BoardControlsTypes({
+            types: [BOARD_CONTROL_CANVAS, BOARD_CONTROL_PDF, BOARD_CONTROL_VIDEO],
+            handler: (bType => {
+                this.handleSelect(bType);
             })
         });
     }
@@ -60,40 +70,40 @@ class BoardView extends View {
         return boardContent;
     };
 
-    renderAsidePanel () {
-        const asidePanel = $("<div></div>", {
-            [CLASS_NAME]: CSS_ASIDE_LIST
-        });
-
-        const _onClick = (e, boardControlType) => {
-          e.preventDefault();
-          this.handleSelect(boardControlType);
-        };
-
-        const buttons = [
-            {
-                name: BOARD_CONTROL_CANVAS,
-                onClick: (e) => _onClick(e, BOARD_CONTROL_CANVAS)
-            },
-            {
-                name: BOARD_CONTROL_PDF,
-                onClick: (e) => _onClick(e, BOARD_CONTROL_PDF)
-            },
-            {
-                name: BOARD_CONTROL_VIDEO,
-                onClick: (e) => _onClick(e, BOARD_CONTROL_VIDEO)
-            }
-        ];
-        buttons.forEach((btn) => {
-            $(ELEMENT_DIV, {
-                [CLASS_NAME]: CSS_TOOL_ELEMENT,
-            }).on(MOUSE_CLICK, btn.onClick.bind(this))
-                .append(Bottom_View.getImage(btn.name.toLowerCase()))
-                .appendTo(asidePanel);
-
-        });
-        return asidePanel;
-    };
+    // renderAsidePanel () {
+    //     const asidePanel = $("<div></div>", {
+    //         [CLASS_NAME]: CSS_ASIDE_LIST
+    //     });
+    //
+    //     const _onClick = (e, boardControlType) => {
+    //       e.preventDefault();
+    //       this.handleSelect(boardControlType);
+    //     };
+    //
+    //     const buttons = [
+    //         {
+    //             name: BOARD_CONTROL_CANVAS,
+    //             onClick: (e) => _onClick(e, BOARD_CONTROL_CANVAS)
+    //         },
+    //         {
+    //             name: BOARD_CONTROL_PDF,
+    //             onClick: (e) => _onClick(e, BOARD_CONTROL_PDF)
+    //         },
+    //         {
+    //             name: BOARD_CONTROL_VIDEO,
+    //             onClick: (e) => _onClick(e, BOARD_CONTROL_VIDEO)
+    //         }
+    //     ];
+    //     buttons.forEach((btn) => {
+    //         $(ELEMENT_DIV, {
+    //             [CLASS_NAME]: CSS_TOOL_ELEMENT,
+    //         }).on(MOUSE_CLICK, btn.onClick.bind(this))
+    //             .append(Bottom_View.getImage(btn.name.toLowerCase()))
+    //             .appendTo(asidePanel);
+    //
+    //     });
+    //     return asidePanel;
+    // };
 
     update () {
         $(`.${CSS_BOARD_VIEW}`).replaceWith(this.render());
@@ -104,8 +114,9 @@ class BoardView extends View {
         wrapper.attr("id", this.controller.model._id);
         const div = $(ELEMENT_DIV).addClass(CSS_BOARD_ELEMENT);
         const content = this.renderContent();
-        const asidePanel = this.renderAsidePanel();
-        wrapper.append(div.append(asidePanel, content));
+        // const asidePanel = this.renderAsidePanel();
+        // wrapper.append(div.append(asidePanel, content));
+        wrapper.append(div.append(content));
         return wrapper;
     }
 }

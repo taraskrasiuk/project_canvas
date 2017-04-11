@@ -11,7 +11,7 @@ class BoardModel {
         this._id = props.id;
         this.views = {
             [PAINT_VIEW]: new PaintView({elementId: "content", tools: ["brush", "shapes", "line", "background", "erase", "select", "text"]}),
-            [PDF_VIEW]: new PDF_View({id: "canvas", tools: ["brush"]}),
+            [PDF_VIEW]: new PDF_View({id: "canvas", tools: ["brush", "laser"]}),
             [VIDEO_VIEW]: new VideoView({id: "content"})
         };
     }

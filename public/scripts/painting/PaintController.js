@@ -95,6 +95,9 @@ class PaintController extends Controller{
                 case "brush" :
                     this.controls[type] = new BrushControl(props);
                     break;
+                case "laser" :
+                    this.controls[type] = new BrushControl(props);
+                    break;
                 case "background" :
                     this.controls[type] = new BackgroundControl(props);
                     break;

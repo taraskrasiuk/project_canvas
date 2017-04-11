@@ -39,6 +39,7 @@ class AppView extends View {
 
         this.topPanel = new Top_View({
             items: this.getTopItems(),
+            boardControls: null,
             head: "Board"
         });
     }
@@ -110,7 +111,6 @@ class AppView extends View {
                 onClick: (e) => {
                     e.preventDefault();
                     self.controller.setCurrentBoard(b, self.update.bind(self));
-
                 }
             }
         });
@@ -139,13 +139,17 @@ class AppView extends View {
         const main = $("#" + this._id);
         // $(main).empty();
         this.topPanel.items = this.getTopItems();
+        const currentBoard = this.controller.getCurrentBoard();
+        if (currentBoard) {
+            this.topPanel.boardControls = currentBoard.boardControls;
+        }
         const topPanel = this.topPanel.update();
         const bottomPanel = this.bottomPanel.update();
         let content = null;
         if (board != null) {
             content = board.render();
         }
-        $(main).replaceWith($("<div></div>", {
+        $(main).replaceWith($(ELEMENT_DIV, {
             id: this._id
         }).append(topPanel, content, bottomPanel));
     }

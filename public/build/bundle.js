@@ -14078,6 +14078,10 @@ var _Bottom_View = __webpack_require__(4);
 
 var _Bottom_View2 = _interopRequireDefault(_Bottom_View);
 
+var _BoardControlsTypes = __webpack_require__(117);
+
+var _BoardControlsTypes2 = _interopRequireDefault(_BoardControlsTypes);
+
 var _Constants = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -14090,9 +14094,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BOARD_CONTROL_CANVAS = "Canvas";
-var BOARD_CONTROL_PDF = "PDF";
-var BOARD_CONTROL_VIDEO = "Video";
+// const BOARD_CONTROL_CANVAS = "Canvas";
+// const BOARD_CONTROL_PDF = "PDF";
+// const BOARD_CONTROL_VIDEO = "Video";
 
 var BoardView = function (_View) {
     _inherits(BoardView, _View);
@@ -14112,6 +14116,12 @@ var BoardView = function (_View) {
                 name: props.name,
                 id: props.name + "_id"
             })
+        });
+        _this.boardControls = new _BoardControlsTypes2.default({
+            types: [_Constants.BOARD_CONTROL_CANVAS, _Constants.BOARD_CONTROL_PDF, _Constants.BOARD_CONTROL_VIDEO],
+            handler: function handler(bType) {
+                _this.handleSelect(bType);
+            }
         });
         return _this;
     }
@@ -14149,40 +14159,44 @@ var BoardView = function (_View) {
             return boardContent;
         }
     }, {
-        key: "renderAsidePanel",
-        value: function renderAsidePanel() {
-            var _this2 = this;
-
-            var asidePanel = (0, _jquery2.default)("<div></div>", _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_ASIDE_LIST));
-
-            var _onClick = function _onClick(e, boardControlType) {
-                e.preventDefault();
-                _this2.handleSelect(boardControlType);
-            };
-
-            var buttons = [{
-                name: BOARD_CONTROL_CANVAS,
-                onClick: function onClick(e) {
-                    return _onClick(e, BOARD_CONTROL_CANVAS);
-                }
-            }, {
-                name: BOARD_CONTROL_PDF,
-                onClick: function onClick(e) {
-                    return _onClick(e, BOARD_CONTROL_PDF);
-                }
-            }, {
-                name: BOARD_CONTROL_VIDEO,
-                onClick: function onClick(e) {
-                    return _onClick(e, BOARD_CONTROL_VIDEO);
-                }
-            }];
-            buttons.forEach(function (btn) {
-                (0, _jquery2.default)(_Constants.ELEMENT_DIV, _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_TOOL_ELEMENT)).on(_Constants.MOUSE_CLICK, btn.onClick.bind(_this2)).append(_Bottom_View2.default.getImage(btn.name.toLowerCase())).appendTo(asidePanel);
-            });
-            return asidePanel;
-        }
-    }, {
         key: "update",
+
+
+        // renderAsidePanel () {
+        //     const asidePanel = $("<div></div>", {
+        //         [CLASS_NAME]: CSS_ASIDE_LIST
+        //     });
+        //
+        //     const _onClick = (e, boardControlType) => {
+        //       e.preventDefault();
+        //       this.handleSelect(boardControlType);
+        //     };
+        //
+        //     const buttons = [
+        //         {
+        //             name: BOARD_CONTROL_CANVAS,
+        //             onClick: (e) => _onClick(e, BOARD_CONTROL_CANVAS)
+        //         },
+        //         {
+        //             name: BOARD_CONTROL_PDF,
+        //             onClick: (e) => _onClick(e, BOARD_CONTROL_PDF)
+        //         },
+        //         {
+        //             name: BOARD_CONTROL_VIDEO,
+        //             onClick: (e) => _onClick(e, BOARD_CONTROL_VIDEO)
+        //         }
+        //     ];
+        //     buttons.forEach((btn) => {
+        //         $(ELEMENT_DIV, {
+        //             [CLASS_NAME]: CSS_TOOL_ELEMENT,
+        //         }).on(MOUSE_CLICK, btn.onClick.bind(this))
+        //             .append(Bottom_View.getImage(btn.name.toLowerCase()))
+        //             .appendTo(asidePanel);
+        //
+        //     });
+        //     return asidePanel;
+        // };
+
         value: function update() {
             (0, _jquery2.default)("." + _Constants.CSS_BOARD_VIEW).replaceWith(this.render());
         }
@@ -14193,8 +14207,9 @@ var BoardView = function (_View) {
             wrapper.attr("id", this.controller.model._id);
             var div = (0, _jquery2.default)(_Constants.ELEMENT_DIV).addClass(_Constants.CSS_BOARD_ELEMENT);
             var content = this.renderContent();
-            var asidePanel = this.renderAsidePanel();
-            wrapper.append(div.append(asidePanel, content));
+            // const asidePanel = this.renderAsidePanel();
+            // wrapper.append(div.append(asidePanel, content));
+            wrapper.append(div.append(content));
             return wrapper;
         }
     }]);
@@ -14249,6 +14264,8 @@ var Canvas_View = function (_View) {
 
         _this.canvas = document.createElement("canvas");
         _this.canvas.setAttribute("id", "canvas");
+        // TODO : width
+        _this.canvas.style.marginLeft = "59px";
         // TODO find way for dynamic width and height canvas
         _this.canvas.width = 542;
         _this.canvas.height = 376;
@@ -14490,6 +14507,9 @@ var PaintController = function (_Controller) {
                         this.controls[type] = new _PaintControls.ShapeControl(props);
                         break;
                     case "brush":
+                        this.controls[type] = new _PaintControls.BrushControl(props);
+                        break;
+                    case "laser":
                         this.controls[type] = new _PaintControls.BrushControl(props);
                         break;
                     case "background":
@@ -18659,6 +18679,7 @@ var AppView = function (_View) {
 
         _this.topPanel = new _TopView2.default({
             items: _this.getTopItems(),
+            boardControls: null,
             head: "Board"
         });
         return _this;
@@ -18766,13 +18787,17 @@ var AppView = function (_View) {
             var main = (0, _jquery2.default)("#" + this._id);
             // $(main).empty();
             this.topPanel.items = this.getTopItems();
+            var currentBoard = this.controller.getCurrentBoard();
+            if (currentBoard) {
+                this.topPanel.boardControls = currentBoard.boardControls;
+            }
             var topPanel = this.topPanel.update();
             var bottomPanel = this.bottomPanel.update();
             var content = null;
             if (board != null) {
                 content = board.render();
             }
-            (0, _jquery2.default)(main).replaceWith((0, _jquery2.default)("<div></div>", {
+            (0, _jquery2.default)(main).replaceWith((0, _jquery2.default)(_Constants.ELEMENT_DIV, {
                 id: this._id
             }).append(topPanel, content, bottomPanel));
         }
@@ -19142,7 +19167,7 @@ var BoardModel = function () {
         var VIDEO_VIEW = "Video";
         this.name = props.name;
         this._id = props.id;
-        this.views = (_views = {}, _defineProperty(_views, PAINT_VIEW, new _PaintView2.default({ elementId: "content", tools: ["brush", "shapes", "line", "background", "erase", "select", "text"] })), _defineProperty(_views, PDF_VIEW, new _PDF_View2.default({ id: "canvas", tools: ["brush"] })), _defineProperty(_views, VIDEO_VIEW, new _VideoView2.default({ id: "content" })), _views);
+        this.views = (_views = {}, _defineProperty(_views, PAINT_VIEW, new _PaintView2.default({ elementId: "content", tools: ["brush", "shapes", "line", "background", "erase", "select", "text"] })), _defineProperty(_views, PDF_VIEW, new _PDF_View2.default({ id: "canvas", tools: ["brush", "laser"] })), _defineProperty(_views, VIDEO_VIEW, new _VideoView2.default({ id: "content" })), _views);
     }
 
     _createClass(BoardModel, [{
@@ -19389,10 +19414,12 @@ var TopView = function (_View) {
         var _this = _possibleConstructorReturn(this, (TopView.__proto__ || Object.getPrototypeOf(TopView)).call(this, { className: _Constants.CSS_TOP_PANEL, active: true }));
 
         var head = props.head,
-            items = props.items;
+            items = props.items,
+            boardControls = props.boardControls;
 
         _this.head = head;
         _this.items = items;
+        _this.boardControls = boardControls;
         return _this;
     }
 
@@ -19404,9 +19431,27 @@ var TopView = function (_View) {
             return (0, _jquery2.default)("<h3></h3>", (_$ = {}, _defineProperty(_$, _Constants.CLASS_NAME, _Constants.CSS_TOP_PANEL_HEAD), _defineProperty(_$, "text", "Board"), _$));
         }
     }, {
+        key: "renderBoardControls",
+        value: function renderBoardControls() {
+            var _this2 = this;
+
+            var bControls = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+            return (0, _jquery2.default)(_Constants.ELEMENT_UL, _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_TOP_PANEL_LIST)).append(bControls.map(function (type) {
+                return _this2.renderBoardControl(type);
+            }));
+        }
+    }, {
+        key: "renderBoardControl",
+        value: function renderBoardControl() {
+            var bControl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            return (0, _jquery2.default)(_Constants.ELEMENT_LI, _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_TOOL_ELEMENT)).on(_Constants.MOUSE_CLICK, bControl.handleSelect.bind(bControl)).append(bControl.getTypeIcon());
+        }
+    }, {
         key: "renderListItem",
         value: function renderListItem(_ref) {
-            var _$2;
+            var _$4;
 
             var className = _ref.className,
                 text = _ref.text,
@@ -19414,7 +19459,7 @@ var TopView = function (_View) {
                 child = _ref.child,
                 active = _ref.active;
 
-            var i = (0, _jquery2.default)(_Constants.ELEMENT_LI, (_$2 = {}, _defineProperty(_$2, _Constants.CLASS_NAME, className), _defineProperty(_$2, "text", text), _$2)).on("click", onClick);
+            var i = (0, _jquery2.default)(_Constants.ELEMENT_LI, (_$4 = {}, _defineProperty(_$4, _Constants.CLASS_NAME, className), _defineProperty(_$4, "text", text), _$4)).on("click", onClick);
             if (child != null) {
                 i.append((0, _jquery2.default)(_Constants.ELEMENT_SPAN, _defineProperty({
                     text: child.text
@@ -19428,23 +19473,22 @@ var TopView = function (_View) {
     }, {
         key: "renderTopList",
         value: function renderTopList() {
-            var _this2 = this;
+            var _this3 = this;
 
             return (0, _jquery2.default)(_Constants.ELEMENT_UL, _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_TOP_PANEL_LIST)).append(this.items.map(function (it) {
-                return _this2.renderListItem(it);
+                return _this3.renderListItem(it);
             }));
-        }
-    }, {
-        key: "renderBoardControls",
-        value: function renderBoardControls() {
-            var boardControlsWrapper = (0, _jquery2.default)(_Constants.ELEMENT_UL, _defineProperty({}, _Constants.CLASS_NAME, "top-panel_list board_controls"));
         }
     }, {
         key: "update",
         value: function update() {
             var wrapper = (0, _jquery2.default)("." + this.className);
             wrapper.empty();
-            return wrapper.append(this.renderHeader(), this.renderTopList());
+            wrapper.append(this.renderHeader(), this.renderTopList());
+            if (this.boardControls != null) {
+                wrapper.append(this.renderBoardControls(this.boardControls.getTypes()));
+            }
+            return wrapper;
         }
     }, {
         key: "render",
@@ -19452,7 +19496,11 @@ var TopView = function (_View) {
             var wrapper = this.renderWrapper();
             var items = this.renderTopList();
             var header = this.renderHeader();
-            return wrapper.append(header, items);
+            wrapper.append(header, items);
+            if (this.boardControls != null) {
+                wrapper.append(this.renderBoardControls(this.boardControls));
+            }
+            return wrapper;
         }
     }]);
 
@@ -19517,7 +19565,7 @@ var PaintView = function (_Canvas_View) {
             className: "paint-view",
             active: props.active,
             showTools: true,
-            position: "right",
+            position: "left",
             tools: props.tools
         }));
 
@@ -20097,6 +20145,7 @@ var BrushControl = exports.BrushControl = function (_Control3) {
         _this3.temp = null;
 
         _this3.isDown = false;
+        _this3.interval = null;
         return _this3;
     }
 
@@ -20129,11 +20178,32 @@ var BrushControl = exports.BrushControl = function (_Control3) {
                         shadowColor: context.shadowColor
                     });
                     break;
+                case "Laser":
+                    this.temp = new _Brush2.default({
+                        ctx: context,
+                        strokeStyle: "#f00",
+                        lineWidth: 10,
+                        globalAlpha: .5,
+                        shadowBlur: context.shadowBlur,
+                        shadowColor: context.shadowColor
+                    });
+                    break;
             }
             this.isDown = true;
             console.log(this.tool);
             this.temp.setX(x).setY(y);
             this.state.holder.addShape(this.temp);
+            if (type == "Laser") {
+                var self = this;
+                this.interval = setInterval(function () {
+                    if (self.temp != null) {
+                        self.temp.paths.shift();
+                        self.temp.paths.shift();
+                        self.temp.setX(self.temp.paths[self.temp.paths.length - 1]);
+                        self.temp.setY(self.temp.paths[self.temp.paths.length]);
+                    } else {}
+                }, 30);
+            }
         }
     }, {
         key: "onMouseUp",
@@ -20147,8 +20217,13 @@ var BrushControl = exports.BrushControl = function (_Control3) {
                     this.state.holder.pop();
                 }
                 this.temp.addPath({ x: x, y: y });
-                this.state.stateValid = true;
                 // this.state.stopUpdateState();
+                if (this.interval != null) {
+                    clearInterval(this.interval);
+                    this.state.holder.pop();
+                    this.interval = null;
+                }
+                this.state.stateValid = true;
             }
             this.temp = null;
         }
@@ -20912,6 +20987,8 @@ var Pencil = function (_Path) {
             this.ctx.stroke();
             this.ctx.closePath();
             this.ctx.restore();
+
+            var self = this;
         }
     }, {
         key: "contains",
@@ -21822,6 +21899,9 @@ var dropDownSet = {
     "brush": {
         types: ["pencil", "brush"]
     },
+    "laser": {
+        types: ["laser"]
+    },
     "shapes": {
         types: ["rectangle", "circle", "triangle"]
     },
@@ -21849,6 +21929,9 @@ var toolOptions = {
     "brush": {
         "color": ["strokeStyle", "shadowColor"],
         "range": ["lineWidth", "globalAlpha", "shadowBlur"]
+    },
+    "laser": {
+        "range": ["lineWidth"]
     },
     "rectangle": {
         "color": ["strokeStyle", "fillStyle", "shadowColor"],
@@ -22356,15 +22439,11 @@ var PDF_Controller = function (_PaintController) {
         _this.element = null;
         _this.ctx = props.ctx;
         _this.canvas = props.canvas;
-
         _this.scale = 1;
-
         _this.currentPage = 1;
         _this.totalPages = 0;
-
         _this.pageRendering = false;
         _this.pageNumPending = null;
-
         return _this;
     }
 
@@ -22586,7 +22665,7 @@ var PDF_Vew = function (_Canvas_View) {
             active: props.active,
             showTools: false,
             tools: props.tools,
-            position: "right"
+            position: "left"
         }));
 
         _this.controller.setView(_this);
@@ -39013,6 +39092,118 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 
 exports.MainBoard = _AppView2.default;
+
+/***/ }),
+/* 116 */,
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Constants = __webpack_require__(2);
+
+var _Bottom_View = __webpack_require__(4);
+
+var _Bottom_View2 = _interopRequireDefault(_Bottom_View);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BoardType = function () {
+    function BoardType() {
+        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _classCallCheck(this, BoardType);
+
+        var type = props.type,
+            handler = props.handler;
+
+        this._type = type;
+        this.handler = handler;
+    }
+
+    _createClass(BoardType, [{
+        key: "handleSelect",
+        value: function handleSelect(e) {
+            e.preventDefault();
+            this.handler(this._type);
+        }
+    }, {
+        key: "getTypeIcon",
+        value: function getTypeIcon() {
+            // const loverType = this._type.toLowerCase();
+            // return `board-${loverType}.png`;
+            return _Bottom_View2.default.getImage(this._type.toLowerCase());
+        }
+    }, {
+        key: "getType",
+        value: function getType() {
+            return this._type;
+        }
+    }, {
+        key: "isActive",
+        value: function isActive(type) {
+            return this._type === type;
+        }
+    }, {
+        key: "render",
+        value: function render() {}
+    }]);
+
+    return BoardType;
+}();
+
+var BoardTypesControls = function () {
+    function BoardTypesControls() {
+        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _classCallCheck(this, BoardTypesControls);
+
+        var types = props.types,
+            handler = props.handler;
+
+        this._types = types || [];
+        this.currentType = null;
+        this._types = this._types.map(function (type) {
+            return new BoardType({ type: type, handler: handler });
+        });
+    }
+
+    _createClass(BoardTypesControls, [{
+        key: "getTypes",
+        value: function getTypes() {
+            return this._types;
+        }
+    }, {
+        key: "getCurrentType",
+        value: function getCurrentType() {
+            return this.currentType;
+        }
+    }, {
+        key: "setCurrentType",
+        value: function setCurrentType(type) {
+            if (type instanceof BoardType) {
+                this.currentType = type;
+            }
+        }
+    }]);
+
+    return BoardTypesControls;
+}();
+
+exports.default = BoardTypesControls;
 
 /***/ })
 /******/ ]);

@@ -8,15 +8,18 @@ import {
     CSS_TOP_PANEL_HEAD,
     CSS_TOP_PANEL,
     CSS_ACTIVE,
-    CSS_TOP_PANEL_LIST
+    CSS_TOOL_ELEMENT,
+    CSS_TOP_PANEL_LIST,
+    MOUSE_CLICK
 } from "../Constants";
 
 class TopView extends View {
     constructor (props = {}) {
         super({className: CSS_TOP_PANEL, active: true});
-        const {head, items} = props;
+        const {head, items, boardControls} = props;
         this.head = head;
         this.items = items;
+        this.boardControls = boardControls;
     }
 
     renderHeader () {
@@ -25,6 +28,20 @@ class TopView extends View {
             text: "Board"
         });
     }
+
+    renderBoardControls (bControls = []) {
+        return $(ELEMENT_UL, {
+            [CLASS_NAME]: CSS_TOP_PANEL_LIST
+        }).append(bControls.map(type => this.renderBoardControl(type)));
+    }
+
+    renderBoardControl (bControl = {}) {
+        return $(ELEMENT_LI, {
+            [CLASS_NAME]: CSS_TOOL_ELEMENT
+        }).on(MOUSE_CLICK, bControl.handleSelect.bind(bControl))
+            .append(bControl.getTypeIcon());
+    }
+
 
     renderListItem ({className, text, onClick, child, active}) {
         const i =  $(ELEMENT_LI, {
@@ -51,23 +68,25 @@ class TopView extends View {
         }));
     }
 
-    renderBoardControls () {
-        const boardControlsWrapper = $(ELEMENT_UL, {
-            [CLASS_NAME]: "top-panel_list board_controls"
-        });
-    }
-
     update () {
         const wrapper = $(`.${this.className}`);
         wrapper.empty();
-        return wrapper.append(this.renderHeader(), this.renderTopList());
+        wrapper.append(this.renderHeader(), this.renderTopList());
+        if (this.boardControls != null) {
+            wrapper.append(this.renderBoardControls(this.boardControls.getTypes()));
+        }
+        return wrapper;
     }
 
     render () {
         const wrapper = this.renderWrapper();
         const items = this.renderTopList();
         const header = this.renderHeader();
-        return wrapper.append(header, items);
+        wrapper.append(header, items);
+        if (this.boardControls != null) {
+            wrapper.append(this.renderBoardControls(this.boardControls));
+        }
+        return wrapper;
     }
 }
 

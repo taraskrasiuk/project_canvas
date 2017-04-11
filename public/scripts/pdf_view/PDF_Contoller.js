@@ -8,16 +8,11 @@ class PDF_Controller extends PaintController{
         this.element = null;
         this.ctx = props.ctx;
         this.canvas = props.canvas;
-
         this.scale = 1;
-
         this.currentPage = 1;
         this.totalPages = 0;
-
         this.pageRendering = false;
         this.pageNumPending = null;
-
-
     }
 
     load(data ) {
