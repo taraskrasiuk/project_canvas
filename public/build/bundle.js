@@ -10414,6 +10414,7 @@ var TOOL_IMG_PATH = exports.TOOL_IMG_PATH = "static/images/";
 var STATIC_PATH = exports.STATIC_PATH = "static/";
 var IMAGES_PATH = exports.IMAGES_PATH = "images/";
 
+var CLASS_NAME = exports.CLASS_NAME = "class";
 // elements
 var ELEMENT_DIV = exports.ELEMENT_DIV = "<div></div>";
 var ELEMENT_IFRAME = exports.ELEMENT_IFRAME = "<iframe></iframe>";
@@ -10474,11 +10475,30 @@ var MOUSE_MOVE = exports.MOUSE_MOVE = "mouse:move";
 var MOUSE_CLICK = exports.MOUSE_CLICK = "click";
 
 // CSS classes
+
 var CSS_TOOLS_SET = exports.CSS_TOOLS_SET = "tools-set";
 var CSS_MAIN_TOOL_IMAGE = exports.CSS_MAIN_TOOL_IMAGE = "tool-img";
 var CSS_MAIN_TOOL_ELEMENT = exports.CSS_MAIN_TOOL_ELEMENT = "tool-element";
 var CSS_MAIN_TOOL_ACTIVE = exports.CSS_MAIN_TOOL_ACTIVE = "tool-active";
 var CSS_TOOL_LABEL = exports.CSS_TOOL_LABEL = "tool-label";
+
+// -- CSS classes BoardView
+var CSS_BOARD_VIEW = exports.CSS_BOARD_VIEW = "board-view";
+var CSS_BOARD_CONTENT = exports.CSS_BOARD_CONTENT = "board-content";
+var CSS_BOARD_ELEMENT = exports.CSS_BOARD_ELEMENT = "board-main";
+var CSS_TOOL_ELEMENT = exports.CSS_TOOL_ELEMENT = "tool-element";
+var CSS_ASIDE_LIST = exports.CSS_ASIDE_LIST = "aside-list";
+
+// -- CSS classes TopView
+var CSS_TOP_PANEL_HEAD = exports.CSS_TOP_PANEL_HEAD = "top-panel_head";
+var CSS_TOP_PANEL = exports.CSS_TOP_PANEL = "top-panel";
+var CSS_ACTIVE = exports.CSS_ACTIVE = "active";
+var CSS_TOP_PANEL_LIST = exports.CSS_TOP_PANEL_LIST = "top-panel_list";
+
+// Board Contols
+var BOARD_CONTROL_CANVAS = exports.BOARD_CONTROL_CANVAS = "Canvas";
+var BOARD_CONTROL_PDF = exports.BOARD_CONTROL_PDF = "PDF";
+var BOARD_CONTROL_VIDEO = exports.BOARD_CONTROL_VIDEO = "Video";
 
 /***/ }),
 /* 3 */
@@ -14058,13 +14078,21 @@ var _Bottom_View = __webpack_require__(4);
 
 var _Bottom_View2 = _interopRequireDefault(_Bottom_View);
 
+var _Constants = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BOARD_CONTROL_CANVAS = "Canvas";
+var BOARD_CONTROL_PDF = "PDF";
+var BOARD_CONTROL_VIDEO = "Video";
 
 var BoardView = function (_View) {
     _inherits(BoardView, _View);
@@ -14075,7 +14103,7 @@ var BoardView = function (_View) {
         _classCallCheck(this, BoardView);
 
         var _this = _possibleConstructorReturn(this, (BoardView.__proto__ || Object.getPrototypeOf(BoardView)).call(this, {
-            className: "board-view",
+            className: _Constants.CSS_BOARD_VIEW,
             active: true
         }));
 
@@ -14113,9 +14141,7 @@ var BoardView = function (_View) {
     }, {
         key: "renderContent",
         value: function renderContent() {
-            var boardContent = (0, _jquery2.default)("<div></div>", {
-                "class": "board-content"
-            });
+            var boardContent = (0, _jquery2.default)("<div></div>", _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_BOARD_CONTENT));
             var currentView = this.controller.getCurrentView();
             if (currentView != null) {
                 boardContent.append(currentView.render());
@@ -14127,50 +14153,47 @@ var BoardView = function (_View) {
         value: function renderAsidePanel() {
             var _this2 = this;
 
-            var asidePanel = (0, _jquery2.default)("<div></div>", {
-                "class": "aside-list"
-            });
+            var asidePanel = (0, _jquery2.default)("<div></div>", _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_ASIDE_LIST));
+
+            var _onClick = function _onClick(e, boardControlType) {
+                e.preventDefault();
+                _this2.handleSelect(boardControlType);
+            };
 
             var buttons = [{
-                name: "Canvas",
+                name: BOARD_CONTROL_CANVAS,
                 onClick: function onClick(e) {
-                    e.preventDefault();
-                    _this2.handleSelect("Canvas");
+                    return _onClick(e, BOARD_CONTROL_CANVAS);
                 }
             }, {
-                name: "PDF",
+                name: BOARD_CONTROL_PDF,
                 onClick: function onClick(e) {
-                    e.preventDefault();
-                    _this2.handleSelect("PDF");
+                    return _onClick(e, BOARD_CONTROL_PDF);
                 }
             }, {
-                name: "Video",
+                name: BOARD_CONTROL_VIDEO,
                 onClick: function onClick(e) {
-                    e.preventDefault();
-                    _this2.handleSelect("Video");
+                    return _onClick(e, BOARD_CONTROL_VIDEO);
                 }
             }];
             buttons.forEach(function (btn) {
-                var b = (0, _jquery2.default)("<div></div>", {
-                    "class": "tool-element"
-                }).on("click", btn.onClick.bind(_this2)).append(_Bottom_View2.default.getImage(btn.name.toLowerCase())).appendTo(asidePanel);
+                (0, _jquery2.default)(_Constants.ELEMENT_DIV, _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_TOOL_ELEMENT)).on(_Constants.MOUSE_CLICK, btn.onClick.bind(_this2)).append(_Bottom_View2.default.getImage(btn.name.toLowerCase())).appendTo(asidePanel);
             });
             return asidePanel;
         }
     }, {
         key: "update",
         value: function update() {
-            (0, _jquery2.default)(".board-view").replaceWith(this.render());
+            (0, _jquery2.default)("." + _Constants.CSS_BOARD_VIEW).replaceWith(this.render());
         }
     }, {
         key: "render",
         value: function render() {
             var wrapper = this.renderWrapper();
             wrapper.attr("id", this.controller.model._id);
-            var div = (0, _jquery2.default)("<div></div>").addClass("board-main");
+            var div = (0, _jquery2.default)(_Constants.ELEMENT_DIV).addClass(_Constants.CSS_BOARD_ELEMENT);
             var content = this.renderContent();
             var asidePanel = this.renderAsidePanel();
-            // const bottom = this.renderBottomPanel();
             wrapper.append(div.append(asidePanel, content));
             return wrapper;
         }
@@ -14403,8 +14426,6 @@ var PaintController = function (_Controller) {
 
         _this.controls = {};
         _this.activeControl = null;
-
-        // this.isStartPaint = false;
         return _this;
     }
 
@@ -18589,9 +18610,9 @@ var _BoardView = __webpack_require__(24);
 
 var _BoardView2 = _interopRequireDefault(_BoardView);
 
-var _Top_View = __webpack_require__(55);
+var _TopView = __webpack_require__(55);
 
-var _Top_View2 = _interopRequireDefault(_Top_View);
+var _TopView2 = _interopRequireDefault(_TopView);
 
 var _Bottom_View = __webpack_require__(4);
 
@@ -18604,6 +18625,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CSS_MAIN_APP = "main-app";
 
 var AppView = function (_View) {
     _inherits(AppView, _View);
@@ -18634,18 +18657,12 @@ var AppView = function (_View) {
         });
         _this._id = "main_board";
 
-        _this.topPanel = new _Top_View2.default({
+        _this.topPanel = new _TopView2.default({
             items: _this.getTopItems(),
             head: "Board"
         });
-
         return _this;
     }
-
-    // updateBottomPanel (items = []) {
-    //     this.bottomPanel.items = items;
-    //     this.bottomPanel.update();
-    // }
 
     _createClass(AppView, [{
         key: 'render',
@@ -18671,7 +18688,6 @@ var AppView = function (_View) {
             } else {
                 (0, _jquery2.default)(main).append(topPanel, content, bottomPanel).appendTo("body");
             }
-            // resizable({}, $(main));
         }
     }, {
         key: 'topDrag',
@@ -18689,7 +18705,6 @@ var AppView = function (_View) {
                 }
             }, top);
             return top;
-            // return top;
         }
     }, {
         key: 'getBottomItems',
@@ -18757,11 +18772,6 @@ var AppView = function (_View) {
             if (board != null) {
                 content = board.render();
             }
-
-            // if (board != null) {
-            //     const b = board.render();
-            //     content.append(b);
-            // }
             (0, _jquery2.default)(main).replaceWith((0, _jquery2.default)("<div></div>", {
                 id: this._id
             }).append(topPanel, content, bottomPanel));
@@ -19356,7 +19366,11 @@ var _View2 = __webpack_require__(5);
 
 var _View3 = _interopRequireDefault(_View2);
 
+var _Constants = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19364,15 +19378,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Top_View = function (_View) {
-    _inherits(Top_View, _View);
+var TopView = function (_View) {
+    _inherits(TopView, _View);
 
-    function Top_View() {
+    function TopView() {
         var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-        _classCallCheck(this, Top_View);
+        _classCallCheck(this, TopView);
 
-        var _this = _possibleConstructorReturn(this, (Top_View.__proto__ || Object.getPrototypeOf(Top_View)).call(this, { className: "top-panel", active: true }));
+        var _this = _possibleConstructorReturn(this, (TopView.__proto__ || Object.getPrototypeOf(TopView)).call(this, { className: _Constants.CSS_TOP_PANEL, active: true }));
 
         var head = props.head,
             items = props.items;
@@ -19382,35 +19396,32 @@ var Top_View = function (_View) {
         return _this;
     }
 
-    _createClass(Top_View, [{
+    _createClass(TopView, [{
         key: "renderHeader",
         value: function renderHeader() {
-            return (0, _jquery2.default)("<h3></h3>", {
-                "class": "top-panel_head",
-                text: "Board"
-            });
+            var _$;
+
+            return (0, _jquery2.default)("<h3></h3>", (_$ = {}, _defineProperty(_$, _Constants.CLASS_NAME, _Constants.CSS_TOP_PANEL_HEAD), _defineProperty(_$, "text", "Board"), _$));
         }
     }, {
         key: "renderListItem",
         value: function renderListItem(_ref) {
+            var _$2;
+
             var className = _ref.className,
                 text = _ref.text,
                 onClick = _ref.onClick,
                 child = _ref.child,
                 active = _ref.active;
 
-            var i = (0, _jquery2.default)("<li></li>", {
-                "class": className,
-                "text": text
-            }).on("click", onClick);
+            var i = (0, _jquery2.default)(_Constants.ELEMENT_LI, (_$2 = {}, _defineProperty(_$2, _Constants.CLASS_NAME, className), _defineProperty(_$2, "text", text), _$2)).on("click", onClick);
             if (child != null) {
-                i.append((0, _jquery2.default)("<span></span>", {
-                    text: child.text,
-                    "class": child.className
-                }).on("click", child.onClick));
+                i.append((0, _jquery2.default)(_Constants.ELEMENT_SPAN, _defineProperty({
+                    text: child.text
+                }, _Constants.CLASS_NAME, child.className)).on("click", child.onClick));
             }
             if (active) {
-                i.addClass("active");
+                i.addClass(_Constants.CSS_ACTIVE);
             }
             return i;
         }
@@ -19419,11 +19430,14 @@ var Top_View = function (_View) {
         value: function renderTopList() {
             var _this2 = this;
 
-            return (0, _jquery2.default)("<ul></ul>", {
-                "class": "top-panel_list"
-            }).append(this.items.map(function (it) {
+            return (0, _jquery2.default)(_Constants.ELEMENT_UL, _defineProperty({}, _Constants.CLASS_NAME, _Constants.CSS_TOP_PANEL_LIST)).append(this.items.map(function (it) {
                 return _this2.renderListItem(it);
             }));
+        }
+    }, {
+        key: "renderBoardControls",
+        value: function renderBoardControls() {
+            var boardControlsWrapper = (0, _jquery2.default)(_Constants.ELEMENT_UL, _defineProperty({}, _Constants.CLASS_NAME, "top-panel_list board_controls"));
         }
     }, {
         key: "update",
@@ -19442,10 +19456,10 @@ var Top_View = function (_View) {
         }
     }]);
 
-    return Top_View;
+    return TopView;
 }(_View3.default);
 
-exports.default = Top_View;
+exports.default = TopView;
 
 /***/ }),
 /* 56 */

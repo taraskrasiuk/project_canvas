@@ -1,10 +1,19 @@
 import $ from "jquery";
 import View from "../global/View";
+import {
+    ELEMENT_UL,
+    ELEMENT_LI,
+    ELEMENT_SPAN,
+    CLASS_NAME,
+    CSS_TOP_PANEL_HEAD,
+    CSS_TOP_PANEL,
+    CSS_ACTIVE,
+    CSS_TOP_PANEL_LIST
+} from "../Constants";
 
-
-class Top_View extends View{
+class TopView extends View {
     constructor (props = {}) {
-        super({className: "top-panel", active: true});
+        super({className: CSS_TOP_PANEL, active: true});
         const {head, items} = props;
         this.head = head;
         this.items = items;
@@ -12,34 +21,40 @@ class Top_View extends View{
 
     renderHeader () {
         return $("<h3></h3>", {
-            "class": "top-panel_head",
+            [CLASS_NAME]: CSS_TOP_PANEL_HEAD,
             text: "Board"
         });
     }
 
     renderListItem ({className, text, onClick, child, active}) {
-        const i =  $("<li></li>", {
-            "class": className,
+        const i =  $(ELEMENT_LI, {
+            [CLASS_NAME]: className,
             "text": text
         }).on("click", onClick);
         if (child != null) {
-            i.append($("<span></span>", {
+            i.append($(ELEMENT_SPAN, {
                 text: child.text,
-                "class": child.className,
+                [CLASS_NAME]: child.className,
             }).on("click", child.onClick));
         }
         if (active) {
-            i.addClass("active");
+            i.addClass(CSS_ACTIVE);
         }
         return i;
     }
 
     renderTopList () {
-        return $("<ul></ul>", {
-            "class": "top-panel_list"
+        return $(ELEMENT_UL, {
+            [CLASS_NAME]: CSS_TOP_PANEL_LIST
         }).append(this.items.map(it => {
             return this.renderListItem(it);
         }));
+    }
+
+    renderBoardControls () {
+        const boardControlsWrapper = $(ELEMENT_UL, {
+            [CLASS_NAME]: "top-panel_list board_controls"
+        });
     }
 
     update () {
@@ -56,4 +71,4 @@ class Top_View extends View{
     }
 }
 
-export default Top_View;
+export default TopView;

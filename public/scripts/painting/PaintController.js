@@ -38,9 +38,6 @@ class PaintController extends Controller{
 
         this.controls = {};
         this.activeControl = null;
-
-
-        // this.isStartPaint = false;
     }
 
     startRecordDraw () {
