@@ -38,9 +38,6 @@ class PaintController extends Controller{
 
         this.controls = {};
         this.activeControl = null;
-
-
-        // this.isStartPaint = false;
     }
 
     startRecordDraw () {
@@ -96,6 +93,9 @@ class PaintController extends Controller{
                     this.controls[type] = new ShapeControl(props);
                     break;
                 case "brush" :
+                    this.controls[type] = new BrushControl(props);
+                    break;
+                case "laser" :
                     this.controls[type] = new BrushControl(props);
                     break;
                 case "background" :

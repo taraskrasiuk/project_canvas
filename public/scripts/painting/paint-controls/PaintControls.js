@@ -143,7 +143,7 @@ export class ShapeControl extends Control{
 
 }
 
-export class BrushControl extends Control {
+export class  BrushControl extends Control {
     constructor(props ={}) {
         super(props);
         this.listenersOn = true;
@@ -151,6 +151,7 @@ export class BrushControl extends Control {
         this.temp = null;
 
         this.isDown = false;
+        this.interval = null;
     }
 
     onMouseDown({x, y}) {
@@ -177,11 +178,35 @@ export class BrushControl extends Control {
                     shadowColor: context.shadowColor
                 });
                 break;
+            case "Laser":
+                this.temp = new Brush({
+                    ctx: context,
+                    strokeStyle: "#f00",
+                    lineWidth: 10,
+                    globalAlpha: .5,
+                    shadowBlur: context.shadowBlur,
+                    shadowColor: context.shadowColor
+                });
+                break;
         }
         this.isDown = true;
         console.log(this.tool);
         this.temp.setX(x).setY(y);
         this.state.holder.addShape(this.temp);
+        if (type == "Laser") {
+            const self = this;
+            this.interval = setInterval(() => {
+                if (self.temp != null) {
+                    self.temp.paths.shift();
+                    self.temp.paths.shift();
+                    self.temp.setX(self.temp.paths[self.temp.paths.length -1]);
+                    self.temp.setY(self.temp.paths[self.temp.paths.length]);
+                } else {
+                }
+
+            }, 30);
+        }
+
     }
 
     onMouseUp({x, y}) {
@@ -191,8 +216,13 @@ export class BrushControl extends Control {
                 this.state.holder.pop();
             }
             this.temp.addPath({x, y});
-            this.state.stateValid = true;
             // this.state.stopUpdateState();
+            if (this.interval != null) {
+                clearInterval(this.interval);
+                this.state.holder.pop();
+                this.interval = null;
+            }
+            this.state.stateValid = true;
         }
         this.temp = null;
     }

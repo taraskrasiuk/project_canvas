@@ -380,7 +380,7 @@ html, body {
 
 }
 .tools-wrapper {
-	position: absolute;
+	/*position: absolute;*/
 	z-index: 99;
 	top: 0;
 	bottom: 0;
@@ -421,7 +421,8 @@ html, body {
 	outline: 1px solid rgba(0,0,0,.3);
 	box-shadow: 1px 1px 3px rgba(0,0,0,.4);
 	top: 0;
-	right: 725%;
+	/*left: 725%;*/
+	right: 0;
 }
 
 .tools-set {
@@ -558,6 +559,7 @@ html, body {
 	max-height: 2.5rem;
 	padding: 0 1rem;
 	background: #4bb7b7;
+	justify-content: space-between;
 }
 .top-panel_head {
 	margin: 0;
@@ -674,7 +676,7 @@ html, body {
 	height: 100%;
 }
 .pdf-wrapper {
-	cursor: url("../static/images/cursor_point.png") 32 32, pointer;
+	cursor: url("../static/images/cursor_point.png") 5 5, pointer;
 }
 .pdf-view,
 .paint-view{

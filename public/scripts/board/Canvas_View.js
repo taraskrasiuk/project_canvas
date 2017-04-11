@@ -7,6 +7,8 @@ class Canvas_View extends View {
         super({className: props.className, active: props.active});
         this.canvas = document.createElement("canvas");
         this.canvas.setAttribute("id", "canvas");
+        // TODO : width
+        this.canvas.style.marginLeft = "59px";
         // TODO find way for dynamic width and height canvas
         this.canvas.width = 542;
         this.canvas.height = 376;

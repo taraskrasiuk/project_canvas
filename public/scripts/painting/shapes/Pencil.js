@@ -21,6 +21,9 @@ class Pencil extends Path {
         this.ctx.stroke();
         this.ctx.closePath();
         this.ctx.restore();
+
+        const self = this;
+
     }
     contains () {
         return false;

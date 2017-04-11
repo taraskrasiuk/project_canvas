@@ -7,6 +7,8 @@ export const TOOL_IMG_PATH = "static/images/";
 export const STATIC_PATH = "static/";
 export const IMAGES_PATH = "images/";
 
+
+export const CLASS_NAME = "class";
 // elements
 export const ELEMENT_DIV = "<div></div>";
 export const ELEMENT_IFRAME = "<iframe></iframe>";
@@ -68,8 +70,28 @@ export const MOUSE_CLICK = "click";
 
 
 // CSS classes
+
 export const CSS_TOOLS_SET = "tools-set";
 export const CSS_MAIN_TOOL_IMAGE = "tool-img";
 export const CSS_MAIN_TOOL_ELEMENT = "tool-element";
 export const CSS_MAIN_TOOL_ACTIVE = "tool-active";
 export const CSS_TOOL_LABEL = "tool-label";
+
+// -- CSS classes BoardView
+export const CSS_BOARD_VIEW = "board-view";
+export const CSS_BOARD_CONTENT = "board-content";
+export const CSS_BOARD_ELEMENT = "board-main";
+export const CSS_TOOL_ELEMENT = "tool-element";
+export const CSS_ASIDE_LIST = "aside-list";
+
+// -- CSS classes TopView
+export const CSS_TOP_PANEL_HEAD = "top-panel_head";
+export const CSS_TOP_PANEL = "top-panel";
+export const CSS_ACTIVE = "active";
+export const CSS_TOP_PANEL_LIST = "top-panel_list";
+
+
+// Board Contols
+export const BOARD_CONTROL_CANVAS = "Canvas";
+export const BOARD_CONTROL_PDF = "PDF";
+export const BOARD_CONTROL_VIDEO = "Video";

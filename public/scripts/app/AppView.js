@@ -9,8 +9,11 @@ import {
     ELEMENT_UL
 } from "../Constants";
 import BoardView from "../board/BoardView";
-import Top_View from "../board/Top_View";
+import Top_View from "../board/TopView";
 import Bottom_View from "../board/Bottom_View";
+
+const CSS_MAIN_APP = "main-app";
+
 
 class AppView extends View {
     constructor(props = {}) {
@@ -24,7 +27,6 @@ class AppView extends View {
 
         var boardView = new BoardView({
             name: "Board 1",
-            // updateBottom: this.updateBottomPanel.bind(this)
         });
         this.controller = new AppController({
             currentBoard: boardView,
@@ -37,17 +39,10 @@ class AppView extends View {
 
         this.topPanel = new Top_View({
             items: this.getTopItems(),
+            boardControls: null,
             head: "Board"
         });
-
-
-
     }
-
-    // updateBottomPanel (items = []) {
-    //     this.bottomPanel.items = items;
-    //     this.bottomPanel.update();
-    // }
 
     render (id) {
         var tag = document.createElement('script');
@@ -71,7 +66,6 @@ class AppView extends View {
         } else {
             $(main).append(topPanel, content, bottomPanel).appendTo("body");
         }
-        // resizable({}, $(main));
     };
 
     topDrag () {
@@ -88,7 +82,6 @@ class AppView extends View {
             }
         }, top);
         return top;
-        // return top;
     }
 
     getBottomItems () {
@@ -118,7 +111,6 @@ class AppView extends View {
                 onClick: (e) => {
                     e.preventDefault();
                     self.controller.setCurrentBoard(b, self.update.bind(self));
-
                 }
             }
         });
@@ -147,18 +139,17 @@ class AppView extends View {
         const main = $("#" + this._id);
         // $(main).empty();
         this.topPanel.items = this.getTopItems();
+        const currentBoard = this.controller.getCurrentBoard();
+        if (currentBoard) {
+            this.topPanel.boardControls = currentBoard.boardControls;
+        }
         const topPanel = this.topPanel.update();
         const bottomPanel = this.bottomPanel.update();
         let content = null;
         if (board != null) {
             content = board.render();
         }
-
-        // if (board != null) {
-        //     const b = board.render();
-        //     content.append(b);
-        // }
-        $(main).replaceWith($("<div></div>", {
+        $(main).replaceWith($(ELEMENT_DIV, {
             id: this._id
         }).append(topPanel, content, bottomPanel));
     }

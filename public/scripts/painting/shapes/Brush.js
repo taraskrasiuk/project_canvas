@@ -25,6 +25,7 @@ class Brush extends Path {
         this.ctx.stroke();
         this.ctx.closePath();
         this.ctx.restore();
+        
     }
     contains () {
         return false;

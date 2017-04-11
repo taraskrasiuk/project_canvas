@@ -3,17 +3,41 @@ import View from "../global/View";
 import BoardController from "./BoardController";
 import BoardModel from "./BoardModel";
 import Bottom_View from "./Bottom_View";
+import BoardControlsTypes from "../global/BoardControlsTypes";
+import {
+    MOUSE_CLICK,
+    CLASS_NAME,
+    ELEMENT_DIV,
+    CSS_BOARD_VIEW,
+    CSS_BOARD_CONTENT,
+    CSS_BOARD_ELEMENT,
+    CSS_TOOL_ELEMENT,
+    CSS_ASIDE_LIST,
+    BOARD_CONTROL_CANVAS,
+    BOARD_CONTROL_PDF,
+    BOARD_CONTROL_VIDEO
+} from "../Constants";
+
+// const BOARD_CONTROL_CANVAS = "Canvas";
+// const BOARD_CONTROL_PDF = "PDF";
+// const BOARD_CONTROL_VIDEO = "Video";
 
 class BoardView extends View {
     constructor(props ={}) {
         super({
-            className: "board-view",
+            className: CSS_BOARD_VIEW,
             active: true
         });
         this.controller = new BoardController({
             model: new BoardModel({
                 name: props.name,
                 id: props.name + "_id"
+            })
+        });
+        this.boardControls = new BoardControlsTypes({
+            types: [BOARD_CONTROL_CANVAS, BOARD_CONTROL_PDF, BOARD_CONTROL_VIDEO],
+            handler: (bType => {
+                this.handleSelect(bType);
             })
         });
     }
@@ -37,7 +61,7 @@ class BoardView extends View {
 
     renderContent () {
         const boardContent = $("<div></div>", {
-            "class": "board-content"
+            [CLASS_NAME]: CSS_BOARD_CONTENT
         });
         var currentView = this.controller.getCurrentView();
         if (currentView != null) {
@@ -46,58 +70,53 @@ class BoardView extends View {
         return boardContent;
     };
 
-    renderAsidePanel () {
-        const asidePanel = $("<div></div>", {
-            "class": "aside-list"
-        });
-
-        const buttons = [
-            {
-                name: "Canvas",
-                onClick: (e) => {
-                    e.preventDefault();
-                    this.handleSelect("Canvas");
-                }
-            },
-            {
-                name: "PDF",
-                onClick: (e) => {
-                    e.preventDefault();
-                    this.handleSelect("PDF");
-                }
-            },
-            {
-                name: "Video",
-                onClick: (e) => {
-                    e.preventDefault();
-                    this.handleSelect("Video");
-                }
-            }
-        ];
-        buttons.forEach((btn) => {
-            const b = $("<div></div>", {
-                "class": "tool-element",
-            }).on("click", btn.onClick.bind(this))
-                .append(Bottom_View.getImage(btn.name.toLowerCase()))
-                .appendTo(asidePanel);
-
-        });
-        return asidePanel;
-    };
+    // renderAsidePanel () {
+    //     const asidePanel = $("<div></div>", {
+    //         [CLASS_NAME]: CSS_ASIDE_LIST
+    //     });
+    //
+    //     const _onClick = (e, boardControlType) => {
+    //       e.preventDefault();
+    //       this.handleSelect(boardControlType);
+    //     };
+    //
+    //     const buttons = [
+    //         {
+    //             name: BOARD_CONTROL_CANVAS,
+    //             onClick: (e) => _onClick(e, BOARD_CONTROL_CANVAS)
+    //         },
+    //         {
+    //             name: BOARD_CONTROL_PDF,
+    //             onClick: (e) => _onClick(e, BOARD_CONTROL_PDF)
+    //         },
+    //         {
+    //             name: BOARD_CONTROL_VIDEO,
+    //             onClick: (e) => _onClick(e, BOARD_CONTROL_VIDEO)
+    //         }
+    //     ];
+    //     buttons.forEach((btn) => {
+    //         $(ELEMENT_DIV, {
+    //             [CLASS_NAME]: CSS_TOOL_ELEMENT,
+    //         }).on(MOUSE_CLICK, btn.onClick.bind(this))
+    //             .append(Bottom_View.getImage(btn.name.toLowerCase()))
+    //             .appendTo(asidePanel);
+    //
+    //     });
+    //     return asidePanel;
+    // };
 
     update () {
-        $(".board-view").replaceWith(this.render());
+        $(`.${CSS_BOARD_VIEW}`).replaceWith(this.render());
     }
-
 
     render () {
         const wrapper = this.renderWrapper();
         wrapper.attr("id", this.controller.model._id);
-        const div = $("<div></div>").addClass("board-main");
+        const div = $(ELEMENT_DIV).addClass(CSS_BOARD_ELEMENT);
         const content = this.renderContent();
-        const asidePanel = this.renderAsidePanel();
-        // const bottom = this.renderBottomPanel();
-        wrapper.append(div.append(asidePanel, content));
+        // const asidePanel = this.renderAsidePanel();
+        // wrapper.append(div.append(asidePanel, content));
+        wrapper.append(div.append(content));
         return wrapper;
     }
 }

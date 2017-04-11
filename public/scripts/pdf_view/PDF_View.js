@@ -37,7 +37,7 @@ class PDF_Vew extends Canvas_View {
             active: props.active,
             showTools: false,
             tools: props.tools,
-            position: "right",
+            position: "left",
         });
         // set view to controller
         this.controller.setView(this);
