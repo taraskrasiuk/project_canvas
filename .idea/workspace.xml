@@ -2,24 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="944885a8-180c-453a-99b7-c4b30fc9af15" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/scripts/painting/shapes/Laser.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/static/images/laser-pointer.png" afterPath="$PROJECT_DIR$/public/static/images/tool_Laser.png" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/build/0.bundle.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/build/0.bundle.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/build/bundle.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/build/bundle.js.map" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/,gitignore" afterPath="$PROJECT_DIR$/,gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/bundle.js" afterPath="$PROJECT_DIR$/public/build/bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/bundle.js.map" afterPath="$PROJECT_DIR$/public/build/bundle.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/app/AppView.js" afterPath="$PROJECT_DIR$/public/scripts/app/AppView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/board/BoardModel.js" afterPath="$PROJECT_DIR$/public/scripts/board/BoardModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/board/BoardView.js" afterPath="$PROJECT_DIR$/public/scripts/board/BoardView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/board/Canvas_View.js" afterPath="$PROJECT_DIR$/public/scripts/board/Canvas_View.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/board/TopView.js" afterPath="$PROJECT_DIR$/public/scripts/board/TopView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/global/BoardControlsTypes.js" afterPath="$PROJECT_DIR$/public/scripts/global/BoardControlsTypes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/PaintController.js" afterPath="$PROJECT_DIR$/public/scripts/painting/PaintController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/PaintView.js" afterPath="$PROJECT_DIR$/public/scripts/painting/PaintView.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/paint-controls/PaintControls.js" afterPath="$PROJECT_DIR$/public/scripts/painting/paint-controls/PaintControls.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/shapes/Brush.js" afterPath="$PROJECT_DIR$/public/scripts/painting/shapes/Brush.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/shapes/Pencil.js" afterPath="$PROJECT_DIR$/public/scripts/painting/shapes/Pencil.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/painting/tools/ToolsModel.js" afterPath="$PROJECT_DIR$/public/scripts/painting/tools/ToolsModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Contoller.js" afterPath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Contoller.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" afterPath="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/styles/style.css" afterPath="$PROJECT_DIR$/public/styles/style.css" />
     </list>
@@ -44,11 +32,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PaintControls.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PaintControls.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/paint-controls/PaintControls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
+            <state relative-caret-position="2850">
               <caret line="204" column="17" selection-start-line="204" selection-start-column="17" selection-end-line="204" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=",gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/,gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -57,18 +55,18 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/styles/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="678" column="56" selection-start-line="678" selection-start-column="56" selection-end-line="678" selection-end-column="56" />
+            <state relative-caret-position="10050">
+              <caret line="670" column="9" selection-start-line="670" selection-start-column="9" selection-end-line="670" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ToolsView.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/scripts/painting/tools/ToolsView.js">
+      <file leaf-file-name="PDF_View.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+            <state relative-caret-position="345">
+              <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -77,18 +75,8 @@
       <file leaf-file-name="ToolsModel.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/tools/ToolsModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
+            <state relative-caret-position="1800">
               <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Canvas_View.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/scripts/board/Canvas_View.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -107,7 +95,7 @@
       <file leaf-file-name="PaintController.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
+            <state relative-caret-position="1395">
               <caret line="102" column="26" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
               <folding />
             </state>
@@ -137,7 +125,7 @@
       <file leaf-file-name="PaintState.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintState.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2415">
+            <state relative-caret-position="570">
               <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
               <folding />
             </state>
@@ -185,7 +173,6 @@
         <option value="$PROJECT_DIR$/public/build/bundle.js" />
         <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Model.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/PaintState.js" />
-        <option value="$PROJECT_DIR$/,gitignore" />
         <option value="$PROJECT_DIR$/public/main.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/public/scripts/global/Controller.js" />
@@ -200,7 +187,6 @@
         <option value="$PROJECT_DIR$/public/scripts/board/TopView.js" />
         <option value="$PROJECT_DIR$/public/scripts/app/AppView.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/PaintView.js" />
-        <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" />
         <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_Contoller.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/shapes/Brush.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/shapes/Pencil.js" />
@@ -208,8 +194,10 @@
         <option value="$PROJECT_DIR$/public/scripts/board/BoardModel.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/tools/ToolsModel.js" />
         <option value="$PROJECT_DIR$/public/scripts/painting/PaintController.js" />
-        <option value="$PROJECT_DIR$/public/styles/style.css" />
         <option value="$PROJECT_DIR$/public/scripts/painting/paint-controls/PaintControls.js" />
+        <option value="$PROJECT_DIR$/public/styles/style.css" />
+        <option value="$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js" />
+        <option value="$PROJECT_DIR$/,gitignore" />
       </list>
     </option>
   </component>
@@ -253,7 +241,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -552,6 +539,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -681,12 +669,13 @@
       <workItem from="1491245517651" duration="3044000" />
       <workItem from="1491425514134" duration="26000" />
       <workItem from="1491837723876" duration="4848000" />
-      <workItem from="1491942689549" duration="7940000" />
+      <workItem from="1491942689549" duration="8312000" />
+      <workItem from="1491977734965" duration="41000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="238169000" />
+    <option name="totallyTimeSpent" value="238582000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1436" height="877" extended-state="6" />
@@ -695,20 +684,20 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2459364" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24203822" sideWeight="0.50530034" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30700636" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3057325" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24585988" sideWeight="0.49469966" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32920793" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -782,13 +771,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/,gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webpack.config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -850,7 +832,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -858,7 +839,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="6" column="55" selection-start-line="6" selection-start-column="55" selection-end-line="6" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -866,7 +846,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -874,7 +853,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1440">
           <caret line="96" column="7" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -882,7 +860,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -890,7 +867,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -914,7 +890,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -930,9 +905,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="40" column="48" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -940,9 +912,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="16" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -950,14 +919,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
           <caret line="144" column="9" selection-start-line="144" selection-start-column="9" selection-end-line="144" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="113" column="63" selection-start-line="113" selection-start-column="63" selection-end-line="113" selection-end-column="63" />
           <folding />
         </state>
       </provider>
@@ -982,7 +943,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -990,7 +950,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1006,7 +965,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1058,7 +1016,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintState.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2415">
+        <state relative-caret-position="570">
           <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
           <folding />
         </state>
@@ -1090,7 +1048,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/painting/tools/ToolsModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
+        <state relative-caret-position="1800">
           <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
           <folding />
         </state>
@@ -1098,24 +1056,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/painting/PaintController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
+        <state relative-caret-position="1395">
           <caret line="102" column="26" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/styles/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="678" column="56" selection-start-line="678" selection-start-column="56" selection-end-line="678" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/painting/paint-controls/PaintControls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
+        <state relative-caret-position="2850">
           <caret line="204" column="17" selection-start-line="204" selection-start-column="17" selection-end-line="204" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/styles/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10050">
+          <caret line="670" column="9" selection-start-line="670" selection-start-column="9" selection-end-line="670" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/scripts/pdf_view/PDF_View.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="31" column="14" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/,gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
           <folding />
         </state>
       </provider>
