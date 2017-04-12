@@ -676,7 +676,7 @@ html, body {
 	height: 100%;
 }
 .pdf-wrapper {
-	cursor: url("../static/images/cursor_point.png") 5 5, pointer;
+	/*cursor: url("../static/images/cursor_point.png") 5 5, pointer;*/
 }
 .pdf-view,
 .paint-view{

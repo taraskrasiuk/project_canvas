@@ -22,10 +22,10 @@ const BUTTON_RECORD = "record";
 const PDF_BUTTONS_TYPE = [BUTTON_NEXT, BUTTON_PREV, BUTTON_LOAD, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_UPLOAD, BUTTON_SAVE, BUTTON_TOGGLE, BUTTON_CLEAR];
 
 const START_POINT = {
-  buttons: [BUTTON_UPLOAD, BUTTON_TOGGLE, BUTTON_RECORD, BUTTON_LOAD]
+  buttons: [BUTTON_UPLOAD,BUTTON_TOGGLE, BUTTON_RECORD]
 };
 const PDF_LOAD = {
-    buttons: [BUTTON_DOWNLOAD, BUTTON_PREV, BUTTON_NEXT, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE]
+    buttons: [BUTTON_DOWNLOAD, BUTTON_NEXT,BUTTON_PREV, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE]
 };
 
 class PDF_Vew extends Canvas_View {
@@ -129,14 +129,15 @@ class PDF_Vew extends Canvas_View {
                     self.showTools = !self.showTools;
                     super.update();
                 }
-            },
-                {
-                    type: "button",
-                    label: "record",
-                    onClick: (e) => {
-                        this.controller.startRecordDraw();
-                    }
-                }];
+            }
+                // {
+                //     type: "button",
+                //     label: "record",
+                //     onClick: (e) => {
+                //         this.controller.startRecordDraw();
+                //     }
+                // }
+                ];
         this._bottomControls = {
             items: this._getItems(),
             optionsItems: []
