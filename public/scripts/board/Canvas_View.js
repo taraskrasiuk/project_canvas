@@ -10,7 +10,7 @@ class Canvas_View extends View {
         // TODO : width
         this.canvas.style.marginLeft = "59px";
         // TODO find way for dynamic width and height canvas
-        this.canvas.width = 542;
+        this.canvas.width = 581;
         this.canvas.height = 376;
         this.controller = new props.controller({canvas: this.canvas, modelConstructor: props.modelConstructor});
         // set view to controller
