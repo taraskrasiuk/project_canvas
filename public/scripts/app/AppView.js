@@ -15,6 +15,9 @@ import Bottom_View from "../board/Bottom_View";
 const CSS_MAIN_APP = "main-app";
 
 
+const FULL = "full";
+const MIDDLE = "middle";
+
 class AppView extends View {
     constructor(props = {}) {
         super({
@@ -42,6 +45,21 @@ class AppView extends View {
             boardControls: null,
             head: "Board"
         });
+    }
+    // TODO resize if FULL , and if not update canvas
+    attachResize () {
+        if (this.currentScreen == FULL) {
+            window.addEventListener("resize", this._resizeEvent, false);
+        } else {
+            window.removeEventListener(this._resizeEvent);
+        }
+    }
+    _resizeEvent () {
+        var currentBoard = this.controller.getCurrentBoard();
+        var currentView = currentBoard.currentView;
+        if (currentBoard && currentView == "Canvas") {
+            console.log("UPDATE");
+        }
     }
 
     render (id) {
@@ -134,6 +152,7 @@ class AppView extends View {
         });
         return board;
     };
+
 
     update (board) {
         const main = $("#" + this._id);

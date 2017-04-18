@@ -20,12 +20,19 @@ class ToolsView{
         this.controller = new ToolsController({
             tools: props.tools || ["brush"],
             handleTool: this.props.handleTool,
-            handleOption: this.props.handleOption
+            handleOption: this.props.handleOption,
+            // ref
+
         });
+        this.handlePDFUpload= this.props.handlePDFUpload;
+        this.handleImageUpload= this.props.handleImageUpload;
         //set view to controller
         this.controller.setView(this);
         this.position = position;
-        this.absolutePositions = {};
+        // this.absolutePositions = {};
+
+        this.handleHistoryNext = this.props.handleHistoryNext;
+        this.handleHistoryPrev = this.props.handleHistoryPrev;
 
     }
 
@@ -116,6 +123,20 @@ class ToolsView{
         }
     }
 
+    //TODO replact
+    _getActionInput (handler, label) {
+        const input = $("<input type=\"file\" />");
+        input.on("change", handler);
+        input.attr("id", label);
+        input.css({display: "none"});
+        const img = $("<label></label>", {"for": label}).append(Bottom_View.getImage(label), input);
+        // img.on("click", (e) => {
+        //     e.preventDefault();
+        //     $("#"+label).click();
+        // });
+        return img;
+    }
+
     render() {
         const wrapper = $("<div></div>", {
             "class": "tools-wrapper"
@@ -138,7 +159,18 @@ class ToolsView{
         const $button = $("<div></div>", {
             "class": "tool-element"
         }).on("click", this.handleToggleOptions.bind(this)).append(Bottom_View.getImage("toggle"));
-            wrapper.append($button);
+        wrapper.append($button);
+
+        const pdfButton = this._getActionInput((e) => this.handlePDFUpload(e), "pdf");
+        wrapper.append(pdfButton);
+
+        const imgButton = this._getActionInput((e) => this.handleImageUpload(e), "canvas");
+        wrapper.append(imgButton);
+
+        const backButton = $("<div></div>").append(Bottom_View.getImage("prev").on("click", (e => this.props.handleHistoryPrev(e))));
+        const nextButton = $("<div></div>").append(Bottom_View.getImage("next").on("click", (e => this.props.handleHistoryNext(e))));
+        wrapper.append(backButton, nextButton);
+
         if (this.controller.getCurrentTool() != null) {
             $(ELEMENT_DIV, {
                 "class": "tools-absolute"

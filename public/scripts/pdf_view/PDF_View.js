@@ -1,5 +1,6 @@
 import $ from "jquery";
 import {
+    ELEMENT_SPAN,
     ELEMENT_CANVAS,
     ELEMENT_DIV
 } from "../Constants";
@@ -25,8 +26,9 @@ const START_POINT = {
   buttons: [BUTTON_UPLOAD,BUTTON_TOGGLE, BUTTON_RECORD]
 };
 const PDF_LOAD = {
-    buttons: [BUTTON_DOWNLOAD, BUTTON_NEXT,BUTTON_PREV, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE]
+    buttons: [BUTTON_DOWNLOAD, BUTTON_NEXT,BUTTON_PREV, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE, BUTTON_RECORD]
 };
+
 
 class PDF_Vew extends Canvas_View {
     constructor(props = {}) {
@@ -130,13 +132,6 @@ class PDF_Vew extends Canvas_View {
                     super.update();
                 }
             }
-                // {
-                //     type: "button",
-                //     label: "record",
-                //     onClick: (e) => {
-                //         this.controller.startRecordDraw();
-                //     }
-                // }
                 ];
         this._bottomControls = {
             items: this._getItems(),
@@ -161,11 +156,6 @@ class PDF_Vew extends Canvas_View {
         return this.bottomItems.filter(b => this._currentBottomView.buttons.indexOf(b.label) != -1);
     }
 
-
-    /**
-     * upload file
-     * @param e
-     */
     handleUploadFile (e) {
         this.controller.uploadFile(e);
     }
@@ -179,17 +169,13 @@ class PDF_Vew extends Canvas_View {
                 optionsItems: [{text: `${currentPage} / ${totalPages}`}]
             };
             this.bottomControl.option = this._bottomControls ;
-            // this.controls.items = this._getItems();
-            // this.controls.optionItems = [].concat({
-            //     text: `${currentPage} / ${totalPages}`
-            // });
             this.bottomControl.update();
 
         }
     }
 
     renderTopPages () {
-        return $("<span></span>", {
+        return $(ELEMENT_SPAN, {
             text: `${this.controller.currentPage} / ${this.controller.model.pdf.numPages}`
         });
     }

@@ -20,6 +20,13 @@ class Control {
         this.state = model;
         this.tool = tool;
     }
+
+    _data (data) {
+        if (data != null) {
+            const d = JSON.stringify(data);
+            this.state.sendData(d);
+        }
+    }
 }
 
 export class BackgroundControl extends Control{
@@ -48,7 +55,8 @@ export class BackgroundControl extends Control{
         switch(data.type) {
             case "backgroundColor":
                 this.backgroundColor = data.value;
-                this.state.setBackgroundColor(this.backgroundColor);
+                this.state.setBackgroundColor(this.backgroundColor, true);
+                // this.state.setTemp({backgroundColor: this.backgroundColor});
                 break;
             case "scale":
                 this.scale = data.value;
@@ -57,7 +65,8 @@ export class BackgroundControl extends Control{
             case "upload":
                 this.setImage(data.value);
                 this.upload = data.value;
-                this.state.setUpload(this.upload);
+                this.state.setUpload(this.upload, true);
+                // this.state.setTemp({backgroundImage: this.upload});
                 break;
         }
     }
@@ -80,6 +89,7 @@ export class ShapeControl extends Control{
         switch (type) {
             case "Rectangle":
                 this.temp = new Rectangle({
+                    type: "Rectangle",
                     ctx: context,
                     strokeStyle: context.strokeStyle,
                     lineWidth: context.lineWidth,
@@ -92,6 +102,7 @@ export class ShapeControl extends Control{
                 break;
             case "Circle":
                 this.temp = new Ellipsis({
+                    type: "Ellipsis",
                     ctx: context,
                     strokeStyle: context.strokeStyle,
                     lineWidth: context.lineWidth,
@@ -104,6 +115,7 @@ export class ShapeControl extends Control{
                 break;
             case "Triangle":
                 this.temp = new Triangle({
+                    type: "Triangle",
                     ctx: context,
                     strokeStyle: context.strokeStyle,
                     lineWidth: context.lineWidth,
@@ -119,6 +131,8 @@ export class ShapeControl extends Control{
         console.log(this.tool);
         this.temp.setX(x).setY(y).setW(0).setH(0);
         this.state.holder.addShape(this.temp);
+        this.state.setTemp(this.temp);
+
     }
 
     onMouseUp({x, y}) {
@@ -127,8 +141,10 @@ export class ShapeControl extends Control{
             this.state.holder.pop();
         }
         this.temp.setW(x - this.temp.x).setH(y - this.temp.y);
+        this.state.setTemp(this.temp);
         this.state.draw();
         this.temp = null;
+        this.state.setTemp(null);
     }
 
     onMouseMove({x, y}) {
@@ -160,6 +176,7 @@ export class  BrushControl extends Control {
         switch (type) {
             case "Pencil":
                 this.temp = new Pencil({
+                    type: "Pencil",
                     ctx: context,
                     strokeStyle: context.strokeStyle,
                     lineWidth: context.lineWidth,
@@ -170,6 +187,7 @@ export class  BrushControl extends Control {
                 break;
             case "Brush":
                 this.temp = new Brush({
+                    type: "Brush",
                     ctx: context,
                     strokeStyle: context.strokeStyle,
                     lineWidth: context.lineWidth,
@@ -180,6 +198,7 @@ export class  BrushControl extends Control {
                 break;
             case "Laser":
                 this.temp = new Brush({
+                    type: "Laser",
                     ctx: context,
                     strokeStyle: "#f00",
                     lineWidth: 10,
@@ -193,6 +212,8 @@ export class  BrushControl extends Control {
         console.log(this.tool);
         this.temp.setX(x).setY(y);
         this.state.holder.addShape(this.temp);
+        this.state.setTemp(this.temp);
+
         if (type == "Laser") {
             const self = this;
             this.interval = setInterval(() => {
@@ -225,6 +246,8 @@ export class  BrushControl extends Control {
             this.state.stateValid = true;
         }
         this.temp = null;
+        this.state.setTemp(this.temp);
+
     }
 
     onMouseMove({x, y}) {
@@ -273,6 +296,7 @@ export class SelectControl extends Control{
             this.isDragging = true;
             this.isResizing = false;
         }
+        this.state.setTemp(selected);
 
     }
 
@@ -280,6 +304,7 @@ export class SelectControl extends Control{
         this.isDown = false;
         this.isDragging = false;
         this.isResizing = false;
+        this.state.setTemp(null);
 
     }
 
@@ -373,6 +398,7 @@ export class EraseControl extends Control {
         const context = this.state.getContext();
         const type = Utils.firstCharTOUpperCase(this.tool.getSelected());
         this.temp = new Brush({
+            type: "Erase",
             ctx: context,
             strokeStyle: "#ffffff",
             lineWidth: context.lineWidth,
@@ -384,6 +410,7 @@ export class EraseControl extends Control {
         console.log(this.tool);
         this.temp.setX(x).setY(y);
         this.state.holder.addShape(this.temp);
+        this.state.setTemp(this.temp);
     }
 
     onMouseUp({x, y}) {
@@ -394,6 +421,7 @@ export class EraseControl extends Control {
         this.temp.addPath({x, y});
         this.state.draw();
         this.temp = null;
+        this.state.setTemp(this.temp);
     }
 
     onMouseMove({x, y}) {
@@ -425,12 +453,14 @@ export class TextControl extends Control{
         const strokeStyle = this.state.context.strokeStyle;
         let text = this.state.context.text;
         if (text.length > 0) {
-            let textCls = new Text({ctx: context, fillShape, font, text, x, y});
+            let textCls = new Text({ctx: context, fillShape, font, text, x, y, type: "Text"});
             this.state.holder.addShape(textCls);
+            this.state.setTemp(textCls);
             this.state.draw();
         }
     }
     onMouseUp ({x,y}) {
+        this.state.setTemp(null);
         return ;
     }
     onMouseMove({x,y}) {
@@ -452,6 +482,7 @@ export class LinesControl extends Control {
     onMouseDown({x, y}) {
         const context = this.state.getContext();
         this.temp = new Line({
+            type: "Line",
             ctx: context,
             strokeStyle: context.strokeStyle,
             lineWidth: context.lineWidth,
@@ -463,6 +494,7 @@ export class LinesControl extends Control {
         console.log(this.tool);
         this.temp.setX(x).setY(y);
         this.state.holder.addShape(this.temp);
+        this.state.setTemp(this.temp);
     }
 
     onMouseUp({x, y}) {
@@ -477,6 +509,7 @@ export class LinesControl extends Control {
             this.state.draw();
         }
         this.temp = null;
+        this.state.setTemp(this.temp);
     }
 
     onMouseMove({x, y}) {

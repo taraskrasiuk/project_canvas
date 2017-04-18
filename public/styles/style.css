@@ -332,7 +332,7 @@ html, body {
 	height: 100%;
 }
 .pdf-wrapper {
-	/*cursor: url("../static/images/undefined.png") 32 32, pointer;*/
+	/*cursor: url("../static/images/record.png") 32 32, pointer;*/
 }
 .pdf-view,
 .paint-view{
@@ -468,7 +468,7 @@ html, body {
 }
 .board-view {
 	width: 100%;
-	min-height: 100%;
+	/*min-height: 100%;*/
 	flex: 10;
 	display: flex;
 	border: 1px solid #333;
@@ -532,10 +532,11 @@ html, body {
 
 /*REFACTOR STYLE*/
 #main_board {
-	min-width: 640px;
-	min-height: 460px;
-	max-width: 540px;
-	max-height: 460px;
+	/*min-width: 640px;*/
+	/*min-height: 460px;*/
+	/*max-width: 960px;*/
+	/*max-height: 700px;*/
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 
@@ -551,6 +552,15 @@ html, body {
 	border-top: .2rem solid darkslategrey;
 	border-bottom: .2rem solid darkslategrey;
 }
+
+.main-board .middle {
+
+}
+.main-board .full {
+	width: 100%;
+	height: 100%;
+}
+
 /*TOP-PANEL*/
 .top-panel {
 	display: flex;
@@ -676,7 +686,7 @@ html, body {
 	height: 100%;
 }
 .pdf-wrapper {
-	/*cursor: url("../static/images/undefined.png") 5 5, pointer;*/
+	/*cursor: url("../static/images/record.png") 5 5, pointer;*/
 }
 .pdf-view,
 .paint-view{

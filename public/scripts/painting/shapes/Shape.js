@@ -2,8 +2,8 @@ import BoundBox from "./BoundBox";
 import PaintObject from "./PaintObject";
 
 class Shape extends PaintObject {
-    constructor({x, y, w, h, ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill}) {
-        super({x,y, ctx});
+    constructor({x, y, w, h, ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill, type}) {
+        super({x,y, ctx, type});
         this.w = w;
         this.h = h;
 
@@ -25,6 +25,8 @@ class Shape extends PaintObject {
         this.boundSize = 4;
         this.boundBoxes = [];
     }
+
+
 
     setW(newW) {
         this.w = Math.abs(newW);

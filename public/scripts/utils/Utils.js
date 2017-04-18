@@ -2,7 +2,7 @@ import BoardView from "../board/BoardView";
 class Utils {
 
     static getId (a,b) {
-        return Math.round(Math.random() * ((a * 42) >>2 + ((b + 42) - Math.round(Math.random() * (a - 2))))).toString() + "_&_hash";
+        return Math.random().toString(16).substr(2,10);
     }
 
     static firstCharTOUpperCase (str) {

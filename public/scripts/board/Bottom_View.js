@@ -1,6 +1,17 @@
 import $ from "jquery";
 import View from "../global/View";
 import FileUploadField from "../painting/tools/InputFields/FileUploadField";
+import {
+    ELEMENT_DIV,
+    ELEMENT_LI,
+    CLASS_NAME,
+    MOUSE_CLICK
+} from "../Constants";
+
+const BOTTOM_BUTTON = "button";
+const BOTTOM_INPUT = "input";
+const BOTTOM_LINK = "link";
+const BOTTOM_TEXT = "text";
 
 class Bottom_View extends View{
     constructor(props = {}) {
@@ -47,6 +58,22 @@ class Bottom_View extends View{
         });
     }
 
+
+    _renderBottomItem({type, label, onClick, onUpload, onChange}) {
+        let element = null;
+        switch (type) {
+            case BOTTOM_BUTTON:
+                element = $(ELEMENT_DIV, {
+                    [CLASS_NAME]: "tool-element"
+                }).on(MOUSE_CLICK, onClick)
+                    .append(Bottom_View.getImage(label));
+                break;
+            case BOTTOM_INPUT:
+                element = $
+
+        }
+    }
+    //TODO : refactor
     renderItem(props = {}) {
         const {type, label, onClick, className, onUpload, onChange} = props;
         if (type == "button") {

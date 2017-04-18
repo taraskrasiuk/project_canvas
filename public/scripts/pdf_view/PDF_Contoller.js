@@ -1,4 +1,3 @@
-import PDF_Model from "./PDF_Model";
 import PaintController from "../painting/PaintController";
 
 class PDF_Controller extends PaintController{
@@ -30,10 +29,6 @@ class PDF_Controller extends PaintController{
 
     uploadFile (e) {
         this.model.upload(e, this.renderPage.bind(this));
-    }
-
-    update () {
-
     }
 
     static _getViewport (page, canvas, scale) {

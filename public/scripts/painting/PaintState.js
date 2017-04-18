@@ -1,6 +1,15 @@
 import Canvas_Context from "../board/Canvas_Context";
 import ShapesHolder from "./ShapesHolder";
+import PDFJS from "pdfjs-dist";
 import io from "socket.io-client";
+import Rectangle from "./shapes/Rectangle";
+import Triangle from "./shapes/Triangle";
+import Ellipsis from "./shapes/Ellipsis";
+import Pencil from "./shapes/Pencil";
+import Brush from "./shapes/Brush";
+import Laser from "./shapes/Laser";
+import Line from "./shapes/Line";
+import Text from "./shapes/Text";
 
 class CanvasRecord {
     constructor(props = {}) {
@@ -45,9 +54,11 @@ class PaintState {
         this.holder = new ShapesHolder();
         this.selected = null;
         this.canvas = props.canvas;
-        this.FPS = 60;
+        this.FPS = 40; // 1000 / 40 = 25FPS
 
         const self = this;
+
+        this.currentItem = null;
 
 
         this.socketRecord = new CanvasRecord({
@@ -68,7 +79,37 @@ class PaintState {
                 console.log("INTERVAL STARS");
             }
         }, self.FPS);
+
+
+        // PDF
+
+        this.pageRendering = false;
+        this.pageRendering = null;
+        this.scale = 1;
+
+        this.pdf = null;
+        this.pageNum = 1;
     }
+
+
+
+    setTemp (t) {
+        this.__last = t;
+        // if (this.socketRecord.isRecord && this.__last != null) {
+        //     this.socketRecord.socketEmit(JSON.stringify(this.__last));
+        // }
+    }
+    getFromTemp (_data) {
+        var parse = JSON.parse(_data);
+        if (parse != null) {
+            if (parse._id != null) {
+                console.log(_data);
+            } else {
+                console.log(_data);
+            }
+        }
+    }
+
     recStart () {
         this.socketRecord.startRecord();
     }
@@ -78,16 +119,87 @@ class PaintState {
 
     takeSnapShot () {
         // TODO:
-        return this.canvas.toDataURL("image/png");
+        // return this.canvas.toDataURL("image/png");
+        // if (this.socketRecord.isRecord && this.__last != null) {
+        //     this.socketRecord.socketEmit(JSON.stringify(this.__last));
+        // }
+        if (this.__last != null) {
+            return JSON.stringify(this.__last);
+        }
     }
 
     getSnapShot (dataUrl) {
+        const data = JSON.parse(dataUrl);
+        if (data && data._id) {
 
-        const img = new Image();
-        img.src = dataUrl;
-        var context = this.context.getContext();
-        this.context.clearContext();
-        context.drawImage(img, 0, 0);
+            const obj = this.holder.getShapeById(data._id);
+            data.ctx = this.context.context;
+
+            if (obj[0]) {
+                this.holder.merge(data);
+            } else {
+                let cls;
+
+                switch (data._type) {
+                    case "Rectangle":
+                        cls = new Rectangle(data);
+                        break;
+                    case "Triangle":
+                        cls = new Triangle(data);
+                        break;
+                    case "Ellipsis":
+                        cls = new Ellipsis(data);
+                        break;
+                    case "Pencil":
+                        cls = new Pencil(data);
+                        break;
+                    case "Brush":
+                        cls = new Brush(data);
+                        break;
+                    case "Laser":
+                        cls = new Laser(data);
+                        break;
+                    case "Line":
+                        cls = new Line(data);
+                        break;
+                    case "Erase":
+                        cls = new Brush(data);
+                        break;
+                    case "Text":
+                        cls = new Text(data);
+                        break;
+
+                }
+                if (data.isBounded != null) {
+                    cls.isBounded = data.isBounded;
+                }
+                cls._id = data._id;
+                cls._type = data._type;
+                // cls.ctx = this.getContext();
+
+                this.holder.addShape(cls);
+
+            }
+
+        } else if (data && data.backgroundImage) {
+            this.setUpload(data.backgroundImage, false);
+        } else if (data && data.backgroundColor) {
+            this.setBackgroundColor(data.backgroundColor, false);
+        }
+        this.draw();
+
+
+        //
+        //
+        // const img = new Image();
+        // img.src = dataUrl;
+        // var context = this.context.getContext();
+        // this.context.clearContext();
+        // context.drawImage(img, 0, 0);
+        // if (this.socketRecord.isRecord && this.__last != null) {
+        //     this.socketRecord.socketEmit(JSON.stringify(this.__last));
+        // }
+
     }
 
     startUpdateState () {
@@ -193,11 +305,17 @@ class PaintState {
             }
             sh.draw();
         });
-        if (this.socketRecord.isRecord) {
+        if (this.socketRecord.isRecord && this.__last) {
             this.socketRecord.sendData(this.takeSnapShot());
         }
     }
     clearAll () {
+        this.pageRendering = false;
+        this.pageRendering = null;
+        this.scale = 1;
+
+        this.pageNum = 1;
+        this.pdf = null;
         this.holder.clearAll();
         this.context.clearAll();
     }
@@ -205,7 +323,8 @@ class PaintState {
         this.context.update(optionData);
         console.log("PAINSTATE update:", optionData);
     }
-    setBackgroundColor(val) {
+    setBackgroundColor(val, bool) {
+        // this.context.clearContext();
         if (this.context.backgroundImage != null) {
             this.context.backgroundImage = null;
         }
@@ -214,22 +333,78 @@ class PaintState {
         const ctx = this.getContext();
         ctx.fillRect(0, 0, this.context.width, this.context.height);
         this.draw();
+        // SOCKET EMIT ****
+        if (this.socketRecord.isRecord && bool) {
+            var value = {
+                backgroundColor: val
+            };
+            this.socketRecord.socket.emit("draw", JSON.stringify(value));
+        }
     }
     setScale(val) {
         this.context.clearContext();
         this.context.update({type: "scale", value: parseFloat(val)});
         this.draw();
     }
-    setUpload(img) {
+    setUpload(img, bool) {
+        // this.context.clearContext();
         if (this.context.backgroundColor != null) {
             this.context.backgroundColor = null;
         }
-        this.context.backgroundImage = img;
-        this.context.clearContext();
+
+        if (typeof img == "string") {
+            let i = new Image();
+            i.src = img;
+            this.context.backgroundImage = i;
+        } else {
+            this.context.backgroundImage = img.src;
+        }
         this.draw();
+
+        if (this.socketRecord.isRecord && bool) {
+            var value = {backgroundImage: this.context.backgroundImage};
+            this.socketRecord.socket.emit("draw", JSON.stringify(value));
+        }
+        // SOCKET EMIT ****
+        // this.context.clearContext();
+
     }
     getContext() {
         return this.context.context;
+    }
+
+    // PDF MODEL
+
+    loadPDF (data, cb) {
+        const self = this;
+        let c = PDFJS.getDocument(data).then(pdfDoc_ => {
+            self.pdf = pdfDoc_;
+            // callback(self.pdf).then(this.promise);
+            cb();
+        });
+    }
+
+    upload (event, callback) {
+        const file = event.target.files[0];
+        let reader = null;
+        const self = this;
+        if (file != null) {
+            reader = new FileReader();
+            reader.onload = () => {
+                let typedArray = new Uint8Array(reader.result);
+                self.loadPdfFile(typedArray, callback);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    }
+
+    loadPdfFile (data, callback) {
+        const self = this;
+        let c = PDFJS.getDocument(data).then(pdfDoc_ => {
+            self.pdf = pdfDoc_;
+            // callback(self.pdf).then(this.promise);
+            callback();
+        });
     }
 }
 

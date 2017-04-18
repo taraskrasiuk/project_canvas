@@ -1,9 +1,12 @@
 import Shape from "./Shape";
 
 class Rectangle extends Shape{
-    constructor({x,y,w,h,ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill}) {
-        super({x,y,w,h, ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill});
+    constructor({x,y,w,h,ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill, type, _id}) {
+        super({x,y,w,h, ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill, type, _id});
         this.isBounded = false;
+        if (_id) {
+            this._id = _id;
+        }
     }
 
     draw () {

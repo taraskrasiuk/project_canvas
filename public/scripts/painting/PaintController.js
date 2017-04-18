@@ -38,6 +38,38 @@ class PaintController extends Controller{
 
         this.controls = {};
         this.activeControl = null;
+
+        // PDF
+
+        this.ctx = props.ctx;
+        this.canvas = props.canvas;
+        this.scale = 1;
+        this.currentPage = 1;
+        this.totalPages = 0;
+        this.pageRendering = false;
+        this.pageNumPending = null;
+    }
+
+    handlePDFUpload (data) {
+        this.uploadFile(data);
+    }
+
+    handleImageUpload (e) {
+        const self = this;
+        const reader = new FileReader();
+        const img = new Image();
+        // reader.onload = (e) => {
+        //     img.onload = () => {
+        //
+        //     };
+        // };
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onloadend = (e) => {
+            img.src = e.target.result;
+            // cb({name: self.name, value: img});
+            this.model.setUpload(img, true);
+
+        }
     }
 
     startRecordDraw () {
@@ -154,6 +186,7 @@ class PaintController extends Controller{
         this.updatedPositions.y = y;
         console.log("PAINT CONTROLLER: updatedPositions: " + this.updatedPositions);
         if (this.activeControl != null && this.activeControl.listenersOn) {
+            this.model.selectedItem =
             this.activeControl.onMouseMove(this.updatedPositions);
         }
     }
@@ -167,5 +200,119 @@ class PaintController extends Controller{
     setSelectTool(tool) {
         this.selectedTool = tool;
     }
+
+
+
+
+    // PDF CONTROLLER
+    _getPropsFileProps () {
+        return {
+            totalPages: this.model.pdf.numPages,
+            currentPage: this.currentPage,
+            fileName: this.model.pdf
+        }
+    }
+
+    uploadFile (e) {
+        this.model.upload(e, this.renderPage.bind(this));
+    }
+
+    static _getViewport (page, canvas, scale) {
+        // TODO: need to rewrite
+        const viewport = page.getViewport(scale);
+        canvas.height = viewport.height;
+        const _scale = canvas.width / viewport.width;
+        return page.getViewport(_scale);
+    }
+    static _calcCanvasOffset () {
+        const wrapper = document.querySelector(".paint-view");
+        if (wrapper != null) {
+            return {
+                w: wrapper.offsetWidth,
+                h: wrapper.offsetHeight
+            };
+        }
+    }
+
+    zoomIn () {
+        this.scale-=.5;
+        this.renderPage();
+        this.model.clearContext();
+    }
+
+    zoomOut () {
+        this.scale+=.5;
+        this.renderPage();
+        this.model.context.clearContext();
+    }
+
+    clear () {
+        // this.model.pdf = null;
+        this.model.context.clearContext();
+    }
+    _image (p) {
+        const self = this;
+        const _p = new Promise((res, rej) => {
+            self.pageRendering = false;
+            // self.updateViewCallback(self._getPropsFileProps());
+            self.view.update(self._getPropsFileProps());
+            if (self.pageNumPending !== null) {
+                self.renderPage();
+                self.pageNumPending = null;
+            }
+            res({})
+        });
+        _p.then(p => {
+            console.log(p);
+            // const c = self.model.getContext();
+            self.model.setUpload(self.model.canvas.toDataURL(), true);
+        })
+    }
+    renderPage() {
+        this.pageRendering = true;
+        const self = this;
+        self.model.pdf.getPage(self.currentPage).then(page => {
+            const offset = PaintController._calcCanvasOffset();
+            self.canvas.width = offset.w;
+            self.canvas.height = offset.h;
+
+            const viewport = PaintController._getViewport(page, self.canvas, self.scale);
+
+            const renderContext = {
+                canvasContext: self.model.getContext(),
+                viewport: viewport
+            };
+            let render = page.render(renderContext);
+
+            render.promise.then(self._image.bind(self));
+        });
+
+    }
+
+    queueRenderPage(num) {
+        if (this.pageRendering) {
+            this.pageNumPending = num;
+        } else {
+            this.renderPage();
+        }
+    }
+
+    nextPage () {
+        if (this.currentPage >= this.model.pdf.numPages) {
+            return;
+        }
+        this.currentPage++;
+        this.queueRenderPage(this.currentPage);
+    }
+
+    prevPage() {
+        if (this.currentPage <= 1) {
+            return;
+        }
+        this.currentPage--;
+        this.queueRenderPage(this.currentPage);
+    }
+
+
 }
 export default PaintController;

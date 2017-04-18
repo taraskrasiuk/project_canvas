@@ -103,14 +103,14 @@ class Canvas_Context {
     clearContext() {
         this.context.clearRect(0, 0, this.width, this.height);
         if (this.backgroundImage == null && this.backgroundColor != null) {
-            this.context.save();
+            // this.context.save();
             this.context.fillStyle = this.backgroundColor;
             this.context.fillRect(0, 0, this.width, this.height);
-            this.context.globalAlpha = 1;
-            this.context.restore();
+            // this.context.globalAlpha = 1;
+            // this.context.restore();
         }
         if (this.backgroundImage != null && this.backgroundColor == null) {
-            this.context.save();
+            // this.context.save();
             if (this.backgroundImage.data != null) {
                 this.context.putImageData(this.backgroundImage, 0, 0);
             } else {
@@ -122,8 +122,8 @@ class Canvas_Context {
                     this.context.drawImage(img, 0, 0);
                 }
             }
-            this.context.globalAlpha = 1;
-            this.context.restore();
+            // this.context.globalAlpha = 1;
+            // this.context.restore();
         }
     }
 

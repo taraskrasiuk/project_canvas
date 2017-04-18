@@ -1,7 +1,7 @@
 import PaintObject from "./PaintObject";
 class Path extends PaintObject{
-    constructor({x,y, ctx, strokeStyle, lineWidth, globalAlpha, shadowColor, shadowBlur}) {
-        super ({x, y, ctx});
+    constructor({x,y, ctx, strokeStyle, lineWidth, globalAlpha, shadowColor, shadowBlur, type}) {
+        super ({x, y, ctx, type});
         this.paths = [];
 
         this.strokeStyle = strokeStyle;

@@ -11,7 +11,7 @@ io.on("connection", function(socket) {
 		console.log("user disconnect");
 	});
 	socket.on("draw", function(data) {
-		console.log("DATA send");
+		console.log("DATA send" + data);
 		socket.broadcast.emit("draw", data);
 	});
 });

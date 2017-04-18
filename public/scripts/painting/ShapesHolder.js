@@ -87,6 +87,20 @@ class ShapesHolder {
         }
     }
 
+    getShapeById (id) {
+        return this.shapes.filter(sh => sh._id == id);
+    }
+
+    merge (newObj) {
+        for(let i = 0; i < this.shapes.length; i++) {
+            if (this.shapes[i]._id && this.shapes[i]._id == newObj._id) {
+                let n = Object.assign(this.shapes[i], newObj);
+                n.ctx = this.shapes[i].ctx;
+                this.shapes[i] = n;
+            }
+        }
+    }
+
     pop() {
         this.shapes.pop();
     }

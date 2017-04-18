@@ -1,8 +1,8 @@
 import Shape from "./Shape";
 
 class Triangle extends Shape {
-    constructor({x,y,w,h,ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill}) {
-        super({x,y,w,h,ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill});
+    constructor({x,y,w,h,ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill, type}) {
+        super({x,y,w,h,ctx, strokeStyle, lineWidth, fillStyle, globalAlpha, shadowBlur, shadowColor, fill, type});
         this.isBounded = false;
         this.sides = 3;
         this.pathes = this.getPath();

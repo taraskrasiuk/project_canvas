@@ -4,6 +4,26 @@ import PaintState from "./PaintState";
 import Canvas_View from "../board/Canvas_View";
 import Bottom_View from "../board/Bottom_View";
 
+
+const BUTTON_NEXT = "next";
+const BUTTON_PREV = "prev";
+const BUTTON_LOAD = "load";
+const BUTTON_ZOOM_IN = "zoom-in";
+const BUTTON_ZOOM_OUT = "zoom-out";
+const BUTTON_UPLOAD = "upload";
+const BUTTON_DOWNLOAD = "download";
+const BUTTON_SAVE = "save";
+const BUTTON_TOGGLE = "toggle";
+const BUTTON_CLEAR = "clear";
+const BUTTON_RECORD = "record";
+
+const START_POINT = {
+    buttons: [BUTTON_UPLOAD,BUTTON_TOGGLE, BUTTON_RECORD]
+};
+const PDF_LOAD = {
+    buttons: [BUTTON_DOWNLOAD, BUTTON_NEXT,BUTTON_PREV, BUTTON_ZOOM_IN, BUTTON_ZOOM_OUT, BUTTON_SAVE, BUTTON_CLEAR, BUTTON_TOGGLE]
+};
+
 class PaintView extends Canvas_View{
     constructor (props ={}) {
         super({
@@ -23,7 +43,10 @@ class PaintView extends Canvas_View{
         this._element = elementId;
         this.currentTool = null;
         const self = this;
-        this.controlsItems = [
+
+        this._currentBottomView = START_POINT;
+
+        this.bottomItems = [
             {
                 type: "link",
                 label: "download",
@@ -47,15 +70,12 @@ class PaintView extends Canvas_View{
                 label: "clear",
                 onClick: (e) => {
                     e.preventDefault();
+                    this._currentBottomView = START_POINT;
+                    this._bottomControls  = {
+                        items: this._getItems(),
+                        optionsItems: []
+                    };
                     this.controller.clearAll();
-                }
-            },
-            {
-                type: "button",
-                label: "prev",
-                onClick: (e) => {
-                    e.preventDefault();
-                    this.controller.historyBack();
                 }
             },
             {
@@ -63,19 +83,36 @@ class PaintView extends Canvas_View{
                 label: "next",
                 onClick: (e) => {
                     e.preventDefault();
-                    this.controller.historyNext();
-                }
+                    this.controller.nextPage((num) => {
+                        this.currentPage = num;
+                        $("#totalaPages").text(this.currentPage + "/" + this.totalPages);
+                    });
+                },
+                className: "bottom-button"
             },
             {
                 type: "button",
-                lable: "record",
+                label: "prev",
                 onClick: (e) => {
+                    e.preventDefault();
+                    this.controller.prevPage(num => {
+                        this.currentPage = num;
+                        $("#totalaPages").text(this.currentPage + "/" + this.totalPages);
+                    });
+                },
+                className: "bottom-button"
+            },
+            {
+                type: "button",
+                label: "record",
+                onClick: (e) => {
+                    e.preventDefault();
                     this.controller.startRecordDraw();
                 }
             }
         ];
         this._bottomControls  = {
-            items: this.controlsItems || [],
+            items: this.bottomItems || [],
             optionItems: []
         };
         this.bottomControl = new Bottom_View(this._bottomControls);
@@ -97,12 +134,36 @@ class PaintView extends Canvas_View{
         this.bottomControl.update();
     }
 
+    _getItems () {
+        return this.bottomItems.filter(b => this._currentBottomView.buttons.indexOf(b.label) != -1);
+    }
+
+    update ({currentPage, totalPages}) {
+        if (totalPages > 0) {
+            this._currentBottomView = PDF_LOAD;
+            this.items = this._getItems();
+            this._bottomControls  = {
+                items: this._getItems(),
+                optionsItems: [{text: `${currentPage} / ${totalPages}`}]
+            };
+            this.bottomControl.option = this._bottomControls ;
+            this.bottomControl.update();
+
+        }
+    }
+    initBottomControls () {
+        return {
+            items: this._getItems(),
+            optionsItems: []
+        };
+    }
 
     /**
      *
      * @returns {jQuery|HTMLElement}
      */
     render () {
+        this.bottomControl.option = this.initBottomControls();
         this.bottomControl.update();
         const div =  $("<div></div>", {
             "class": "paint"

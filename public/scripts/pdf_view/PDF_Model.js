@@ -50,16 +50,16 @@ class PDF_Model extends PaintState{
             callback();
         });
     }
-    promise(cb) {
-        this.pageRendering = false;
-        const c = this.getContext();
-        this.context.backgroundImage = c.canvas.toDataURL(0, 0, c.canvas.width, c.canvas.height);
-        this.context.clearContext();
-        if (this.pageNumPending !== null) {
-            // this.renderPage(cb);
-            this.pageNumPending = null;
-        }
-    }
+    // promise(cb) {
+    //     this.pageRendering = false;
+    //     const c = this.getContext();
+    //     this.context.backgroundImage = c.canvas.toDataURL(0, 0, c.canvas.width, c.canvas.height);
+    //     this.context.clearContext();
+    //     if (this.pageNumPending !== null) {
+    //         // this.renderPage(cb);
+    //         this.pageNumPending = null;
+    //     }
+    // }
 }
 
 export default PDF_Model;

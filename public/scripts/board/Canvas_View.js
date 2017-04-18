@@ -2,6 +2,14 @@ import $ from "jquery";
 import View from "../global/View";
 import ToolsView from "../painting/tools/ToolsView";
 
+const getParentWidthAndHeight = (queryClass) => {
+    const parent = $(`.${queryClass}`);
+    return {
+        w: parent.width(),
+        h: parent.height()
+    };
+};
+
 class Canvas_View extends View {
     constructor(props = {}) {
         super({className: props.className, active: props.active});
@@ -10,8 +18,9 @@ class Canvas_View extends View {
         // TODO : width
         this.canvas.style.marginLeft = "59px";
         // TODO find way for dynamic width and height canvas
-        this.canvas.width = 581;
-        this.canvas.height = 376;
+        const offset = getParentWidthAndHeight("board-content");
+        this.canvas.width = offset.w - 59;
+        this.canvas.height = offset.h;
         this.controller = new props.controller({canvas: this.canvas, modelConstructor: props.modelConstructor});
         // set view to controller
         this.controller.setView(this);
@@ -23,6 +32,14 @@ class Canvas_View extends View {
             tools: props.tools || ["brush", "shapes", "background", "erase", "select"],
             handleTool: (tool) => this.controller.handleTool(tool),
             handleOption: (data) => this.controller.handleOptionTool(data),
+
+            // ref
+            handlePDFUpload: (data) => this.controller.handlePDFUpload(data),
+            handleImageUpload: (data) => this.controller.handleImageUpload(data),
+
+            handleHistoryNext: (e) => this.controller.historyNext(),
+            handleHistoryPrev: (e) => this.controller.historyBack(),
+
             position: props.position
         });
     }
@@ -85,7 +102,7 @@ class Canvas_View extends View {
         $(this.canvas).on("mouseup", this.handleMouseUp.bind(this));
         $(this.canvas).on("doubleclick", this.handleDoubleClick.bind(this));
 
-        $(this.canvas).on("resize", this.handleCanvasResize.bind(this));
+        // $(this.canvas).on("resize", this.handleCanvasResize.bind(this));
         const wrapper = this.renderWrapper();
         if (this.showTools) {
             wrapper.append(this.tools.render());
