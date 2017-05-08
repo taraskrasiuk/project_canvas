@@ -39,26 +39,26 @@ class Canvas_Context {
         return type != "fillShape" || type != "text";
     }
 
-    stringify () {
-        return JSON.stringify({
-            context : this.context,
-            width : this.width,
-            height : this.height,
-            strokeStyle : this.strokeStyle,
-            lineWidth : this.lineWidth,
-            fillStyle : this.fillStyle,
-            shadowBlur : this.shadowBlur,
-            shadowColor : this.shadowColor,
-            globalAlpha : this.globalAlpha,
-            lineCap : this.lineCap,
-            globalComposition : this.globalComposition,
-            backgroundImage : this.backgroundImage,
-            backgroundColor : this.backgroundColor,
-            fillShape : this.fillShape,
-            text : this.text,
-            font : this.font
-        });
-    }
+    // stringify () {
+    //     return JSON.stringify({
+    //         context : this.context,
+    //         width : this.width,
+    //         height : this.height,
+    //         strokeStyle : this.strokeStyle,
+    //         lineWidth : this.lineWidth,
+    //         fillStyle : this.fillStyle,
+    //         shadowBlur : this.shadowBlur,
+    //         shadowColor : this.shadowColor,
+    //         globalAlpha : this.globalAlpha,
+    //         lineCap : this.lineCap,
+    //         globalComposition : this.globalComposition,
+    //         backgroundImage : this.backgroundImage,
+    //         backgroundColor : this.backgroundColor,
+    //         fillShape : this.fillShape,
+    //         text : this.text,
+    //         font : this.font
+    //     });
+    // }
 
     update({type, value}) {
         this[type] = value;
