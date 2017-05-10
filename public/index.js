@@ -29,7 +29,7 @@ app.get("/log", function(req, res) {
 	res.sendFile(__dirname + "/log.html");
 });
 app.get("/styles/*", function(req, res) {
-	res.sendFile(__dirname + "/styles/style.css");
+	res.sendFile(__dirname + "/styles/" + req.params[0]);
 });
 app.get("/build/bundle.js", function(req, res) {
 	res.sendFile(__dirname + "/build/bundle.js");

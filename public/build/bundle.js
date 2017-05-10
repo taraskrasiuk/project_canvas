@@ -39758,13 +39758,168 @@ module.exports = __webpack_amd_options__;
 "use strict";
 
 
+var _ROLE_USER, _ROLE_ADMIN, _Permission$_ROLES;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _AppView = __webpack_require__(54);
 
 var _AppView2 = _interopRequireDefault(_AppView);
 
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Utils = __webpack_require__(11);
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 // SET youtube AP
+
+
+// UTILS
+
+
+//roles
+var ROLE_USER = "user";
+var ROLE_ADMIN = "admin";
+
+//permission
+var PERMISSION_CREATE_NEW_BOARD = "createNewBoard";
+var PERMISSION_CREATE_NEW_STREAM = "createNewStream";
+var PERMISSION_EDITING = "editing";
+
+var Permission = function () {
+    function Permission() {
+        _classCallCheck(this, Permission);
+    }
+
+    _createClass(Permission, [{
+        key: "getPermission",
+        value: function getPermission(user) {
+            if (user != null && user instanceof User) {
+                return Permission._ROLES[user.getRole()];
+            } else {
+                throw new Error("CHECK permission failed");
+            }
+        }
+    }]);
+
+    return Permission;
+}();
+
+Permission._ROLES = (_Permission$_ROLES = {}, _defineProperty(_Permission$_ROLES, ROLE_USER, (_ROLE_USER = {}, _defineProperty(_ROLE_USER, PERMISSION_CREATE_NEW_BOARD, false), _defineProperty(_ROLE_USER, PERMISSION_CREATE_NEW_STREAM, false), _defineProperty(_ROLE_USER, PERMISSION_EDITING, true), _ROLE_USER)), _defineProperty(_Permission$_ROLES, ROLE_ADMIN, (_ROLE_ADMIN = {}, _defineProperty(_ROLE_ADMIN, PERMISSION_CREATE_NEW_BOARD, true), _defineProperty(_ROLE_ADMIN, PERMISSION_CREATE_NEW_STREAM, true), _defineProperty(_ROLE_ADMIN, PERMISSION_EDITING, true), _ROLE_ADMIN)), _Permission$_ROLES);
+
+var User = function () {
+    function User() {
+        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _classCallCheck(this, User);
+
+        this.name = props.name || "unknown";
+        this.role = props.role || ROLE_USER;
+    }
+
+    _createClass(User, [{
+        key: "getRole",
+        value: function getRole() {
+            return this.role;
+        }
+    }, {
+        key: "getName",
+        value: function getName() {
+            return this.name;
+        }
+    }]);
+
+    return User;
+}();
+
+// config
+
+var defaultConfig = {
+    host: "localhost",
+    port: 8080,
+    user: new User("Taras", ROLE_ADMIN)
+};
+
+var ConfigApp = function ConfigApp() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, ConfigApp);
+
+    this.host = props.host;
+    this.port = props.port;
+    this.user = props.user;
+};
+
+var ToolOption = function ToolOption() {
+    var prpos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, ToolOption);
+
+    this.toolOptionName = props.toolOptionName;
+    this.toolOptionHandler = props.toolOptionHanlder;
+    // TODO: for time i call it addon. Option that will fire event, to show option details
+    this.ADDON = props.ADDON;
+};
+//
+// class NewTool {
+//     constructor(props = {}) {
+//         this.toolName = props.toolName;
+//         this.toolHandler = props.toolHandler;
+//         this.toolOptions = props.toolOptions;
+//
+//
+//     }
+//
+//     checkOptions () {
+//         return this.toolOptions != null;
+//     }
+//     _renderToolOption () {
+//
+//     }
+//     _renderToolsOptions () {
+//
+//     }
+//
+//     getToolOptions () {
+//         if (this.checkOptions()) {
+//
+//         }
+//     }
+//
+//
+//     render () {
+//         const toolImage = UiUtils.renderIcon(this.toolName);
+//
+//         return null;
+//     }
+// }
+//
+// //
+
+// const WIDTH_TOOL = {
+//   toolName: "lineWidth",
+//   options: [1,3,5,10,15,25],
+//   _get: () => {
+//       return $("<div></div>", {
+//          className: "tool widthTool"
+//       });
+//   }
+//
+// };
+//
+// const COLOR_TOOL = {
+//   toolName: "color",
+//   options: ["#ffffff", "#000000", "#ff00ff"]
+// };
 
 
 exports.MainBoard = _AppView2.default;

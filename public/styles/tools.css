@@ -1,0 +1,68 @@
+.tools {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 6rem;
+}
+
+.tool {
+
+    width: 4rem;
+    height: 4rem;
+
+    border: 1px solid #000000;
+
+    display: flex;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.tool:hover {
+    background: #2B333F;
+    border-color: #0000FF;
+}
+
+
+
+.tool-extend {
+    position: relative;
+}
+
+.tool-options {
+    display: flex;
+    flex-direction: row;
+
+    position: absolute;
+    left: 100%;
+    top: 0;
+    bottom: 0;
+}
+.tool-options .hide {
+    display: none;
+}
+
+.tool-option {
+    margin: 0 auto;
+}
+
+/* tool option width*/
+.width {
+    background: #000000;
+    border-radius: 50%;
+}
+
+/* tool option color*/
+.color {
+    width: 80%;
+    height: 80%;
+
+    border: 1px solid #000000;
+}
+
+/* selected */
+.selected {
+    background: #2B333F;
+    border-color: #0000FF;
+    color: #fffa90;
+}
