@@ -28,8 +28,7 @@ class BoardModel {
             // const PDF_VIEW = "PDF";
             const VIDEO_VIEW = "Video";
             this.views = {
-                [PAINT_VIEW]: new PaintView({elementId: "content", tools: ["brush", "shapes", "line", "background", "erase", "select", "text"]}),
-                // [PDF_VIEW]: new PDF_View({id: "canvas", tools: ["brush", "laser"]}),
+                [PAINT_VIEW]: new PaintView({elementId: "content", tools: ["brush", "shapes", "line", "laser", "background", "erase", "select", "text"]}),
                 [VIDEO_VIEW]: new VideoView({id: "content"})
             };
         }

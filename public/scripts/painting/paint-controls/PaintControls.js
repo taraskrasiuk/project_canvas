@@ -6,6 +6,7 @@ import Ellipsis from "../shapes/Ellipsis";
 import Triangle from "../shapes/Triangle";
 import Text from "../shapes/Text";
 import Line from "../shapes/Line";
+import Laser from "../shapes/Laser";
 import {
     CURSOR_TOP_LEFT,
     CURSOR_TOP_RIGHT,
@@ -440,24 +441,74 @@ export class TextControl extends Control{
         super(props);
         this.listenersOn = true;
 
+        this.alreadyInput = false;
+        this.value = "";
+        this.input = null;
     }
 
     update(data) {
         this.state.updateContext(data);
     }
 
-    onMouseDown ({x,y}) {
-        const context = this.state.getContext();
-        const font = this.state.context.font;
-        const fillShape = this.state.context.fillShape;
-        const strokeStyle = this.state.context.strokeStyle;
-        let text = this.state.context.text;
-        if (text.length > 0) {
-            let textCls = new Text({ctx: context, fillShape, font, text, x, y, type: "Text"});
-            this.state.holder.addShape(textCls);
-            this.state.setTemp(textCls);
-            this.state.draw();
+    addInput ({x,y}) {
+        this.input = document.createElement('input');
+        this.input.type = 'text';
+        this.input.style.position = 'fixed';
+        this.input.style.left = (x + 4) + 'px';
+        this.input.style.top = (y + 24) + 'px';
+
+        this.input.onkeydown = e => this.onKeyDown(e, x, y);
+
+        document.body.appendChild(this.input);
+
+        this.input.focus();
+
+        this.alreadyInput = true;
+    }
+
+    onKeyDown(e, x, y) {
+        const self = this;
+        var keyCode = e.keyCode;
+        if (keyCode === 13 && self.alreadyInput) {
+            const context = self.state.getContext();
+            const font = self.state.context.font;
+            const fillShape = self.state.context.fillShape;
+            let textCls = new Text({ctx: context, fillShape, font, text: e.target.value, x, y, type: "Text"});
+            self.state.holder.addShape(textCls);
+            self.state.setTemp(textCls);
+            self.state.draw();
+
+            self.alreadyInput = false;
+            document.body.removeChild(self.input);
+            self.input = null;
+
+            //
+            // drawText(this.value, parseInt(this.style.left, 10), parseInt(this.style.top, 10));
+            // document.body.removeChild(this);
+            // hasInput = false;
         }
+    }
+
+    onMouseDown ({x,y}) {
+        // const context = this.state.getContext();
+        // const font = this.state.context.font;
+        // const fillShape = this.state.context.fillShape;
+        // const strokeStyle = this.state.context.strokeStyle;
+        // let text = this.state.context.text;
+        // if (text.length > 0) {
+        //     let textCls = new Text({ctx: context, fillShape, font, text, x, y, type: "Text"});
+        //     this.state.holder.addShape(textCls);
+        //     this.state.setTemp(textCls);
+        //     this.state.draw();
+        // }
+        if (!this.alreadyInput) {
+            this.addInput({x,y});
+
+        }
+
+
+
+
     }
     onMouseUp ({x,y}) {
         this.state.setTemp(null);
@@ -517,6 +568,77 @@ export class LinesControl extends Control {
             this.temp.paths[0] = x;
             this.temp.paths[1] = y;
             this.state.draw();
+        }
+    }
+}
+
+export class LaserControl extends Control {
+    constructor(props = {}) {
+        super(props);
+        this.listenersOn = true;
+        this.temp = null;
+        this.interval = null;
+    }
+
+    update(data) {
+        this.state.updateContext(data);
+    }
+
+    onMouseDown({x, y}) {
+        const context = this.state.getContext();
+        this.temp = new Laser({
+            type: "Line",
+            ctx: context,
+            strokeStyle: "#ff0000",
+            lineWidth: 5,
+            globalAlpha: .8,
+            shadowBlur: null,
+            shadowColor: null
+        });
+        this.isDown = true;
+        console.log(this.tool);
+        this.temp.setX(x).setY(y);
+        this.state.holder.addShape(this.temp);
+        this.state.setTemp(this.temp);
+        const self = this;
+        this.interval = setInterval(() => {
+            if (self.temp.paths.length > 0) {
+                self.temp.paths.splice(0, 2);
+                // self.temp.draw();
+            }
+
+        }, 30);
+    }
+
+    onMouseUp({x, y}) {
+        this.isDown = false;
+        if (this.temp != null) {
+            this.temp.addPath({x, y});
+            this.state.draw();
+            if (this.temp != null) {
+                this.state.holder.pop();
+            }
+        }
+        this.temp = null;
+        if (this.interval != null) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
+        this.state.setTemp(this.temp);
+    }
+
+    onMouseMove({x, y}) {
+
+        if (this.isDown) {
+            if (this.temp.paths[this.temp.paths.length - 2] !== null &&
+                this.temp.paths[this.temp.paths.length - 2] == x && this.temp.paths[this.temp.paths.length - 1] == y) {
+                return;
+            }
+            this.temp.addPath({x, y});
+            if (this.temp.paths.length > 16) {
+                this.temp.paths.splice(0, 2);
+            }
+            this.state.stateValid = false;
         }
     }
 }

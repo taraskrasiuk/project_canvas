@@ -23,7 +23,9 @@
 	<!---->
 <!--</div>-->
 <script type="text/javascript">
-	new board.MainBoard().render();
+	document.body.appendChild(new board.MainBoard({className: "record-wrapper"}).render()[0]);
+
+//	new board.MainBoard().render();
 </script>
 </body>
 </html>

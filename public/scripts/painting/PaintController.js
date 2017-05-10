@@ -5,7 +5,8 @@ import {
     BrushControl,
     SelectControl,
     TextControl,
-    LinesControl
+    LinesControl,
+    LaserControl
 } from "./paint-controls/PaintControls"
 import Controller from "../global/Controller";
 
@@ -128,7 +129,7 @@ class PaintController extends Controller{
                     this.controls[type] = new BrushControl(props);
                     break;
                 case "laser" :
-                    this.controls[type] = new BrushControl(props);
+                    this.controls[type] = new LaserControl(props);
                     break;
                 case "background" :
                     this.controls[type] = new BackgroundControl(props);

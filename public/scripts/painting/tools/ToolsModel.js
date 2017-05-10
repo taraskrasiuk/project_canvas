@@ -201,6 +201,10 @@ class ToolsModel {
     constructor(props = {}) {
         this.props = props;
         this.tools = this.props.tools.map(t => new Tool({name: t, active: false}));
+
+        this.lineWidthTool = [1,3,5,10,15];
+        this.colors = ["#ffffff", "#00ff00", "#0000ff", "#0f0f0f", "#ccddee"];
+        this.shapes = ["brush","rectangle","triangle","ellipsis"]
     }
 
     setTools (tools) {

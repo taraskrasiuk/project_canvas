@@ -13,17 +13,15 @@ import Text from "./shapes/Text";
 
 class CanvasRecord {
     constructor(props = {}) {
-        this.isRecord = props.record || true;
-        const h = "http://localhost:";
-        const self = this;
-        this.props = props;
-            this.socket = io();
+        this.isRecord = props.record;
+        this.socket = null;
 
     }
 
     startRecord() {
         const self = this;
         this.isRecord = true;
+        this.socket = io();
         this.socket.connect("http://localhost:3000");
         this.socket.emit("draw", self.props.socketEmit());
         this.socket.on("draw", (data) => {
@@ -62,7 +60,7 @@ class PaintState {
 
 
         this.socketRecord = new CanvasRecord({
-           record: false,
+            record: false,
             host: "3000",
             socketUpdate: self.getSnapShot.bind(self),
             socketEmit: self.takeSnapShot.bind(self)
@@ -70,7 +68,6 @@ class PaintState {
 
         this.__last = null;
 
-        this.isRecord = false;
         this.stateValid = true;
         this.stateInterval = window.setInterval(() => {
             if (!self.stateValid) {
@@ -95,9 +92,6 @@ class PaintState {
 
     setTemp (t) {
         this.__last = t;
-        // if (this.socketRecord.isRecord && this.__last != null) {
-        //     this.socketRecord.socketEmit(JSON.stringify(this.__last));
-        // }
     }
     getFromTemp (_data) {
         var parse = JSON.parse(_data);
@@ -118,11 +112,6 @@ class PaintState {
     }
 
     takeSnapShot () {
-        // TODO:
-        // return this.canvas.toDataURL("image/png");
-        // if (this.socketRecord.isRecord && this.__last != null) {
-        //     this.socketRecord.socketEmit(JSON.stringify(this.__last));
-        // }
         if (this.__last != null) {
             return JSON.stringify(this.__last);
         }
@@ -188,18 +177,6 @@ class PaintState {
         }
         this.draw();
 
-
-        //
-        //
-        // const img = new Image();
-        // img.src = dataUrl;
-        // var context = this.context.getContext();
-        // this.context.clearContext();
-        // context.drawImage(img, 0, 0);
-        // if (this.socketRecord.isRecord && this.__last != null) {
-        //     this.socketRecord.socketEmit(JSON.stringify(this.__last));
-        // }
-
     }
 
     startUpdateState () {
@@ -222,35 +199,6 @@ class PaintState {
         this.stateValid = true;
         this.stateInterval = clearInterval(this.stateInterval);
         this.stateInterval = null;
-    }
-
-    _diff(obj1, obj2) {
-        var result = {};
-        obj1 = Object.keys(obj1).map(o => JSON.parse(obj1[o]));
-        obj2 = Object.keys(obj2).map(o => JSON.parse(obj2[o]));
-        for(var key in obj1) {
-            if(obj2[key] != obj1[key]) result[key] = obj2[key];
-            if(typeof obj2[key] == 'array' && typeof obj1[key] == 'array')
-                result[key] = this._diff(obj1[key], obj2[key]);
-            if(typeof obj2[key] == 'object' && typeof obj1[key] == 'object')
-                result[key] = this._diff(obj1[key], obj2[key]);
-        }
-        return result;
-    }
-
-    stringify () {
-        var o = {
-            canvasContext: this.context.stringify(),
-            shapesHolder: this.holder.stringify()
-        };
-
-        return JSON.stringify(o);
-
-    }
-
-    show() {
-        var res = this._diff(JSON.parse(o.canvasContext), JSON.parse(o.shapesHolder));
-        console.log(res);
     }
 
     historyNext() {
@@ -276,18 +224,11 @@ class PaintState {
         });
     }
 
-    lastChange () {
-
-    }
-
     draw() {
 
-        // TODO: need to rebuild MVC. Should be : view -> controller; controller -> view; controller -> model
-
-        const toolsWrapper = document.querySelector(".tools-absolute");
-        if (toolsWrapper != null) {
-            toolsWrapper.parentNode.removeChild(toolsWrapper);
-        }
+        // // TODO: need to rebuild MVC. Should be : view -> controller; controller -> view; controller -> model
+        //
+        this.context.clearContext();
 
         this.holder._history.clear();
         // TODO : need to be rebuild; Too hard for every mls update
@@ -296,7 +237,6 @@ class PaintState {
             this.holder.shapes = this.holder.getShapes();
             this.holder._history.step = 0;
         }
-        this.context.clearContext();
         this.holder.shapes.forEach(sh => {
             if (sh == this.selected) {
                 sh.isBounded = true;
@@ -309,6 +249,7 @@ class PaintState {
             this.socketRecord.sendData(this.takeSnapShot());
         }
     }
+
     clearAll () {
         this.pageRendering = false;
         this.pageRendering = null;
@@ -319,10 +260,12 @@ class PaintState {
         this.holder.clearAll();
         this.context.clearAll();
     }
+
     updateContext(optionData) {
         this.context.update(optionData);
         console.log("PAINSTATE update:", optionData);
     }
+
     setBackgroundColor(val, bool) {
         // this.context.clearContext();
         if (this.context.backgroundImage != null) {
@@ -332,7 +275,7 @@ class PaintState {
         this.context.backgroundColor = val;
         const ctx = this.getContext();
         ctx.fillRect(0, 0, this.context.width, this.context.height);
-        this.draw();
+        // this.draw();
         // SOCKET EMIT ****
         if (this.socketRecord.isRecord && bool) {
             var value = {
@@ -341,11 +284,13 @@ class PaintState {
             this.socketRecord.socket.emit("draw", JSON.stringify(value));
         }
     }
+
     setScale(val) {
         this.context.clearContext();
         this.context.update({type: "scale", value: parseFloat(val)});
         this.draw();
     }
+
     setUpload(img, bool) {
         // this.context.clearContext();
         if (this.context.backgroundColor != null) {
@@ -359,7 +304,7 @@ class PaintState {
         } else {
             this.context.backgroundImage = img.src;
         }
-        this.draw();
+        // this.draw();
 
         if (this.socketRecord.isRecord && bool) {
             var value = {backgroundImage: this.context.backgroundImage};
@@ -369,6 +314,7 @@ class PaintState {
         // this.context.clearContext();
 
     }
+
     getContext() {
         return this.context.context;
     }
