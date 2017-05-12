@@ -1,5 +1,7 @@
 import $ from "jquery";
 import Utils from "../../utils/Utils";
+import UiUtils from "../../utils/UiUtils";
+
 class NewTools {
     constructor(props = {}) {
 
@@ -9,17 +11,17 @@ class NewTools {
 
         this.colorSelected = "#ff00ff";
         this.shapeSelected = "brush";
+        this.selectedFill = false;
 
         this.toggle = {
             widthSelected: true,
             colorSelected: true,
             shapeSelected: true
-        }
+        };
         this.props = props;
     }
 
     handleToggle (data) {
-        // const data = e.target.getAttribute("data");
         Object.keys(this.toggle).forEach(key => {
             if (key == data) {
                 this.toggle[key] = !this.toggle[key];
@@ -27,26 +29,32 @@ class NewTools {
                 this.toggle[key] = true;
             }
         });
-        // this.toggle[data] = !this.toggle[data];
         this.update();
     }
 
     handleSelect (type, data) {
         if (this[type] !== undefined) {
-
             this[type] = data;
-            this.toggle[type] = !this.toggle[type];
+            if (this.toggle[type] != null) {
+                this.toggle[type] = !this.toggle[type];
+            }
             if (this.props.handleSelect != null) {
                 this.props.handleSelect(data);
             }
             this.update();
         }
-
     }
 
-    // update () {
-    //     console.log("should update");
-    // }
+    getFill () {
+        let cssClass = "tool-option tool-";
+        if (this.selectedFill) {
+            cssClass += "fill";
+        } else cssClass += "notFill";
+        return $("<div></div>", {"class": "tool"}).append($("<div></div>", {"class": cssClass})
+            .on("click", e => this.handleSelect("selectedFill", !this.selectedFill)));
+    }
+
+
 
     getWidth () {
         const options = [3,5,10,15,25];
@@ -162,16 +170,23 @@ class NewTools {
 
     }
 
-    update () {
-        $(".tools").empty().append(this.getWidth(), this.getColor(), this.getTools());
+
+
+    getAllTools () {
+        return [this.getTools(), this.getColor(), this.getWidth(), this.getFill()];
     }
+
+    update () {
+        $(".tools").empty().append(this.getAllTools());
+    }
+
     render () {
 
         const div = $("<div></div>", {
             "class": "tools"
-        }).append(this.getWidth(), this.getColor(), this.getTools());
+        }).append(this.getAllTools());
 
-        // $("body").append(div);
+        $("body").append(div);
         return div;
 
 

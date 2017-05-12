@@ -1,4 +1,5 @@
 import $ from "jquery";
+import Utils from "./Utils";
 const STATIC_SRC = "static/images/";
 
 const UiUtils = {

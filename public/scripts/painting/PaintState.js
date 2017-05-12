@@ -15,16 +15,17 @@ class CanvasRecord {
     constructor(props = {}) {
         this.isRecord = props.record;
         this.socket = null;
+        this.props = props;
 
     }
 
     startRecord() {
         const self = this;
-        this.isRecord = true;
-        this.socket = io();
-        this.socket.connect("http://localhost:3000");
-        this.socket.emit("draw", self.props.socketEmit());
-        this.socket.on("draw", (data) => {
+        self.isRecord = true;
+        self.socket = io();
+        self.socket.connect("http://localhost:3000");
+        self.socket.emit("draw", self.props.socketEmit());
+        self.socket.on("draw", (data) => {
             self.props.socketUpdate(data);
         });
     }

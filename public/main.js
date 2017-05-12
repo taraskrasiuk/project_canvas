@@ -1,6 +1,7 @@
 import AppView from "./scripts/app/AppView";
 import $ from "jquery";
-import Utils from "./scripts/utils/Utils";
+// import Utils from "./scripts/utils/Utils";
+import NewTool from "./scripts/painting/tools/NewTools";
 
 
 // SET youtube AP
@@ -80,64 +81,29 @@ class ConfigApp {
 }
 
 class ToolOption {
-    constructor(prpos = {}) {
+    constructor(props = {}) {
         this.toolOptionName = props.toolOptionName;
         this.toolOptionHandler = props.toolOptionHanlder;
         // TODO: for time i call it addon. Option that will fire event, to show option details
         this.ADDON = props.ADDON;
     }
 }
-//
-// class NewTool {
-//     constructor(props = {}) {
-//         this.toolName = props.toolName;
-//         this.toolHandler = props.toolHandler;
-//         this.toolOptions = props.toolOptions;
-//
-//
-//     }
-//
-//     checkOptions () {
-//         return this.toolOptions != null;
-//     }
-//     _renderToolOption () {
-//
-//     }
-//     _renderToolsOptions () {
-//
-//     }
-//
-//     getToolOptions () {
-//         if (this.checkOptions()) {
-//
-//         }
-//     }
-//
-//
-//     render () {
-//         const toolImage = UiUtils.renderIcon(this.toolName);
-//
-//         return null;
-//     }
-// }
-//
-// //
 
-// const WIDTH_TOOL = {
-//   toolName: "lineWidth",
-//   options: [1,3,5,10,15,25],
-//   _get: () => {
-//       return $("<div></div>", {
-//          className: "tool widthTool"
-//       });
-//   }
-//
-// };
-//
-// const COLOR_TOOL = {
-//   toolName: "color",
-//   options: ["#ffffff", "#000000", "#ff00ff"]
-// };
+
+const defaultPropsForPopup = {
+    size: "small", // small, medium, big,
+    fields: ["user", "host"], // array that will be map in input with label
+    actions: [{
+        actionName: "start",
+        actions
+    }]
+};
+
+class Popup {
+    constructor(props = {}) {
+
+    }
+}
 
 
 
