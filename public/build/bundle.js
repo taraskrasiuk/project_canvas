@@ -40318,21 +40318,121 @@ var ToolOption = function ToolOption() {
 };
 
 var defaultPropsForPopup = {
+    title: "testTitle",
+    content: "test content",
     size: "small", // small, medium, big,
     fields: ["user", "host"], // array that will be map in input with label
     actions: [{
         actionName: "start",
-        actions: actions
+        actionHandler: function actionHandler(e) {
+            console.log("start");
+        }
+    }, {
+        actionName: "cancel",
+        actionHandler: function actionHandler(e) {
+            console.log("cancel");
+        }
     }]
 };
 
-var Popup = function Popup() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+var Popup = function () {
+    function Popup() {
+        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    _classCallCheck(this, Popup);
-};
+        _classCallCheck(this, Popup);
 
-exports.MainBoard = _AppView2.default;
+        this.title = props.title || null;
+        this.content = props.content || null;
+        this.size = props.size || "small";
+        this.fields = props.fields || [];
+        this.actions = props.actions || [];
+    }
+
+    _createClass(Popup, [{
+        key: "getField",
+        value: function getField() {
+            var field = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var label = (0, _jquery2.default)("<label></label>", {
+                "class": "popup-label",
+                "for": field.name
+            }).text(field.name);
+            var input = (0, _jquery2.default)("<input />", {
+                type: "text",
+                id: field.name,
+                value: "",
+                "class": "popup-input"
+            });
+            var line = (0, _jquery2.default)("<div></div>", {
+                "class": "popup-line"
+            }).append(label.append(input));
+            return line;
+        }
+    }, {
+        key: "getTitle",
+        value: function getTitle() {
+            return (0, _jquery2.default)("<h4></h4>").text(this.title);
+        }
+    }, {
+        key: "getContent",
+        value: function getContent() {
+            return (0, _jquery2.default)("<p></p>").text(this.content);
+        }
+    }, {
+        key: "_getAction",
+        value: function _getAction() {
+            var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            return (0, _jquery2.default)("<button></button>", {
+                "class": "popup-action"
+            }).on("click", function (e) {
+                e.preventDefault();
+                action.actionHandler(action.actionName);
+            });
+        }
+    }, {
+        key: "getAllActions",
+        value: function getAllActions() {
+            var _this = this;
+
+            var actions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+            return (0, _jquery2.default)("<div></div>", {
+                "class": "popup-actions"
+            }).append(actions.map(function (ac) {
+                return _this._getAction(ac);
+            }));
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            var wrapper = (0, _jquery2.default)("<div></div>", {
+                "class": "popup"
+            });
+            if (this.title != null) {
+                wrapper.append(this.getTitle());
+            }
+            if (this.content != null) {
+                wrapper.append(this.getContent());
+            }
+            if (this.fields != null && this.fields.length > 0) {
+                this.fields.forEach(function (f) {
+                    wrapper.append(_this2.getField(f));
+                });
+            }
+            if (this.actions != null && this.actions.length > 0) {
+                wrapper.append(this.getAllActions(this.actions));
+            }
+            return wrapper;
+        }
+    }]);
+
+    return Popup;
+}();
+
+exports.MainBoard = _NewTools2.default;
 
 /***/ })
 /******/ ]);
