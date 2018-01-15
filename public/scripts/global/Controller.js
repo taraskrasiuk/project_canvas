@@ -1,11 +1,8 @@
 
 class Controller {
     constructor(props = {}) {
-        this.model = props.model;
+        this.model = null;
         this.view = null;
-    }
-    getModel() {
-        return this.model;
     }
 
     setModel(m) {

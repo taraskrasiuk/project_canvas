@@ -85,7 +85,7 @@ class NewTools {
             .append($("<div></div>", {
                 "class": "tool-option width",
                 "data": "width"
-            }).css({width: `${this.widthSelected}px`, height: `${this.widthSelected}px`}))
+            }).css({width: `${this.widthSelected}px`, height: `${this.widthSelected}px`}));
 
         return $("<div></div>", {
             "class": "tool tool-extend"
